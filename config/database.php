@@ -95,8 +95,8 @@ return [
 
         'mongodb' => [
             'driver' => 'mongodb',
-            'dsn' => env('DB_URI', 'mongodb+srv://flappyTeam:123@clusterflappy.76zjfj9.mongodb.net/dbFlappy?retryWrites=true&w=majority'),
-            'database' => 'dbFlappy',
+            'dsn' => env('DB_URI', ''),
+            'database' => env('DB_DATABASE', ''),
         ],
 
     ],
