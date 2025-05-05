@@ -7,11 +7,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use MongoDB\Laravel\Relations\HasMany;
 
 class User extends Authenticatable
 {
+    #region Setup
     use HasApiTokens, HasFactory, Notifiable;
-
+    
+    protected $connection = 'mongodb';
     /**
      * The attributes that are mass assignable.
      *
@@ -19,10 +22,12 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'rol',
         'dni',
         'password',
+        'state',
     ];
-
+    
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -32,7 +37,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
+    
     /**
      * The attributes that should be cast.
      *
@@ -42,4 +47,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    #endregion
+    #region Relationships
+    public function operations(): HasMany
+    {
+        return $this->hasMany(Operation::class);
+    }
+
+    public function sales(): HasMany
+    {
+        return $this->hasMany(Sale::class);
+    }
+    #endregion
+
+
 }

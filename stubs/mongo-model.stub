@@ -1,11 +1,9 @@
 <?php
 
 namespace {{ namespace }};
-
 use MongoDB\Laravel\Eloquent\Model;
 
 class {{ class }} extends Model
 {
-    protected $connection = 'mongodb';
-    protected $collection = '{{ collection }}';
+    protected $table = '{{ collection }}';
 }
