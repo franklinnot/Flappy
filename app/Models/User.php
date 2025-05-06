@@ -25,7 +25,7 @@ class User extends Authenticatable
         'rol',
         'dni',
         'password',
-        'state',
+        'status',
     ];
     
     /**

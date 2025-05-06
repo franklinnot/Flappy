@@ -15,7 +15,7 @@ class Supplier extends Model
         'address',
         'email',
         'phone',
-        'state',
+        'status',
     ];
     #endregion
     #region Relationships

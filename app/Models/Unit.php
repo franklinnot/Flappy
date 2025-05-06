@@ -12,7 +12,7 @@ class Unit extends Model
     protected $fillable = [
         'name',
         'code',
-        'state',
+        'status',
     ];
     #endregion
     #region Relationships

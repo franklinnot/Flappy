@@ -14,7 +14,7 @@ class Product extends Model
         'code',
         'name',
         'picture',
-        'state',
+        'status',
     ];
     #endregion
     #region Relationships

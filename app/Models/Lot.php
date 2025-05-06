@@ -17,8 +17,8 @@ class Lot extends Model
         'initial_stock',
         'stock',
         'price',
-        'exp_state',
-        'state',
+        'exp_status',
+        'status',
     ];
     #endregion
     #region Relationships

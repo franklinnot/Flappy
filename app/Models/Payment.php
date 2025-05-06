@@ -11,7 +11,7 @@ class Payment extends Model
     protected $table = 'payments';
     protected $fillable = [
         'name',
-        'state',
+        'status',
     ];
     #endregion
     #region Relationships

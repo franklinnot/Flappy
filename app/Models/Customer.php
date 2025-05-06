@@ -13,7 +13,7 @@ class Customer extends Model
         'name',
         'dni',
         'phone',
-        'state',
+        'status',
     ];
     #endregion
     #region Relationships

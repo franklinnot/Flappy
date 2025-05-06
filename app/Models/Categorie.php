@@ -14,7 +14,7 @@ class Categorie extends Model
     protected $fillable = [
         'code',
         'name',
-        'state',
+        'status',
     ];
     #endregion
     #region Relationships

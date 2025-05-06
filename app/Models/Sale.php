@@ -13,7 +13,7 @@ class Sale extends Model
     protected $fillable = [
         'code',
         'total',
-        'state',
+        'status',
     ];
     #endregion
     #region Relationships

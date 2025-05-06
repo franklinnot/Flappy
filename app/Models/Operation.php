@@ -12,7 +12,7 @@ class Operation extends Model
     protected $fillable = [
         'type',
         'quantity',
-        'state',
+        'status',
     ];
     #endregion
     #region Relationships
