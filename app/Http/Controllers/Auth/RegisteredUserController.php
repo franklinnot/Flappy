@@ -2,20 +2,23 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\Status;
+use App\Enums\UserRol;
+use App\Helpers\EnumHelper;
+use App\Helpers\Report;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class RegisteredUserController extends Controller
 {
+    public const COMPONENT = "Auth/Register";
+
     /**
      * Display the registration view.
      */
@@ -29,24 +32,27 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): Response
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'dni' => 'required|digits:8|unique:'.User::class,
+            'dni' => 'required|digits:8|unique:users,dni',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'rol' => ['required', Rule::in(UserRol::names())],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'dni' => $request->dni,
             'password' => Hash::make($request->password),
+            'rol' => EnumHelper::getValue(UserRol::class, $request->rol),// Convierte el nombre del caso al valor respaldado
+            'status' => Status::ACTIVE->value,
         ]);
 
-        event(new Registered($user));
+        if (!$user) {
+            Report::error('Error al registrar un nuevo usuario');
+        }
 
-        Auth::login($user);
-
-        return redirect(RouteServiceProvider::HOME);
+        return Inertia::render(self::COMPONENT, Report::success('Usuario registrado correctamente'));
     }
 }
