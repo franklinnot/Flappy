@@ -4,8 +4,8 @@ namespace App\Enums;
 
 enum Status: string
 {
-    case ACTIVE = 'Habilitado';
-    case INACTIVE = 'Inhabilitado';
+    case ENABLED = 'Habilitado';
+    case DISABLED = 'Inhabilitado';
 
     public static function values(): array
     {

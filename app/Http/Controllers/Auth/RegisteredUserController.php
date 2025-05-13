@@ -46,7 +46,7 @@ class RegisteredUserController extends Controller
             'dni' => $request->dni,
             'password' => Hash::make($request->password),
             'rol' => EnumHelper::getValue(UserRol::class, $request->rol),// Convierte el nombre del caso al valor respaldado
-            'status' => Status::ACTIVE->value,
+            'status' => Status::ENABLED->value,
         ]);
 
         if (!$user) {
