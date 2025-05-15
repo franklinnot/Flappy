@@ -21,11 +21,6 @@ class Operation extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function supplier(): BelongsTo
-    {
-        return $this->belongsTo(Supplier::class);
-    }
-
     public function lot(): BelongsTo
     {
         return $this->belongsTo(Lot::class);

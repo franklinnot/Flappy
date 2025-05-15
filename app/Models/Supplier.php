@@ -19,9 +19,9 @@ class Supplier extends Model
     ];
     #endregion
     #region Relationships
-    public function operations(): HasMany
+    public function lots(): HasMany
     {
-        return $this->hasMany(Operation::class);
+        return $this->hasMany(Lot::class);
     }
     #endregion
 
