@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Utils;
 
 use Illuminate\Validation\ValidationException;
 /**

@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Enums\UserRol;
-use App\Helpers\SellerRoutes;
+use App\Enums\Roles;
+use App\Utils\SellerRoutes;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +23,7 @@ class VerifyRol
         $user = Auth::user();
         $rol = $user->rol;
 
-        if ($rol == UserRol::SELLER->value) {
+        if ($rol == Roles::SELLER->value) {
             $path = $request->path();
             $routes = SellerRoutes::getRoutes();
             $allowed = false;
