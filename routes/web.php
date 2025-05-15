@@ -31,25 +31,47 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     Route::get('users/new', [RegisteredUserController::class, 'create'])->name('users.new');
     Route::post('users/new', [RegisteredUserController::class, 'store']);
 
-    Route::get('users/edit/{id}', [RegisteredUserController::class, 'store'])->name('users.edit');
-    Route::patch('users/edit/{id}', [RegisteredUserController::class, 'store']);
+    Route::patch('users/edit/{id}', [RegisteredUserController::class, 'store'])->name('users.edit');
     Route::patch('users/edit/pass/{id}', [RegisteredUserController::class, 'update'])->name('users.pass');
 
     Route::patch('users/enable/{id}', [RegisteredUserController::class, 'update'])->name('users.enable');
     Route::patch('users/disable/{id}', [RegisteredUserController::class, 'update'])->name('users.disable');
     #endregion
 
-    #region Categories
-    Route::get('categories', [ProfileController::class, 'edit'])->name('categories');
+    #region Customers
+    Route::get('customers', [RegisteredUserController::class, 'create'])->name('customers');
 
-    Route::get('categories/new', [RegisteredUserController::class, 'create'])->name('categories.new');
-    Route::post('categories/new', [RegisteredUserController::class, 'store']);
+    Route::get('customers/new', [RegisteredUserController::class, 'create'])->name('customers.new');
+    Route::post('customers/new', [RegisteredUserController::class, 'store']);
 
-    Route::get('categories/edit/{id}', [RegisteredUserController::class, 'store'])->name('categories.edit');
-    Route::patch('categories/edit/{id}', [RegisteredUserController::class, 'store']);
+    Route::patch('customers/edit/{id}', [RegisteredUserController::class, 'store'])->name('customers.edit');
 
-    Route::patch('categories/enable/{id}', [RegisteredUserController::class, 'update'])->name('categories.enable');
-    Route::patch('users/disable/{id}', [RegisteredUserController::class, 'update'])->name('users.disable');
+    Route::patch('customers/enable/{id}', [RegisteredUserController::class, 'update'])->name('customers.enable');
+    Route::patch('customers/disable/{id}', [RegisteredUserController::class, 'update'])->name('customers.disable');
+    #endregion
+
+    #region Suppliers
+    Route::get('suppliers', [RegisteredUserController::class, 'create'])->name('suppliers');
+
+    Route::get('suppliers/new', [RegisteredUserController::class, 'create'])->name('suppliers.new');
+    Route::post('suppliers/new', [RegisteredUserController::class, 'store']);
+
+    Route::patch('suppliers/edit/{id}', [RegisteredUserController::class, 'store'])->name('suppliers.edit');
+
+    Route::patch('suppliers/enable/{id}', [RegisteredUserController::class, 'update'])->name('suppliers.enable');
+    Route::patch('suppliers/disable/{id}', [RegisteredUserController::class, 'update'])->name('suppliers.disable');
+    #endregion
+
+    #region Payments
+    Route::get('payments', [RegisteredUserController::class, 'create'])->name('payments');
+
+    Route::get('payments/new', [RegisteredUserController::class, 'create'])->name('payments.new');
+    Route::post('payments/new', [RegisteredUserController::class, 'store']);
+
+    Route::patch('payments/edit/{id}', [RegisteredUserController::class, 'store'])->name('payments.edit');
+
+    Route::patch('payments/enable/{id}', [RegisteredUserController::class, 'update'])->name('payments.enable');
+    Route::patch('payments/disable/{id}', [RegisteredUserController::class, 'update'])->name('payments.disable');
     #endregion
 
     #region Units
@@ -58,11 +80,22 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     Route::get('units/new', [RegisteredUserController::class, 'create'])->name('units.new');
     Route::post('units/new', [RegisteredUserController::class, 'store']);
 
-    Route::get('units/edit/{id}', [RegisteredUserController::class, 'store'])->name('units.edit');
-    Route::patch('units/edit/{id}', [RegisteredUserController::class, 'store']);
+    Route::patch('units/edit/{id}', [RegisteredUserController::class, 'store'])->name('units.edit');
 
     Route::patch('units/enable/{id}', [RegisteredUserController::class, 'update'])->name('units.enable');
     Route::patch('units/disable/{id}', [RegisteredUserController::class, 'update'])->name('units.disable');
+    #endregion
+
+    #region Categories
+    Route::get('categories', [ProfileController::class, 'edit'])->name('categories');
+
+    Route::get('categories/new', [RegisteredUserController::class, 'create'])->name('categories.new');
+    Route::post('categories/new', [RegisteredUserController::class, 'store']);
+
+    Route::patch('categories/edit/{id}', [RegisteredUserController::class, 'store'])->name('categories.edit');
+
+    Route::patch('categories/enable/{id}', [RegisteredUserController::class, 'update'])->name('categories.enable');
+    Route::patch('users/disable/{id}', [RegisteredUserController::class, 'update'])->name('users.disable');
     #endregion
 
     #region Products
@@ -71,8 +104,7 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     Route::get('products/new', [RegisteredUserController::class, 'create'])->name('products.new');
     Route::post('products/new', [RegisteredUserController::class, 'store']);
 
-    Route::get('products/edit/{id}', [RegisteredUserController::class, 'store'])->name('products.edit');
-    Route::patch('products/edit/{id}', [RegisteredUserController::class, 'store']);
+    Route::patch('products/edit/{id}', [RegisteredUserController::class, 'store'])->name('products.edit');
 
     Route::patch('products/enable/{id}', [RegisteredUserController::class, 'update'])->name('products.enable');
     Route::patch('products/disable/{id}', [RegisteredUserController::class, 'update'])->name('products.disable');
@@ -84,24 +116,10 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     Route::get('lots/new', [RegisteredUserController::class, 'create'])->name('lots.new');
     Route::post('lots/new', [RegisteredUserController::class, 'store']);
 
-    Route::get('lots/edit/{id}', [RegisteredUserController::class, 'store'])->name('lots.edit');
-    Route::patch('lots/edit/{id}', [RegisteredUserController::class, 'store']);
+    Route::patch('lots/edit/{id}', [RegisteredUserController::class, 'store'])->name('lots.edit');
 
     Route::patch('lots/enable/{id}', [RegisteredUserController::class, 'update'])->name('lots.enable');
     Route::patch('lots/disable/{id}', [RegisteredUserController::class, 'update'])->name('lots.disable');
-    #endregion
-
-    #region Suppliers
-    Route::get('suppliers', [RegisteredUserController::class, 'create'])->name('suppliers');
-
-    Route::get('suppliers/new', [RegisteredUserController::class, 'create'])->name('suppliers.new');
-    Route::post('suppliers/new', [RegisteredUserController::class, 'store']);
-
-    Route::get('suppliers/edit/{id}', [RegisteredUserController::class, 'store'])->name('suppliers.edit');
-    Route::patch('suppliers/edit/{id}', [RegisteredUserController::class, 'store']);
-
-    Route::patch('suppliers/enable/{id}', [RegisteredUserController::class, 'update'])->name('suppliers.enable');
-    Route::patch('suppliers/disable/{id}', [RegisteredUserController::class, 'update'])->name('suppliers.disable');
     #endregion
 
     #region Operations
@@ -111,32 +129,6 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     Route::post('operations/new', [RegisteredUserController::class, 'store']);
 
     Route::patch('operations/disable/{id}', [RegisteredUserController::class, 'update'])->name('operations.disable');
-    #endregion
-
-    #region Customers
-    Route::get('customers', [RegisteredUserController::class, 'create'])->name('customers');
-
-    Route::get('customers/new', [RegisteredUserController::class, 'create'])->name('customers.new');
-    Route::post('customers/new', [RegisteredUserController::class, 'store']);
-
-    Route::get('customers/edit/{id}', [RegisteredUserController::class, 'store'])->name('customers.edit');
-    Route::patch('customers/edit/{id}', [RegisteredUserController::class, 'store']);
-
-    Route::patch('customers/enable/{id}', [RegisteredUserController::class, 'update'])->name('customers.enable');
-    Route::patch('customers/disable/{id}', [RegisteredUserController::class, 'update'])->name('customers.disable');
-    #endregion
-
-    #region Payments
-    Route::get('payments', [RegisteredUserController::class, 'create'])->name('payments');
-
-    Route::get('payments/new', [RegisteredUserController::class, 'create'])->name('payments.new');
-    Route::post('payments/new', [RegisteredUserController::class, 'store']);
-
-    Route::get('payments/edit/{id}', [RegisteredUserController::class, 'store'])->name('payments.edit');
-    Route::patch('payments/edit/{id}', [RegisteredUserController::class, 'store']);
-
-    Route::patch('payments/enable/{id}', [RegisteredUserController::class, 'update'])->name('payments.enable');
-    Route::patch('payments/disable/{id}', [RegisteredUserController::class, 'update'])->name('payments.disable');
     #endregion
 
     #region Sales
