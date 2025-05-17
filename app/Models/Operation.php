@@ -25,5 +25,10 @@ class Operation extends Model
     {
         return $this->belongsTo(Lot::class);
     }
+
+    public function supplier(): BelongsTo
+    {
+        return $this->belongsTo(Supplier::class);
+    }
     #endregion
 }

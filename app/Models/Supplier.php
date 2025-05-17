@@ -23,6 +23,11 @@ class Supplier extends Model
     {
         return $this->hasMany(Lot::class);
     }
+
+    public function operations(): HasMany
+    {
+        return $this->hasMany(Operation::class);
+    }
     #endregion
 
 

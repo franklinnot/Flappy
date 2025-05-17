@@ -32,11 +32,6 @@ class Lot extends Model
         return $this->hasMany(SaleDetails::class);
     }
 
-    public function supplier(): BelongsTo
-    {
-        return $this->belongsTo(Supplier::class);
-    }
-
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
