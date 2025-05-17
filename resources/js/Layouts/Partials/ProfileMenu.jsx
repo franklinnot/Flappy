@@ -27,7 +27,7 @@ const ProfileMenu = ({ user }) => {
 
     return (
         <div
-            className="relative grid grid-flow-col place-items-center justify-self-end gap-2 mt-1"
+            className="relative grid grid-flow-col place-items-center justify-self-end gap-2"
             ref={menuRef}
         >
             {/* Nombre del usuario */}

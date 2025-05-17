@@ -3,7 +3,7 @@ import { Link } from "@inertiajs/react";
 import { ArrowDown, ArrowUp, IconClose, MenuBurger } from "@/Components/Icons";
 import getRoutes from "@/Utils/routes";
 
-export default function NavigationMenu({user}) {
+export default function NavigationMenu({ user }) {
     const [menuOpen, setMenuOpen] = useState(false);
     const [openSubmenu, setOpenSubmenu] = useState(null);
     const [routes, setRoutes] = useState([]);
@@ -41,7 +41,7 @@ export default function NavigationMenu({user}) {
                 id="open_menu"
                 type="button"
                 onClick={toggleMenu}
-                className="m-0 mt-1 py-1 px-2 bg-[#d4e0fc] hover:bg-[#c9d7fa] rounded-md transition-all ease-in-out"
+                className="m-0 mt-1 py-1 px-2 bg-[#d4e0fc] hover:bg-[#c9d7fa] rounded-md transition-all ease-in-out border-[1px] border-gray-200"
             >
                 {menuOpen ? (
                     <IconClose
