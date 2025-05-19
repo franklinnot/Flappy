@@ -15,6 +15,7 @@ export default function InputField({
     required = false,
     placeholder = "",
     disabled = false,
+    maxLength = 255,
     ...props // Spread additional props
 }) {
     return (
@@ -34,6 +35,7 @@ export default function InputField({
                 placeholder={placeholder}
                 error={error}
                 disabled={disabled}
+                maxLength = {maxLength}
                 {...props} // Spread additional props to TextInput
             />
 
