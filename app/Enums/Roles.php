@@ -18,6 +18,20 @@ enum Roles: string
     }
 
     /**
+     * Get roles formatted 
+     *
+     * @return array<array{id: string, name: string}>
+     */
+    public static function valuesWithId(): array
+    {
+        $roles = [];
+        foreach (Roles::cases() as $case) {
+            $roles[] = ['id' => $case->name, 'name' => $case->value];
+        }
+        return $roles;
+    }
+
+    /**
      * Get an array of all case names.
      * This is useful for validation rules like Rule::in().
      * @return array<string>
