@@ -13,6 +13,7 @@ export default function ComboBox({
     disabled = false,
     error,
     isFocused = false,
+    required = false, // Added required prop
 }) {
     return (
         <div>
@@ -27,6 +28,7 @@ export default function ComboBox({
                 disabled={disabled}
                 error={error}
                 isFocused={isFocused}
+                required={required} // Pass required prop
             />
             <InputError message={error} className="mt-2" />
         </div>

@@ -18,6 +18,7 @@ export default function SelectInput({
     disabled = false,
     error = null,
     isFocused = false, // Added isFocused prop
+    required = false, // Added required prop
 }) {
     const [query, setQuery] = useState("");
     const inputRef = useRef(null); // Ref for the div containing ComboboxInput
@@ -82,18 +83,30 @@ export default function SelectInput({
                                             ? " opacity-70 cursor-not-allowed bg-gray-100 "
                                             : ""
                                     }
-                                    ${
-                                        error
-                                            ? " border-red-500"
-                                            : ""
-                                    }`}
+                                    ${error ? " border-red-500" : ""}
+                                    ${value ? " bg-blue-50 " : " "}`}
                                 displayValue={displayValue} // Uses item.name for display
                                 onChange={(event) =>
                                     setQuery(event.target.value)
                                 }
                                 placeholder={placeholder}
                                 autoComplete="off"
+                                // The required prop is removed from here
                             />
+
+                            {/* Visually hidden input to handle the 'required' attribute for form submission */}
+                            {required && (
+                                <input
+                                    type="text"
+                                    value={value ? value.id : ""} // Use a value that represents selection, like item.id
+                                    required
+                                    className="sr-only top-8 right-24" // Tailwind class for visually hidden
+                                    aria-hidden="true"
+                                    tabIndex={-1} // Make it non-focusable
+                                    onChange={() => {}} // React requires onChange for controlled inputs, even if it does nothing here
+                                    onFocus={(e) => e.target.blur()} // Prevent focus
+                                />
+                            )}
 
                             {/* Button to toggle the visibility of dropdown options */}
                             <ComboboxButton className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
