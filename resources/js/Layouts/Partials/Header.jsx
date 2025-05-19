@@ -12,7 +12,7 @@ export default function Header({ user, title = null }) {
                 {/* Application logo */}
                 <Link
                     className="hidden sm:inline-flex ml-1"
-                    href={route("profile")}
+                    href={route("dashboard")}
                 >
                     <ApplicationLogo className="size-[38px]" />
                 </Link>
