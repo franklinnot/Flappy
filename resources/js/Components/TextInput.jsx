@@ -1,6 +1,16 @@
-import { forwardRef, useEffect, useRef } from 'react';
+import { forwardRef, useEffect, useRef } from "react";
 
-export default forwardRef(function TextInput({ type = 'text', className = '', isFocused = false, ...props }, ref) {
+export default forwardRef(function TextInput(
+    {
+        type = "text",
+        className = "",
+        isFocused = false,
+        disabled = false,
+        error,
+        ...props
+    },
+    ref
+) {
     const input = ref ? ref : useRef();
 
     useEffect(() => {
@@ -13,11 +23,12 @@ export default forwardRef(function TextInput({ type = 'text', className = '', is
         <input
             {...props}
             type={type}
-            className={
-                'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm text-sm' +
-                className
-            }
+            className={`focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm text-sm  
+                ${className} 
+                ${disabled ? " opacity-70 cursor-not-allowed bg-gray-100" : ""}
+                ${error? " border-red-500" : " border-gray-300" }`}
             ref={input}
+            disabled={disabled}
         />
     );
 });

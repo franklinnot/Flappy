@@ -10,10 +10,11 @@ export default function InputField({
     value,
     onChange,
     error,
-    autoComplete = "",
+    autoComplete = "off",
     isFocused = false,
     required = false,
     placeholder = "",
+    disabled = false,
     ...props // Spread additional props
 }) {
     return (
@@ -31,6 +32,8 @@ export default function InputField({
                 onChange={onChange}
                 required={required}
                 placeholder={placeholder}
+                error={error}
+                disabled={disabled}
                 {...props} // Spread additional props to TextInput
             />
 
