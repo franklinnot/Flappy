@@ -20,7 +20,7 @@ export default function Header({ user, title = null }) {
 
             {/* Page title */}
             {title && (
-                <h1 className="text-lg font-medium text-gray-700 mt-1 flex relative items-center justify-center">
+                <h1 className="text-base font-medium text-gray-500 mt-1 flex relative items-center justify-center">
                     <span className="absolute text-nowrap">{title}</span>
                 </h1>
             )}

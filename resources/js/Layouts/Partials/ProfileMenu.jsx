@@ -31,7 +31,7 @@ const ProfileMenu = ({ user }) => {
             ref={menuRef}
         >
             {/* Nombre del usuario */}
-            <span className="hidden sm:block text-gray-600 text-md">{user.name}</span>
+            <span className="hidden sm:block text-gray-600 text-sm">{user.name}</span>
 
             {/* Contenedor del ícono de perfil y la flechita */}
             <div
