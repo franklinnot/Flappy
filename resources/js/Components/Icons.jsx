@@ -7,7 +7,9 @@ const Icon = React.forwardRef(
             children,
             size = 24,
             strokeWidth = 1.5,
-            className = "text-gray-800",
+            className,
+            fill = "none",
+            stroke = "currentColor",
             style,
             ...props
         },
@@ -20,11 +22,11 @@ const Icon = React.forwardRef(
             <svg
                 ref={ref}
                 xmlns="http://www.w3.org/2000/svg"
-                fill="none"
                 viewBox="0 0 24 24"
+                fill={fill}
+                stroke={stroke}
                 strokeWidth={strokeWidth}
-                stroke="currentColor"
-                className={className}
+                className={`size-6 ${className}`}
                 style={computedStyle}
                 aria-hidden="true"
                 role="img"
@@ -89,7 +91,7 @@ export const IconProfile = (props) => (
 );
 
 export const IconCheckCircle = (props) => (
-    <Icon {...props} fill="currentColor" stroke="none">
+    <Icon {...props} fill="none" stroke="currentColor">
         <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -99,7 +101,7 @@ export const IconCheckCircle = (props) => (
 );
 
 export const IconCheck = (props) => (
-    <Icon {...props} fill="currentColor" stroke="none">
+    <Icon {...props} fill="none" stroke="currentColor">
         <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -110,7 +112,7 @@ export const IconCheck = (props) => (
 
 // triangle
 export const IconWarning = (props) => (
-    <Icon {...props} fill="currentColor" stroke="none">
+    <Icon {...props} fill="none" stroke="currentColor">
         <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -120,7 +122,7 @@ export const IconWarning = (props) => (
 );
 
 export const IconError = (props) => (
-    <Icon {...props} fill="currentColor" stroke="none">
+    <Icon {...props} fill="none" stroke="currentColor">
         <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -130,7 +132,7 @@ export const IconError = (props) => (
 );
 
 export const IconInformation = (props) => (
-    <Icon {...props} fill="currentColor" stroke="none">
+    <Icon {...props} fill="none" stroke="currentColor">
         <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -140,7 +142,7 @@ export const IconInformation = (props) => (
 );
 
 export const IconExit = (props) => (
-    <Icon {...props} fill="currentColor" stroke="none">
+    <Icon {...props} fill="none" stroke="currentColor">
         <path
             strokeLinecap="round"
             strokeLinejoin="round"
