@@ -18,6 +18,20 @@ export default {
             screens: {
                 lt: "448px",
             },
+            keyframes: {
+                fadeIn: {
+                    "0%": { opacity: "0" },
+                    "100%": { opacity: "1" },
+                },
+                progressBar: {
+                    "0%": { width: "100%" },
+                    "100%": { width: "0%" },
+                },
+            },
+            animation: {
+                "fade-in": "fadeIn 0.2s ease-out forwards",
+                "progress-bar": "progressBar 5s linear forwards", // Opción por defecto (no se usará con duración dinámica)
+            },
         },
     },
 
