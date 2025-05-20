@@ -4,63 +4,108 @@ namespace App\Utils;
 
 use Illuminate\Validation\ValidationException;
 /**
- * Class SuccessReport
- * Provides a standardized way to return success notifications.
+ * Class Report
+ * Provides standardized methods for generating responses, often including toast notifications.
+ * Some methods can throw ValidationException based on input parameters.
  */
 class Report
 {
     /**
      * Generates a standardized success response array.
      *
-     * @param string $message The success message to display in the toast.
-     * @param array<string, mixed> $additionalData Optional additional data to be passed as props to the frontend.
-     * @return array<string, mixed> The structured array including toast notification and additional data.
+     * @param string $message The success message for the toast notification.
+     * @return array<string, mixed> An array containing toast data with type 'success'.
      */
-    public static function success(string $message, array $additionalData = []): array
+    public static function success(string $message): array
     {
-        $toastData = [
+        $data = [
             'toast' => [
                 'message' => $message,
                 'type' => 'success',
             ],
         ];
-        // Merge additional data with toast data.
-        // If there's a key conflict, $toastData will overwrite keys from $additionalData,
-        // ensuring the toast structure is preserved.
-        // If you want $additionalData to take precedence, reverse the order of merge.
-        // However, for this use case, ensuring 'toast' is correctly structured is likely preferred.
-        return array_merge($additionalData, $toastData);
+
+        return $data;
     }
 
+    /**
+     * Generates a standardized information response array.
+     *
+     * @param string $message The information message for the toast notification.
+     * @return array<string, mixed> An array containing toast data with type 'information'.
+     */
+    public static function information(string $message): array
+    {
+        $data = [
+            'toast' => [
+                'message' => $message,
+                'type' => 'information',
+            ],
+        ];
+
+        return $data;
+    }
 
     /**
-     * Reports an error by throwing a ValidationException.
+     * Generates a warning response, optionally associating it with a field and throwing an exception.
      *
-     * Formats the exception messages to include a 'toast' notification
-     * and optionally associates the message with a specific field.
-     *
-     * @param string $message The error message to display in the toast.
-     * @param string|null $field The specific input field related to the error (optional).
-     * @param int $code The HTTP status code (Note: ValidationException defaults to 422, this parameter is currently unused by ValidationException::withMessages).
-     * @throws \Illuminate\Validation\ValidationException Always throws a ValidationException.
+     * @param string $message The warning message for the toast notification.
+     * @param string|null $field Optional. The specific input field related to the warning.
+     *                           If provided, the message is also added to an array with this field as the key.
+     * @param bool $exception Optional (defaults to true). If true, throws ValidationException with the warning data.
+     * @return array<string, mixed> If $exception is false, returns an array containing toast data with type 'warning'
+     *                              and optionally the field-specific message.
+     * @throws \Illuminate\Validation\ValidationException If $exception is true.
      */
-    public static function error(string $message, ?string $field = null): void
+    public static function warning(string $message, ?string $field = null, bool $exception = true)
     {
-        // Initialize errors array with the mandatory 'toast' structure
-        $errors = [
+        $data = [
+            'toast' => [
+                'message' => $message, 
+                'type' => 'warning'
+            ],
+        ];
+
+        // If a specific field is provided, add it to the errors array
+        if ($field !== null) {
+            // Use the field name as the key and the message as the value
+            $data[$field] = $message;
+        }
+
+        if($exception){
+            throw ValidationException::withMessages($data);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Generates an error response, optionally associating it with a field and throwing an exception.
+     *
+     * @param string $message The error message for the toast notification.
+     * @param string|null $field Optional. The specific input field related to the error.
+     *                           If provided, the message is also added to an array with this field as the key.
+     * @param bool $exception Optional (defaults to true). If true, throws ValidationException with the error data.
+     * @return array<string, mixed> If $exception is false, returns an array containing toast data with type 'error'
+     *                              and optionally the field-specific message.
+     * @throws \Illuminate\Validation\ValidationException If $exception is true.
+     */
+    public static function error(string $message, ?string $field = null, bool $exception = true)
+    {
+        $data = [
             'toast' => ['message' => $message, 'type' => 'error']
         ];
 
         // If a specific field is provided, add it to the errors array
         if ($field !== null) {
             // Use the field name as the key and the message as the value
-            $errors[$field] = $message;
+            $data[$field] = $message;
         }
 
-        // Throw the ValidationException with the structured error messages.
-        // Laravel's handler will typically catch this and return a JSON response
-        // with HTTP status code 422 (Unprocessable Entity).
-        throw ValidationException::withMessages($errors);
-    }
+        if ($exception) {
+            throw ValidationException::withMessages($data);
+        }
 
+        return $data;
+    }
 }
