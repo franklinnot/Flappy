@@ -16,16 +16,16 @@ class Report
      * @param string $message The success message for the toast notification.
      * @return array<string, mixed> An array containing toast data with type 'success'.
      */
-    public static function success(string $message): array
+    public static function success(string $message, array $additionalData = []): array
     {
         $data = [
-            'toast' => [
+            'report' => [
                 'message' => $message,
                 'type' => 'success',
             ],
         ];
 
-        return $data;
+        return array_merge($additionalData, $data);
     }
 
     /**
@@ -37,7 +37,7 @@ class Report
     public static function information(string $message): array
     {
         $data = [
-            'toast' => [
+            'report' => [
                 'message' => $message,
                 'type' => 'information',
             ],
@@ -60,7 +60,7 @@ class Report
     public static function warning(string $message, ?string $field = null, bool $exception = true)
     {
         $data = [
-            'toast' => [
+            'report' => [
                 'message' => $message, 
                 'type' => 'warning'
             ],
@@ -93,7 +93,7 @@ class Report
     public static function error(string $message, ?string $field = null, bool $exception = true)
     {
         $data = [
-            'toast' => ['message' => $message, 'type' => 'error']
+            'report' => ['message' => $message, 'type' => 'error']
         ];
 
         // If a specific field is provided, add it to the errors array
