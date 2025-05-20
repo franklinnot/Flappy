@@ -82,10 +82,8 @@ export default function Toast({
 
             {/* Barra inferior con animación */}
             <div
-                className="h-[2px] bg-white/90"
-                style={{
-                    animation: `progressBar ${duration}ms linear forwards`,
-                }}
+                className="h-[2px] bg-white/90 animate-progress-bar"
+                style={{ "--progress-duration": `${duration}ms` }} 
             />
         </div>
     );

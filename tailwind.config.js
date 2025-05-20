@@ -30,7 +30,8 @@ export default {
             },
             animation: {
                 "fade-in": "fadeIn 0.2s ease-out forwards",
-                "progress-bar": "progressBar 5s linear forwards", // Opción por defecto (no se usará con duración dinámica)
+                "progress-bar":
+                    "progressBar var(--progress-duration, 5s) linear forwards", // Modificado para usar una variable CSS
             },
         },
     },
