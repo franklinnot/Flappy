@@ -8,10 +8,10 @@ import {
 } from "./Icons";
 
 const bgColorMap = {
-    success: "bg-emerald-500 text-white",
-    error: "bg-rose-500 text-white",
-    warning: "bg-orange-500 text-white",
-    information: "bg-gray-900 text-gray-100",
+    success: "bg-emerald-500 text-white border-green-600",
+    error: "bg-rose-500 text-white border-red-600",
+    warning: "bg-orange-500 text-white border-orange-600",
+    information: "bg-gray-900 text-gray-100 border-black",
 };
 
 export default function Toast({
@@ -44,10 +44,10 @@ export default function Toast({
 
     return (
         <div
-            className={`fixed top-16 right-4 w-auto max-w-[520px] rounded-lg shadow-lg overflow-hidden transition-opacity duration-300 ease-in-out
+            className={`fixed top-16 right-4 w-auto max-w-[520px] rounded-lg shadow-lg overflow-hidden transition-opacity duration-300 ease-in-out border-b-[1px]
         ${visible ? "opacity-100" : "opacity-0"} ${styles}`}
         >
-            <div className="flex flex-row items-center justify-between px-4 py-3 gap-3">
+            <div className="relative flex flex-row items-center justify-between px-4 py-3 gap-3 top-[1px]">
                 <div className="flex items-center gap-2">
                     <div>
                         {type === "success" ? (
@@ -83,7 +83,7 @@ export default function Toast({
             {/* Barra inferior con animación */}
             <div
                 className="h-[2px] bg-white/90 animate-progress-bar"
-                style={{ "--progress-duration": `${duration}ms` }} 
+                style={{ "--progress-duration": `${duration}ms` }}
             />
         </div>
     );
