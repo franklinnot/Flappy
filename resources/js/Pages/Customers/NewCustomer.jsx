@@ -77,7 +77,7 @@ export default function NewCustomer({ report }) {
 
                 <InputField
                     id="phone"
-                    label="Teléfono"
+                    label="Teléfono (opc.)"
                     value={data.phone}
                     onChange={(e) => setData("phone", e.target.value)}
                     disabled={processing}
