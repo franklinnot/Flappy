@@ -120,7 +120,7 @@ export default function NewUser({ roles, report }) {
                 />
 
                 <PrimaryButton disabled={processing} className="mt-2">
-                    Iniciar sesión
+                    Registrar
                 </PrimaryButton>
             </form>
         </AuthenticatedLayout>

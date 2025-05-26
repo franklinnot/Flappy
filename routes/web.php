@@ -5,6 +5,7 @@ use App\Http\Controllers\Customers\NewCustomer;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Users\NewUser;
+use App\Http\Controllers\Suppliers\NewSupplier;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -55,8 +56,8 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     #region Suppliers
     Route::get('suppliers', [RegisteredUserController::class, 'show'])->name('suppliers');
 
-    Route::get('suppliers/new', [RegisteredUserController::class, 'show'])->name('suppliers.new');
-    Route::post('suppliers/new', [RegisteredUserController::class, 'create']);
+    Route::get('suppliers/new', [NewSupplier::class, 'show'])->name('suppliers.new');
+    Route::post('suppliers/new', [NewSupplier::class, 'create']);
 
     Route::patch('suppliers/edit/{id}', [RegisteredUserController::class, 'update'])->name('suppliers.edit');
 
