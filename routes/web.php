@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Customers\NewCustomer;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Users\NewUser;
@@ -42,8 +43,8 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     #region Customers
     Route::get('customers', [RegisteredUserController::class, 'show'])->name('customers');
 
-    Route::get('customers/new', [RegisteredUserController::class, 'show'])->name('customers.new');
-    Route::post('customers/new', [RegisteredUserController::class, 'create']);
+    Route::get('customers/new', [NewCustomer::class, 'show'])->name('customers.new');
+    Route::post('customers/new', [NewCustomer::class, 'create']);
 
     Route::patch('customers/edit/{id}', [RegisteredUserController::class, 'update'])->name('customers.edit');
 
