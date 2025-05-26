@@ -8,14 +8,13 @@ import Toast from "@/Components/Toast";
 export default function NewProveedor({ report }) {
     const title = "Nuevo Proveedor";
 
-    const { data, setData, post, reset, processing, errors } =
-        useForm({
-            name: "",
-            ruc: "",
-            address: "",
-            email: "",
-            phone: "",
-        });
+    const { data, setData, post, reset, processing, errors } = useForm({
+        name: "",
+        ruc: "",
+        address: "",
+        email: "",
+        phone: "",
+    });
 
     const [toast, setToast] = useState(null);
     const [toastKey, setToastKey] = useState(0);
@@ -68,7 +67,7 @@ export default function NewProveedor({ report }) {
 
                 <InputField
                     id="name"
-                    label="Nombre del Proveedor"
+                    label="Nombre"
                     value={data.name}
                     required
                     onChange={(e) => setData("name", e.target.value)}
@@ -77,31 +76,8 @@ export default function NewProveedor({ report }) {
                 />
 
                 <InputField
-                    id="address"
-                    label="Dirección"
-                    value={data.address}
-                    required
-                    onChange={(e) => setData("address", e.target.value)}
-                    disabled={processing}
-                    error={errors.address}
-                />
-
-                <InputField
-                    id="email"
-                    label="Correo electronico"
-                    value={data.email}
-                    type="email"
-                    autoComplete="email"
-                    placeholder="ejemplo@gmail.com"
-                    required
-                    onChange={(e) => setData("email", e.target.value)}
-                    disabled={processing}
-                    error={errors.email}
-                />
-
-                <InputField
                     id="phone"
-                    label="Telefono"
+                    label="Teléfono"
                     type="number"
                     maxLength={9}
                     inputMode="numeric"
@@ -111,6 +87,27 @@ export default function NewProveedor({ report }) {
                     onChange={(e) => setData("phone", e.target.value)}
                     disabled={processing}
                     error={errors.phone}
+                />
+
+                <InputField
+                    id="email"
+                    label="Correo (opc.)"
+                    value={data.email}
+                    type="email"
+                    autoComplete="email"
+                    placeholder="ejemplo@email.com"
+                    onChange={(e) => setData("email", e.target.value)}
+                    disabled={processing}
+                    error={errors.email}
+                />
+
+                <InputField
+                    id="address"
+                    label="Dirección (opc.)"
+                    value={data.address}
+                    onChange={(e) => setData("address", e.target.value)}
+                    disabled={processing}
+                    error={errors.address}
                 />
 
                 <PrimaryButton disabled={processing} className="mt-2">

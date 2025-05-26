@@ -21,11 +21,11 @@ class NewSupplier extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
             'ruc' => 'required|digits:11|unique:suppliers,ruc',
-            'address' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'name' => 'required|string|max:255',
             'phone' => 'required|digits:9|unique:suppliers,phone',
+            'email' => 'nullable|email|max:255|unique:suppliers,email',
+            'address' => 'nullable|string|max:255',
         ]);
 
         $supplier = Supplier::create([
