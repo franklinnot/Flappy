@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Http\Controllers\Units;
+
+use App\Enums\Status;
+use App\Http\Controllers\Controller;
+use App\Models\Unit;
+use App\Utils\Report;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+
+class NewUnit extends Controller
+{
+    public const COMPONENT = "Units/NewUnit";
+
+    public function show()
+    {
+        return Inertia::render(self::COMPONENT);
+    }
+
+    public function create(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:24',
+            'code' => 'required|string|max:8|uppercase|unique:units,code',
+        ]);
+
+        $unit = Unit::create([
+            'name' => $request->name,
+            'code' => $request->code,
+            'status' => Status::ENABLED->value,
+        ]);
+
+        if (!$unit) {
+            Report::error('Error al registrar una nueva unidad de medida');
+        }
+
+        return Inertia::render(self::COMPONENT, Report::success('Unidad de medida registrada correctamente'));
+    }
+}
