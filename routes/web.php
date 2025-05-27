@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Customers\NewCustomer;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Suppliers\ListSuppliers;
 use App\Http\Controllers\Users\NewUser;
 use App\Http\Controllers\Suppliers\NewSupplier;
 use Illuminate\Support\Facades\Route;
@@ -54,7 +55,7 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     #endregion
 
     #region Suppliers
-    Route::get('suppliers', [RegisteredUserController::class, 'show'])->name('suppliers');
+    Route::get('suppliers', [ListSuppliers::class, 'show'])->name('suppliers');
 
     Route::get('suppliers/new', [NewSupplier::class, 'show'])->name('suppliers.new');
     Route::post('suppliers/new', [NewSupplier::class, 'create']);
