@@ -3,7 +3,6 @@ import InputField from "@/Components/InputField";
 import { Head, useForm } from "@inertiajs/react";
 import { useEffect, useState, useId } from "react";
 import PrimaryButton from "@/Components/PrimaryButton";
-import ComboBox from "@/Components/ComboBox";
 import Toast from "@/Components/Toast";
 
 export default function NewCustomer({ report }) {
