@@ -5,7 +5,7 @@ namespace App\Enums;
 enum Status: string
 {
     case ENABLED = 'Habilitado';
-    case DISABLED = 'Inhabilitado';
+    case DISABLED = 'Deshabilitado';
 
     /**
      * Get an array of all case values.
