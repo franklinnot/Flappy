@@ -5,6 +5,8 @@ use App\Http\Controllers\Customers\NewCustomer;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Suppliers\ListSuppliers;
+use App\Http\Controllers\MeasurementUnits\ListMeasurementUnits;
+use App\Http\Controllers\MeasurementUnits\NewMeasurementUnit;
 use App\Http\Controllers\Users\NewUser;
 use App\Http\Controllers\Suppliers\NewSupplier;
 use Illuminate\Support\Facades\Route;
@@ -79,10 +81,10 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     #endregion
 
     #region Units
-    Route::get('units', [RegisteredUserController::class, 'show'])->name('units');
+    Route::get('units', [ListMeasurementUnits::class, 'show'])->name('units');
 
-    Route::get('units/new', [RegisteredUserController::class, 'show'])->name('units.new');
-    Route::post('units/new', [RegisteredUserController::class, 'create']);
+    Route::get('units/new', [NewMeasurementUnit::class, 'show'])->name('units.new');
+    Route::post('units/new', [NewMeasurementUnit::class, 'create']);
 
     Route::patch('units/edit/{id}', [RegisteredUserController::class, 'update'])->name('units.edit');
 
