@@ -10,7 +10,7 @@ export default function Table({
     module,
     editInfo = null,
     editStatus = false,
-    sensible = false,
+    isImportant = false,
 }) {
     const [openMenu, setOpenMenu] = useState(null);
     const menuRef = useRef(null);
@@ -85,7 +85,7 @@ export default function Table({
                                             >
                                                 {typeof editInfo ==
                                                     "function" &&
-                                                    !sensible && (
+                                                    !isImportant && (
                                                         <button
                                                             onClick={() => {
                                                                 editInfo(
@@ -102,7 +102,7 @@ export default function Table({
                                                     )}
                                                 {editStatus && (
                                                     <>
-                                                        {sensible &&
+                                                        {isImportant &&
                                                             record.status ==
                                                                 Status.ENABLED && (
                                                                 <Link
@@ -119,7 +119,7 @@ export default function Table({
                                                                     Anular
                                                                 </Link>
                                                             )}
-                                                        {!sensible &&
+                                                        {!isImportant &&
                                                             record.status ==
                                                                 Status.ENABLED && (
                                                                 <Link
