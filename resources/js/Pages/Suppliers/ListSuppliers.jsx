@@ -4,7 +4,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 
 export default function ListSuppliers({ records = [], properties }) {
-    const title = "Proveedores";
+    const title = "Lista de Proveedores";
 
     const [listFiltered, setListFiltered] = useState(records);
 
@@ -21,7 +21,6 @@ export default function ListSuppliers({ records = [], properties }) {
         <AuthenticatedLayout title={title} className="pb-36">
             <Head title={title} />
             <div className="space-y-6">
-                <h1 className="text-xl font-bold">Lista de Proveedores</h1>
                 <Table
                     module="suppliers"
                     properties={properties}
