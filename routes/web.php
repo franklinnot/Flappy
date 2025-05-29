@@ -13,6 +13,8 @@ use App\Http\Controllers\Users\NewUser;
 use App\Http\Controllers\Suppliers\NewSupplier;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Categories\NewCategory;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -96,8 +98,12 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     #region Categories
     Route::get('categories', [ProfileController::class, 'edit'])->name('categories');
 
-    Route::get('categories/new', [RegisteredUserController::class, 'show'])->name('categories.new');
-    Route::post('categories/new', [RegisteredUserController::class, 'create']);
+
+
+    Route::get('categories/new', [NewCategory::class, 'show'])->name('categories.new');
+    Route::post('categories/new', [NewCategory::class, 'create']);
+
+
 
     Route::patch('categories/edit/{id}', [RegisteredUserController::class, 'update'])->name('categories.edit');
 
