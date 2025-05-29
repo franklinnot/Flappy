@@ -9,9 +9,9 @@ use App\Utils\Report;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class NewMethod extends Controller
+class NewPayment extends Controller
 {
-    public const COMPONENT = "Payments/NewMethod";
+    public const COMPONENT = "Payments/NewPayment";
 
     public function show()
     {
@@ -21,7 +21,7 @@ class NewMethod extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:64|unique:payments,name',
         ]);
 
         $method = Payment::create([

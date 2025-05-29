@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import PrimaryButton from "@/Components/PrimaryButton";
 import Toast from "@/Components/Toast";
 
-export default function NewMethod({ report }) {
-    const title = "Nuevo Método de pago";
+export default function NewPayment({ report }) {
+    const title = "Nuevo método de pago";
 
     const { data, setData, post, reset, processing, errors } = useForm({
         name: "",
@@ -46,7 +46,6 @@ export default function NewMethod({ report }) {
                 className="flex flex-col gap-6 pb-16 justify-self-center rounded-2xl max-sm:w-full max-sm:max-w-[448px] sm:w-[75%] sm:max-w-[612px]"
                 onSubmit={submit}
             >
-
                 <InputField
                     id="name"
                     label="Nombre"
@@ -54,9 +53,9 @@ export default function NewMethod({ report }) {
                     required
                     onChange={(e) => setData("name", e.target.value)}
                     disabled={processing}
+                    isFocused={true}
                     error={errors.name}
                 />
-
 
                 <PrimaryButton disabled={processing} className="mt-2">
                     Registrar

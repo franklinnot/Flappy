@@ -7,8 +7,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Suppliers\ListSuppliers;
 use App\Http\Controllers\Units\ListUnits;
 use App\Http\Controllers\Units\NewUnit;
-use App\Http\Controllers\Payments\NewMethod;
-use App\Http\Controllers\Payments\ListMethod;
+use App\Http\Controllers\Payments\NewPayment;
+use App\Http\Controllers\Payments\ListPayments;
 use App\Http\Controllers\Users\NewUser;
 use App\Http\Controllers\Suppliers\NewSupplier;
 use Illuminate\Support\Facades\Route;
@@ -70,10 +70,10 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     #endregion
 
     #region Payments
-    Route::get('payments', [RegisteredUserController::class, 'show'])->name('payments');
+    Route::get('payments', [ListPayments::class, 'show'])->name('payments');
 
-    Route::get('payments/new', [NewMethod::class, 'show'])->name('payments.new');
-    Route::post('payments/new', [NewMethod::class, 'create']);
+    Route::get('payments/new', [NewPayment::class, 'show'])->name('payments.new');
+    Route::post('payments/new', [NewPayment::class, 'create']);
 
     Route::patch('payments/edit/{id}', [RegisteredUserController::class, 'update'])->name('payments.edit');
 
