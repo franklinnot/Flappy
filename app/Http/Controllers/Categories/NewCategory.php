@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Categorie;
 use App\Utils\Report;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class NewCategory extends Controller
@@ -22,8 +21,8 @@ class NewCategory extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'code' => 'required|string|max:255|unique:categories,code',
-            'name' => 'required|string|max:255',
+            'code' => 'required|string|max:64|uppercase|unique:categories,code',
+            'name' => 'required|string|max:64',
         ]);
 
         $category = Categorie::create([

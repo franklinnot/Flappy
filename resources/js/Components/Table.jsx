@@ -1,6 +1,6 @@
 import { Link } from "@inertiajs/react";
 import React, { useState, useEffect, useRef } from "react";
-import { IconKebab } from "@/Components/Icons";
+import { IconKebab, IconTrash, IconPencil, IconDocumentCheck } from "@/Components/Icons";
 import Status from "@/Utils/status";
 
 export default function Table({
@@ -133,7 +133,7 @@ export default function Table({
                                                                         )
                                                                     }
                                                                 >
-                                                                    Deshabilitar
+                                                                    <IconTrash/>
                                                                 </Link>
                                                             )}
                                                         {record.status ===

@@ -6,7 +6,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import Toast from "@/Components/Toast";
 
 export default function NewCategory({ report }) {
-    const title = "Nueva Categoría";
+    const title = "Nueva categoría";
 
     const { data, setData, post, reset, processing, errors } = useForm({
         code: "",
@@ -35,7 +35,11 @@ export default function NewCategory({ report }) {
         <AuthenticatedLayout title={title}>
             <Head title={title} />
             {toast && (
-                <Toast key={toastKey} message={toast.message} type={toast.type} />
+                <Toast
+                    key={toastKey}
+                    message={toast.message}
+                    type={toast.type}
+                />
             )}
             <form
                 className="flex flex-col gap-6 pb-16 justify-self-center rounded-2xl max-sm:w-full max-sm:max-w-[448px] sm:w-[75%] sm:max-w-[612px]"
@@ -43,11 +47,15 @@ export default function NewCategory({ report }) {
             >
                 <InputField
                     id="code"
-                    label="Código SUNAT"
+                    label="Código"
                     value={data.code}
                     required
-                    onChange={(e) => setData("code", e.target.value)}
+                    maxLength={64}
+                    onChange={(e) =>
+                        setData("code", e.target.value.toUpperCase())
+                    }
                     disabled={processing}
+                    isFocused={true}
                     error={errors.code}
                 />
 
@@ -56,13 +64,14 @@ export default function NewCategory({ report }) {
                     label="Nombre"
                     value={data.name}
                     required
+                    maxLength={64}
                     onChange={(e) => setData("name", e.target.value)}
                     disabled={processing}
                     error={errors.name}
                 />
 
                 <PrimaryButton disabled={processing} className="mt-2">
-                    Registrar Categoría
+                    Registrar
                 </PrimaryButton>
             </form>
         </AuthenticatedLayout>
