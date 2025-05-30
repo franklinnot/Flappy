@@ -61,7 +61,7 @@ export default function NewProduct({ units, categories, report }) {
                     maxLength={24}
                     value={data.code}
                     required
-                    onChange={(e) => setData("code", e.target.value)}
+                    onChange={(e) => setData("code", e.target.value.toUpperCase())}
                     disabled={processing}
                     error={errors.code}
                     isFocused={true}
@@ -89,7 +89,7 @@ export default function NewProduct({ units, categories, report }) {
 
                 <ComboBox
                     id="unit"
-                    label="Unidad de medidad"
+                    label="Unidad de medida"
                     items={units}
                     value={data.unit}
                     required

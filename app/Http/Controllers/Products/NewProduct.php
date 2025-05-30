@@ -25,7 +25,7 @@ class NewProduct extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'code' => 'required|string|max:24|unique:products,code',
+            'code' => 'required|string|max:24|uppercase|unique:products,code',
             'name' => 'required|string|max:255',
             'picture' => [
                 'nullable',
@@ -49,22 +49,23 @@ class NewProduct extends Controller
             Report::error('Error al registrar un nuevo producto');
         }
 
-        return inertia(self::COMPONENT, Report::success(
-            'Producto registrado correctamente',
-            [
-                "units" => $this->getUnits(),
-                "categories" => $this->getCategories(),
-            ]
-        ));
+        return inertia(self::COMPONENT, Report::success('Producto registrado correctamente', [
+            "units" => $this->getUnits(),
+            "categories" => $this->getCategories(),
+        ]));
     }
 
     private function getUnits()
     {
-        return Unit::where('status', Status::ENABLED->value)->get();
+        return Unit::select(['id', 'name'])
+            ->where('status', Status::ENABLED->value)
+            ->get();
     }
 
     private function getCategories()
     {
-        return Categorie::where('status', Status::ENABLED->value)->get();
+        return Categorie::select(['id', 'name'])
+            ->where('status', Status::ENABLED->value)
+            ->get();
     }
 }
