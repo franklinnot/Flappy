@@ -14,6 +14,8 @@ class SaleDetails extends Model
         'quantity',
         'price',
         'subtotal',
+        'lot_id',
+        'sale_id',
     ];
     public $timestamps = false;
     #endregion

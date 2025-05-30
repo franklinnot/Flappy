@@ -19,6 +19,7 @@ class Lot extends Model
         'price',
         'exp_status',
         'status',
+        'product_id',
     ];
     #endregion
     #region Relationships
