@@ -14,6 +14,9 @@ class Sale extends Model
         'code',
         'total',
         'status',
+        'user_id',
+        'payment_id',
+        'customer_id',
     ];
     #endregion
     #region Relationships

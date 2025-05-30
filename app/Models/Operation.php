@@ -13,6 +13,9 @@ class Operation extends Model
         'type',
         'quantity',
         'status',
+        'user_id',
+        'supplier_id',
+        'lot_id'
     ];
     #endregion
     #region Relationships
