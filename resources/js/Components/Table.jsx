@@ -1,6 +1,11 @@
 import { Link } from "@inertiajs/react";
 import React, { useState, useEffect, useRef } from "react";
-import { IconKebab, IconTrash, IconPencil, IconDocumentCheck } from "@/Components/Icons";
+import {
+    IconKebab,
+    IconTrash,
+    IconPencil,
+    IconDocumentCheck,
+} from "@/Components/Icons";
 import Status from "@/Utils/status";
 
 export default function Table({
@@ -14,7 +19,7 @@ export default function Table({
 }) {
     const [openMenu, setOpenMenu] = useState(null);
     const menuRef = useRef(null);
-
+    
     const toggleMenu = (recordId) => {
         setOpenMenu(openMenu === recordId ? null : recordId);
     };
@@ -81,12 +86,13 @@ export default function Table({
                                         {openMenu === record.id && (
                                             <div
                                                 ref={menuRef}
-                                                className="absolute bg-white rounded-md shadow-sm z-20 border border-gray-200"
+                                                className="flex flex-row absolute ml-8 mt-[-35px] bg-white rounded-md shadow-md z-20 border border-gray-200"
                                             >
                                                 {typeof editInfo ==
                                                     "function" &&
                                                     !isImportant && (
                                                         <button
+                                                            title="Editar"
                                                             onClick={() => {
                                                                 editInfo(
                                                                     record.id
@@ -95,9 +101,11 @@ export default function Table({
                                                                     null
                                                                 );
                                                             }}
-                                                            className="block w-full text-left px-4 py-2 text-sm text-gray-600 hover:bg-gray-100"
+                                                            className="block w-full text-left p-2 text-sm text-gray-600 hover:bg-gray-100"
                                                         >
-                                                            Editar
+                                                            <IconPencil
+                                                                size={16}
+                                                            />
                                                         </button>
                                                     )}
                                                 {editStatus && (
@@ -106,50 +114,63 @@ export default function Table({
                                                             record.status ==
                                                                 Status.ENABLED && (
                                                                 <Link
+                                                                    title="Anular"
                                                                     href={`${module}/disable/${record.id}`}
                                                                     method="patch"
                                                                     as="button"
-                                                                    className="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
+                                                                    className="block w-full text-left p-2 text-sm text-red-500 hover:bg-gray-100"
                                                                     onClick={() =>
                                                                         setOpenMenu(
                                                                             null
                                                                         )
                                                                     }
                                                                 >
-                                                                    Anular
+                                                                    <IconTrash
+                                                                        size={
+                                                                            16
+                                                                        }
+                                                                    />
                                                                 </Link>
                                                             )}
                                                         {!isImportant &&
                                                             record.status ==
                                                                 Status.ENABLED && (
                                                                 <Link
+                                                                    title="Eliminar"
                                                                     href={`${module}/disable/${record.id}`}
                                                                     method="patch"
                                                                     as="button"
-                                                                    className="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
+                                                                    className="block w-full text-left p-2 text-sm text-red-500 hover:bg-gray-100"
                                                                     onClick={() =>
                                                                         setOpenMenu(
                                                                             null
                                                                         )
                                                                     }
                                                                 >
-                                                                    <IconTrash/>
+                                                                    <IconTrash
+                                                                        size={
+                                                                            16
+                                                                        }
+                                                                    />
                                                                 </Link>
                                                             )}
                                                         {record.status ===
                                                             Status.DISABLED && (
                                                             <Link
+                                                                title="Habilitar"
                                                                 href={`${module}/enable/${record.id}`}
                                                                 method="patch"
                                                                 as="button"
-                                                                className="block w-full text-left px-4 py-2 text-sm text-gray-600 hover:bg-gray-100"
+                                                                className="block w-full text-left p-2 text-sm text-gray-600 hover:bg-gray-100"
                                                                 onClick={() =>
                                                                     setOpenMenu(
                                                                         null
                                                                     )
                                                                 }
                                                             >
-                                                                Habilitar
+                                                                <IconDocumentCheck
+                                                                    size={16}
+                                                                />
                                                             </Link>
                                                         )}
                                                     </>
