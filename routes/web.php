@@ -14,6 +14,7 @@ use App\Http\Controllers\Suppliers\NewSupplier;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Categories\NewCategory;
+use App\Http\Controllers\Products\NewProduct;
 
 /*
 |--------------------------------------------------------------------------
@@ -114,8 +115,8 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     #region Products
     Route::get('products', [RegisteredUserController::class, 'show'])->name('products');
 
-    Route::get('products/new', [RegisteredUserController::class, 'show'])->name('products.new');
-    Route::post('products/new', [RegisteredUserController::class, 'create']);
+    Route::get('products/new', [NewProduct::class, 'show'])->name('products.new');
+    Route::post('products/new', [NewProduct::class, 'create']);
 
     Route::patch('products/edit/{id}', [RegisteredUserController::class, 'update'])->name('products.edit');
 
