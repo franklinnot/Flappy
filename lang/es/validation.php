@@ -193,6 +193,10 @@ return [
         'phone' => 'teléfono',
         'address' => 'dirección',
         'code' => 'código',
+        'picture' => 'imagen',
+        'status' => 'estado',
+        'unit' => 'unidad',
+        'categorie' => 'categoría',
         '' => '',
     ],
 
