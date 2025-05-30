@@ -7,7 +7,7 @@ import ComboBox from "@/Components/ComboBox";
 import Toast from "@/Components/Toast";
 
 export default function NewUser({ roles, report }) {
-    const title = "Nuevo Usuario";
+    const title = "Nuevo usuario";
 
     const { data, setData, post, reset, processing, transform, errors } =
         useForm({
@@ -48,7 +48,7 @@ export default function NewUser({ roles, report }) {
             <Head title={title} />
             {toast && (
                 <Toast
-                    key={toastKey} 
+                    key={toastKey}
                     message={toast.message}
                     type={toast.type}
                 />
@@ -116,7 +116,7 @@ export default function NewUser({ roles, report }) {
                     }
                     required
                     disabled={processing}
-                    error={errors.password}
+                    error={errors.password_confirmation}
                 />
 
                 <PrimaryButton disabled={processing} className="mt-2">

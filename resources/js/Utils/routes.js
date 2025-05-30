@@ -28,72 +28,72 @@ const routes = [
     {
         title: "Usuarios",
         subRoutes: [
-            { title: "Nuevo Usuario", route: "users.new" },
-            { title: "Listar Usuarios", route: "users" },
+            { title: "Nuevo usuario", route: "users.new" },
+            { title: "Listar usuarios", route: "users" },
         ],
     },
     {
         title: "Clientes",
         subRoutes: [
-            { title: "Nuevo Cliente", route: "customers.new" },
-            { title: "Listar Clientes", route: "customers" },
+            { title: "Nuevo cliente", route: "customers.new" },
+            { title: "Listar clientes", route: "customers" },
         ],
         for_seller: true,
     },
     {
         title: "Proveedores",
         subRoutes: [
-            { title: "Nuevo Proveedor", route: "suppliers.new" },
-            { title: "Listar Proveedores", route: "suppliers" },
+            { title: "Nuevo proveedor", route: "suppliers.new" },
+            { title: "Listar proveedores", route: "suppliers" },
         ],
     },
     {
         title: "Métodos de Pago",
         subRoutes: [
-            { title: "Nuevo Método de Pago", route: "payments.new" },
-            { title: "Listar Métodos de Pago", route: "payments" },
+            { title: "Nuevo método de pago", route: "payments.new" },
+            { title: "Listar métodos de pago", route: "payments" },
         ],
     },
     {
         title: "Unidades de Medida",
         subRoutes: [
-            { title: "Nueva Unidad de Medida", route: "units.new" },
-            { title: "Listar Unidades de Medida", route: "units" },
+            { title: "Nueva unidad de medida", route: "units.new" },
+            { title: "Listar unidades de medida", route: "units" },
         ],
     },
     {
         title: "Categorías",
         subRoutes: [
-            { title: "Nueva Categoría", route: "categories.new" },
-            { title: "Listar Categorías", route: "categories" },
+            { title: "Nueva categoría", route: "categories.new" },
+            { title: "Listar categorías", route: "categories" },
         ],
     },
     {
         title: "Productos",
         subRoutes: [
-            { title: "Nuevo Producto", route: "products.new" },
-            { title: "Listar Productos", route: "products" },
+            { title: "Nuevo producto", route: "products.new" },
+            { title: "Listar productos", route: "products" },
         ],
     },
     {
         title: "Lotes",
         subRoutes: [
-            { title: "Nuevo Lote", route: "lots.new" },
-            { title: "Listar Lotes", route: "lots" },
+            { title: "Nuevo lote", route: "lots.new" },
+            { title: "Listar lotes", route: "lots" },
         ],
     },
     {
         title: "Operaciones",
         subRoutes: [
-            { title: "Nueva Operación", route: "operations.new" },
-            { title: "Listar Operaciones", route: "operations" },
+            { title: "Nueva operación", route: "operations.new" },
+            { title: "Listar operaciones", route: "operations" },
         ],
     },
     {
         title: "Ventas",
         subRoutes: [
-            { title: "Nueva Venta", route: "sales.new" },
-            { title: "Listar Ventas", route: "sales" },
+            { title: "Nueva venta", route: "sales.new" },
+            { title: "Listar ventas", route: "sales" },
         ],
         for_seller: true,
     },

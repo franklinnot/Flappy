@@ -6,7 +6,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import Toast from "@/Components/Toast";
 
 export default function NewProveedor({ report }) {
-    const title = "Nuevo Proveedor";
+    const title = "Nuevo proveedor";
 
     const { data, setData, post, reset, processing, errors } = useForm({
         name: "",
