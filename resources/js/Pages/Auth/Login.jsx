@@ -28,11 +28,13 @@ export default function Login() {
         <GuestLayout>
             <Head title="Iniciar sesión" />
 
-            <form className='flex flex-col gap-6' onSubmit={submit}>
+            <form className="flex flex-col gap-6" onSubmit={submit}>
                 <InputField
                     id="dni"
-                    type="text"
                     label="DNI"
+                    inputMode="numeric"
+                    maxLength={8}
+                    pattern="[0-9]{8}"
                     value={data.dni}
                     autoComplete="username"
                     isFocused={true}

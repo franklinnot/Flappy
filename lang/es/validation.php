@@ -185,6 +185,15 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'email' => 'correo',
+        'password' => 'contraseña',
+        'password_confirmation' => 'confirmación de contraseña',
+        'name' => 'nombre',
+        'phone' => 'teléfono',
+        'address' => 'dirección',
+        'code' => 'código',
+        '' => '',
+    ],
 
 ];

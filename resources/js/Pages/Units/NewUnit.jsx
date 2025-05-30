@@ -6,7 +6,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import Toast from "@/Components/Toast";
 
 export default function NewUnit({ report }) {
-    const title = "Nueva Medida";
+    const title = "Nueva unidad de medida";
 
     const { data, setData, post, reset, processing, errors } = useForm({
         name: "",
@@ -48,6 +48,20 @@ export default function NewUnit({ report }) {
                 onSubmit={submit}
             >
                 <InputField
+                    id="code"
+                    label="Código"
+                    value={data.code}
+                    isFocused={true}
+                    required
+                    maxLength={8}
+                    onChange={(e) =>
+                        setData("code", e.target.value.toUpperCase())
+                    }
+                    disabled={processing}
+                    error={errors.code}
+                />
+
+                <InputField
                     id="name"
                     label="Nombre"
                     value={data.name}
@@ -56,19 +70,6 @@ export default function NewUnit({ report }) {
                     disabled={processing}
                     maxLength={24}
                     error={errors.name}
-                />
-
-                <InputField
-                    id="code"
-                    label="Código"
-                    value={data.code}
-                    required
-                    maxLength={8}
-                    onChange={(e) =>
-                        setData("code", e.target.value.toUpperCase())
-                    }
-                    disabled={processing}
-                    error={errors.code}
                 />
 
                 <PrimaryButton disabled={processing} className="mt-2">
