@@ -4,7 +4,7 @@ export default function Loading({ isLoading }) {
     }
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-700 bg-opacity-60 backdrop-blur-xs">
+        <div className="absolute inset-0 z-50 flex items-center justify-center bg-slate-700 bg-opacity-60 backdrop-blur-xs">
             <div role="status" className="p-3 bg-slate-600 bg-op rounded-full">
                 <svg
                     aria-hidden="true"
