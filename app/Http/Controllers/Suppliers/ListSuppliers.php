@@ -5,17 +5,61 @@ namespace App\Http\Controllers\Suppliers;
 use App\Http\Controllers\Controller;
 use App\Models\Supplier;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
+use App\Enums\Status;
+use App\Utils\Report;
 
 class ListSuppliers extends Controller
 {
     public const COMPONENT = "Suppliers/ListSuppliers";
+    public const MODULE = "suppliers";
+    public const ROUTE = "suppliers";
 
-    public function show()
+    public function show(Request $request)
     {
         return Inertia::render(self::COMPONENT, [
             'records' => $this->getSuppliers(),
             'properties' => $this->getColumns(),
+            'module' => self::MODULE,
+            'report' => $request->session()->get('report')
         ]);
+    }
+
+    public function edit() {}
+
+    public function enable($id)
+    {
+        $object = Supplier::find($id);
+        $enabled_value = Status::ENABLED->value;
+
+        if (!$object) {
+            return Report::error(self::ROUTE, 'Proveedor no encontrado.');
+        }
+        else if ($object->status == $enabled_value) {
+            return Report::error(self::ROUTE, 'El proveedor ya está habilitado.');
+        }
+
+        $object->status = $enabled_value;
+        $object->save();
+
+        return Report::success(self::ROUTE, 'Proveedor habilitado correctamente.');
+    }
+
+    public function disable($id)
+    {
+        $object = Supplier::find($id);
+        $disabled_value = Status::DISABLED->value;
+
+        if (!$object) {
+            return Report::error(self::ROUTE, 'Proveedor no encontrado.');
+        } else if ($object->status == $disabled_value) {
+            return Report::error(self::ROUTE, 'El proveedor ya está deshabilitado.');
+        }
+
+        $object->status = $disabled_value;
+        $object->save();
+
+        return Report::success(self::ROUTE, 'Proveedor deshabilitado correctamente.');
     }
 
     private function getSuppliers()

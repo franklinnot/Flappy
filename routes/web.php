@@ -12,7 +12,6 @@ use App\Http\Controllers\Payments\ListPayments;
 use App\Http\Controllers\Users\NewUser;
 use App\Http\Controllers\Suppliers\NewSupplier;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\Categories\NewCategory;
 use App\Http\Controllers\Products\NewProduct;
 
@@ -66,10 +65,10 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     Route::get('suppliers/new', [NewSupplier::class, 'show'])->name('suppliers.new');
     Route::post('suppliers/new', [NewSupplier::class, 'create']);
 
-    Route::patch('suppliers/edit/{id}', [RegisteredUserController::class, 'update'])->name('suppliers.edit');
+    Route::patch('suppliers/edit/{id}', [ListSuppliers::class, 'edit'])->name('suppliers.edit');
 
-    Route::patch('suppliers/enable/{id}', [RegisteredUserController::class, 'update'])->name('suppliers.enable');
-    Route::patch('suppliers/disable/{id}', [RegisteredUserController::class, 'update'])->name('suppliers.disable');
+    Route::patch('suppliers/enable/{id}', [ListSuppliers::class, 'enable'])->name('suppliers.enable');
+    Route::patch('suppliers/disable/{id}', [ListSuppliers::class, 'disable'])->name('suppliers.disable');
     #endregion
 
     #region Payments
