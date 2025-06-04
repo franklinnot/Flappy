@@ -5,17 +5,19 @@ import { useEffect, useState } from "react";
 import PrimaryButton from "@/Components/PrimaryButton";
 import ComboBox from "@/Components/ComboBox";
 import Toast from "@/Components/Toast";
+import Loading from "@/Components/loading";
 
 export default function NewProduct({ units, categories, report }) {
     const title = "Nuevo producto";
 
-    const { data, setData, post, reset, processing, transform, errors } = useForm({
-        code: "",
-        name: "",
-        picture: "",
-        unit: "",
-        categorie: "",
-    });
+    const { data, setData, post, reset, processing, transform, errors } =
+        useForm({
+            code: "",
+            name: "",
+            picture: "",
+            unit: "",
+            categorie: "",
+        });
 
     const [toast, setToast] = useState(null);
     const [toastKey, setToastKey] = useState(0);
@@ -51,6 +53,7 @@ export default function NewProduct({ units, categories, report }) {
                     type={toast.type}
                 />
             )}
+            <Loading isLoading={processing} />;
             <form
                 onSubmit={submit}
                 className="flex flex-col gap-6 pb-16 justify-self-center rounded-2xl max-sm:w-full max-sm:max-w-[448px] sm:w-[75%] sm:max-w-[612px]"
@@ -61,7 +64,9 @@ export default function NewProduct({ units, categories, report }) {
                     maxLength={24}
                     value={data.code}
                     required
-                    onChange={(e) => setData("code", e.target.value.toUpperCase())}
+                    onChange={(e) =>
+                        setData("code", e.target.value.toUpperCase())
+                    }
                     disabled={processing}
                     error={errors.code}
                     isFocused={true}
