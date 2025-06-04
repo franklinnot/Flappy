@@ -1,4 +1,4 @@
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import React, { useState, useEffect, useRef } from "react";
 import {
     IconKebab,
@@ -7,6 +7,7 @@ import {
     IconDocumentCheck,
 } from "@/Components/Icons";
 import Status from "@/Utils/status";
+import Loading from "./loading"; // Importar el componente Loading
 
 export default function Table({
     properties,
@@ -19,7 +20,8 @@ export default function Table({
 }) {
     const [openMenu, setOpenMenu] = useState(null);
     const menuRef = useRef(null);
-    
+    const [isProcessing, setIsProcessing] = useState(false); // Estado para el loading
+
     const toggleMenu = (recordId) => {
         setOpenMenu(openMenu === recordId ? null : recordId);
     };
@@ -32,8 +34,21 @@ export default function Table({
         };
 
         document.addEventListener("mousedown", handleClickOutside);
+
+        // Eventos de Inertia para el loading
+        const handleStart = () => setIsProcessing(true);
+        const handleFinish = () => {
+            setIsProcessing(false);
+            setOpenMenu(null); // Asegurarse de cerrar el menú después de la navegación
+        };
+
+        router.on('start', handleStart);
+        router.on('finish', handleFinish);
+
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
+            router.off('start', handleStart);
+            router.off('finish', handleFinish);
         };
     }, []);
 
@@ -41,6 +56,7 @@ export default function Table({
         <div
             className={`w-full overflow-hidden rounded-md border border-gray-200 shadow-sm ${className}`}
         >
+            <Loading isLoading={isProcessing} /> {/* Añadir el componente Loading aquí */}
             <table className="w-full table-auto text-sm text-left text-gray-700">
                 <thead className="bg-gray-50 border-b border-gray-200">
                     <tr>
@@ -101,7 +117,7 @@ export default function Table({
                                                                     null
                                                                 );
                                                             }}
-                                                            className="block w-full text-left p-2 text-sm text-gray-600 hover:bg-gray-100"
+                                                            className="block w-full text-left p-2 text-sm text-sky-500 hover:bg-gray-100"
                                                         >
                                                             <IconPencil
                                                                 size={16}
@@ -119,11 +135,7 @@ export default function Table({
                                                                     method="patch"
                                                                     as="button"
                                                                     className="block w-full text-left p-2 text-sm text-red-500 hover:bg-gray-100"
-                                                                    onClick={() =>
-                                                                        setOpenMenu(
-                                                                            null
-                                                                        )
-                                                                    }
+                                                                    // Quitar onClick de aquí si solo cierra el menú, ya que 'finish' lo hará
                                                                 >
                                                                     <IconTrash
                                                                         size={
@@ -141,11 +153,7 @@ export default function Table({
                                                                     method="patch"
                                                                     as="button"
                                                                     className="block w-full text-left p-2 text-sm text-red-500 hover:bg-gray-100"
-                                                                    onClick={() =>
-                                                                        setOpenMenu(
-                                                                            null
-                                                                        )
-                                                                    }
+                                                                    // Quitar onClick de aquí si solo cierra el menú, ya que 'finish' lo hará
                                                                 >
                                                                     <IconTrash
                                                                         size={
@@ -161,12 +169,8 @@ export default function Table({
                                                                 href={`${module}/enable/${record.id}`}
                                                                 method="patch"
                                                                 as="button"
-                                                                className="block w-full text-left p-2 text-sm text-gray-600 hover:bg-gray-100"
-                                                                onClick={() =>
-                                                                    setOpenMenu(
-                                                                        null
-                                                                    )
-                                                                }
+                                                                className="block w-full text-left p-2 text-sm text-emerald-500 hover:bg-gray-100"
+                                                                // Quitar onClick de aquí si solo cierra el menú, ya que 'finish' lo hará
                                                             >
                                                                 <IconDocumentCheck
                                                                     size={16}
