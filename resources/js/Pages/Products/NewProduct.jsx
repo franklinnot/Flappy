@@ -53,7 +53,7 @@ export default function NewProduct({ units, categories, report }) {
                     type={toast.type}
                 />
             )}
-            <Loading isLoading={processing} />;
+            <Loading isLoading={processing} />
             <form
                 onSubmit={submit}
                 className="flex flex-col gap-6 pb-16 justify-self-center rounded-2xl max-sm:w-full max-sm:max-w-[448px] sm:w-[75%] sm:max-w-[612px]"
