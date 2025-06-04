@@ -22,7 +22,7 @@ class ListSuppliers extends Controller
             'properties' => $this->getColumns(),
             'module' => self::MODULE,
             'report' => $request->session()->get('report'),
-            'status' => $request->session()->get('status')
+            'status' => $request->session()->get('status') ?? Status::ENABLED->value,
         ]);
     }
 
@@ -59,11 +59,11 @@ class ListSuppliers extends Controller
         } else if ($object->status == $disabled_value) {
             return Report::error(self::ROUTE, 'El proveedor ya está deshabilitado.');
         }
-
+        
+        $old_status = $object->status;
         $object->status = $disabled_value;
         $object->save();
 
-        $old_status = $object->status;
         return Report::success(self::ROUTE, 'Proveedor deshabilitado correctamente.', [
             'status' => $old_status
         ]);

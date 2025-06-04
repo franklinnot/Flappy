@@ -11,28 +11,28 @@ export default function ListSuppliers({
     properties,
     module,
     report,
-    status = null,
+    status,
 }) {
     const title = "Lista de Proveedores";
     const [toast, setToast] = useState(null);
     const [toastKey, setToastKey] = useState(0);
-    const [currentStatus, setcurrentStatus] = useState(
-        status ? status : Status.ENABLED
-    );
     const [filteredRecords, setFilteredRecords] = useState([]);
+    const [statusFilter, setStatusFilter] = useState(status);
 
     useEffect(() => {
         if (report) {
             setToast(report);
             setToastKey(Date.now());
         }
-    }, [report]);
+        setStatusFilter(status);
+    }, []);
 
+    // Filtrar los registros según el estado actual
     useEffect(() => {
         setFilteredRecords(
-            records.filter((record) => record.status === currentStatus)
+            records.filter((record) => record.status === statusFilter)
         );
-    }, [records, currentStatus]);
+    }, [statusFilter]);
 
     // Función para editar la información (ejemplo)
     const editInfo = (id) => {
@@ -44,7 +44,7 @@ export default function ListSuppliers({
 
     // Función para cambiar el filtro de estado
     const handleToggleStatus = () => {
-        setcurrentStatus((prevStatus) =>
+        setStatusFilter((prevStatus) =>
             prevStatus === Status.ENABLED ? Status.DISABLED : Status.ENABLED
         );
     };
@@ -60,7 +60,7 @@ export default function ListSuppliers({
                 />
             )}
             <PrimaryButton onClick={handleToggleStatus}>
-                {currentStatus == Status.ENABLED
+                {statusFilter == Status.ENABLED
                     ? "Mostrar Deshabilitados"
                     : "Mostrar Habilitados"}
             </PrimaryButton>
