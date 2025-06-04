@@ -11,11 +11,14 @@ export default function ListSuppliers({
     properties,
     module,
     report,
+    status = null,
 }) {
     const title = "Lista de Proveedores";
     const [toast, setToast] = useState(null);
     const [toastKey, setToastKey] = useState(0);
-    const [currentStatus, setcurrentStatus] = useState(Status.ENABLED);
+    const [currentStatus, setcurrentStatus] = useState(
+        status ? status : Status.ENABLED
+    );
     const [filteredRecords, setFilteredRecords] = useState([]);
 
     useEffect(() => {
@@ -27,7 +30,7 @@ export default function ListSuppliers({
 
     useEffect(() => {
         setFilteredRecords(
-            records.filter(record => record.status === currentStatus)
+            records.filter((record) => record.status === currentStatus)
         );
     }, [records, currentStatus]);
 
@@ -41,7 +44,7 @@ export default function ListSuppliers({
 
     // Función para cambiar el filtro de estado
     const handleToggleStatus = () => {
-        setcurrentStatus(prevStatus =>
+        setcurrentStatus((prevStatus) =>
             prevStatus === Status.ENABLED ? Status.DISABLED : Status.ENABLED
         );
     };

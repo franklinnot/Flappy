@@ -21,7 +21,8 @@ class ListSuppliers extends Controller
             'records' => $this->getSuppliers(),
             'properties' => $this->getColumns(),
             'module' => self::MODULE,
-            'report' => $request->session()->get('report')
+            'report' => $request->session()->get('report'),
+            'status' => $request->session()->get('status')
         ]);
     }
 
@@ -39,10 +40,13 @@ class ListSuppliers extends Controller
             return Report::error(self::ROUTE, 'El proveedor ya está habilitado.');
         }
 
+        $old_status = $object->status;
         $object->status = $enabled_value;
         $object->save();
 
-        return Report::success(self::ROUTE, 'Proveedor habilitado correctamente.');
+        return Report::success(self::ROUTE, 'Proveedor habilitado correctamente.', [
+            'status' => $old_status
+        ]);
     }
 
     public function disable($id)
@@ -59,7 +63,10 @@ class ListSuppliers extends Controller
         $object->status = $disabled_value;
         $object->save();
 
-        return Report::success(self::ROUTE, 'Proveedor deshabilitado correctamente.');
+        $old_status = $object->status;
+        return Report::success(self::ROUTE, 'Proveedor deshabilitado correctamente.', [
+            'status' => $old_status
+        ]);
     }
 
     private function getSuppliers()
