@@ -16,7 +16,7 @@ class Report
      * @param string $message The success message for the toast notification.
      * @return array<string, mixed> An array containing toast data with type 'success'.
      */
-    public static function success(string $message, array $additionalData = []): array
+    public static function success(string $route, string $message, array $additionalData = [])
     {
         $data = [
             'report' => [
@@ -25,7 +25,7 @@ class Report
             ],
         ];
 
-        return array_merge($additionalData, $data);
+        return Report::sendResponse($route, array_merge($additionalData, $data));
     }
 
     /**
@@ -55,7 +55,6 @@ class Report
      * @param bool $exception Optional (defaults to true). If true, throws ValidationException with the warning data.
      * @return array<string, mixed> If $exception is false, returns an array containing toast data with type 'warning'
      *                              and optionally the field-specific message.
-     * @throws \Illuminate\Validation\ValidationException If $exception is true.
      */
     public static function warning(string $message, ?string $field = null, bool $exception = true)
     {
@@ -88,7 +87,6 @@ class Report
      * @param bool $exception Optional (defaults to true). If true, throws ValidationException with the error data.
      * @return array<string, mixed> If $exception is false, returns an array containing toast data with type 'error'
      *                              and optionally the field-specific message.
-     * @throws \Illuminate\Validation\ValidationException If $exception is true.
      */
     public static function error(string $message, ?string $field = null, bool $exception = true)
     {
@@ -108,4 +106,12 @@ class Report
 
         return $data;
     }
+
+    private static function sendResponse($route, $data)
+    {
+        return redirect()
+            ->route($route)
+            ->with($data);
+    }
+
 }

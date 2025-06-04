@@ -12,7 +12,7 @@ use Inertia\Inertia;
 class NewPayment extends Controller
 {
     public const COMPONENT = "Payments/NewPayment";
-    public const ROUTE = "payment.new";
+    public const ROUTE = "payments.new";
 
     public function show(Request $request)
     {
@@ -35,9 +35,7 @@ class NewPayment extends Controller
         if (!$method) {
             Report::error('Error al registrar un nuevo metodo de pago');
         }
-
-        return redirect()
-            ->route(SELF::ROUTE)
-            ->with(Report::success('Método de pago registrado correctamente'));
+        
+        return Report::success(self::ROUTE, 'Método de pago registrado correctamente');
     }
 }

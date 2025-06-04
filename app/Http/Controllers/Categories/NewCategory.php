@@ -19,7 +19,6 @@ class NewCategory extends Controller
         return Inertia::render(self::COMPONENT, [
             'report' => $request->session()->get('report')
         ]);
-        
     }
 
     public function create(Request $request)
@@ -37,8 +36,6 @@ class NewCategory extends Controller
             Report::error('Error al registrar nueva categoría');
         }
 
-        return redirect()
-            ->route(SELF::ROUTE)
-            ->with(Report::success('Categoría registrada correctamente'));
+        return Report::success(self::ROUTE, 'Categoría registrada correctamente');
     }
 }

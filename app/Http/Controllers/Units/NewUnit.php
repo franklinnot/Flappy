@@ -37,9 +37,7 @@ class NewUnit extends Controller
         if (!$unit) {
             Report::error('Error al registrar una nueva unidad de medida');
         }
-        
-        return redirect()
-            ->route(SELF::ROUTE)
-            ->with(Report::success('Unidad de medida registrada correctamente'));
+
+        return Report::success(self::ROUTE, 'Unidad de medida registrada correctamente');
     }
 }

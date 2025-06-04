@@ -47,9 +47,7 @@ class NewUser extends Controller
         if (!$user) {
             Report::error('Error al registrar un nuevo usuario');
         }
-
-        return redirect()
-            ->route(SELF::ROUTE)
-            ->with(Report::success('Usuario registrado correctamente'));
+        
+        return Report::success(self::ROUTE, 'Usuario registrado correctamente');
     }
 }

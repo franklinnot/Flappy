@@ -39,9 +39,6 @@ class NewCustomer extends Controller
         if (!$customer) {
             Report::error('Error al registrar un nuevo cliente');
         }
-
-        return redirect()
-            ->route(SELF::ROUTE)
-            ->with(Report::success('Cliente registrado correctamente'));
+        return Report::success(self::ROUTE, 'Cliente registrado correctamente');
     }
 }

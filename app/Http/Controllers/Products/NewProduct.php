@@ -13,7 +13,7 @@ use App\Enums\Status;
 class NewProduct extends Controller
 {
     public const COMPONENT = "Products/NewProduct";
-    public const ROUTE = "users.new";
+    public const ROUTE = "products.new";
 
     public function show(Request $request)
     {
@@ -51,9 +51,7 @@ class NewProduct extends Controller
             Report::error('Error al registrar un nuevo producto');
         }
 
-        return redirect()
-            ->route(SELF::ROUTE)
-            ->with(Report::success('Producto registrado correctamente'));
+        return Report::success(self::ROUTE, 'Producto registrado correctamente');
     }
 
     private function getUnits()

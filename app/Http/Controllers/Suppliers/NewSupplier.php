@@ -43,9 +43,7 @@ class NewSupplier extends Controller
         if (!$supplier) {
             Report::error('Error al registrar un nuevo proveedor');
         }
-
-        return redirect()
-            ->route(SELF::ROUTE)
-            ->with(Report::success('Cliente registrado correctamente'));
+        
+        return Report::success(self::ROUTE, 'Proveedor registrado correctamente');
     }
 }
