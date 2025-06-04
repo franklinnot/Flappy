@@ -17,11 +17,13 @@ use Inertia\Inertia;
 class NewUser extends Controller
 {
     public const COMPONENT = "Users/NewUser";
+    public const ROUTE = "users.new";
 
-    public function show()
+    public function show(Request $request)
     {
         return Inertia::render(self::COMPONENT, [
-            'roles' => $this->getRoles(),
+            'roles' => Roles::valuesWithId(),
+            'report' => $request->session()->get('report')
         ]);
     }
 
@@ -46,14 +48,8 @@ class NewUser extends Controller
             Report::error('Error al registrar un nuevo usuario');
         }
 
-        return inertia(self::COMPONENT, Report::success('Usuario registrado correctamente', [
-            'roles' => $this->getRoles()
-        ]));
+        return redirect()
+            ->route(SELF::ROUTE)
+            ->with(Report::success('Usuario registrado correctamente'));
     }
-
-    private function getRoles()
-    {
-        return Roles::valuesWithId();
-    }
-
 }

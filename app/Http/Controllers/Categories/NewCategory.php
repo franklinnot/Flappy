@@ -12,21 +12,23 @@ use Inertia\Inertia;
 class NewCategory extends Controller
 {
     public const COMPONENT = 'Categories/NewCategory';
+    public const ROUTE = "categories.new";
 
-    public function show()
+    public function show(Request $request)
     {
-        return Inertia::render(self::COMPONENT);
+        return Inertia::render(self::COMPONENT, [
+            'report' => $request->session()->get('report')
+        ]);
+        
     }
 
     public function create(Request $request)
     {
         $request->validate([
-            'code' => 'required|string|max:64|uppercase|unique:categories,code',
             'name' => 'required|string|max:64',
         ]);
 
         $category = Categorie::create([
-            'code' => $request->code,
             'name' => $request->name,
             'status' => Status::ENABLED->value,
         ]);
@@ -35,6 +37,8 @@ class NewCategory extends Controller
             Report::error('Error al registrar nueva categoría');
         }
 
-        return inertia(self::COMPONENT, Report::success('Categoría registrada correctamente'));
+        return redirect()
+            ->route(SELF::ROUTE)
+            ->with(Report::success('Categoría registrada correctamente'));
     }
 }

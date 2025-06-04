@@ -12,10 +12,13 @@ use Inertia\Inertia;
 class NewSupplier extends Controller
 {
     public const COMPONENT = "Suppliers/NewSupplier";
+    public const ROUTE = "suppliers.new";
 
-    public function show()
+    public function show(Request $request)
     {
-        return Inertia::render(self::COMPONENT);
+        return Inertia::render(self::COMPONENT, [
+            'report' => $request->session()->get('report')
+        ]);
     }
 
     public function create(Request $request)
@@ -41,6 +44,8 @@ class NewSupplier extends Controller
             Report::error('Error al registrar un nuevo proveedor');
         }
 
-        return Inertia::render(self::COMPONENT, Report::success('Proveedor registrado correctamente'));
+        return redirect()
+            ->route(SELF::ROUTE)
+            ->with(Report::success('Cliente registrado correctamente'));
     }
 }

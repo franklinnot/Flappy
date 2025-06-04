@@ -79,7 +79,7 @@ export default function NewProduct({ units, categories, report }) {
 
                 <InputField
                     id="picture"
-                    label="URL de imagen"
+                    label="URL de imagen (opc.)"
                     type="url"
                     value={data.picture}
                     onChange={(e) => setData("picture", e.target.value)}

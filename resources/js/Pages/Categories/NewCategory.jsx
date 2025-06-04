@@ -9,7 +9,6 @@ export default function NewCategory({ report }) {
     const title = "Nueva categoría";
 
     const { data, setData, post, reset, processing, errors } = useForm({
-        code: "",
         name: "",
     });
 
@@ -45,20 +44,6 @@ export default function NewCategory({ report }) {
                 className="flex flex-col gap-6 pb-16 justify-self-center rounded-2xl max-sm:w-full max-sm:max-w-[448px] sm:w-[75%] sm:max-w-[612px]"
                 onSubmit={submit}
             >
-                <InputField
-                    id="code"
-                    label="Código"
-                    value={data.code}
-                    required
-                    maxLength={64}
-                    onChange={(e) =>
-                        setData("code", e.target.value.toUpperCase())
-                    }
-                    disabled={processing}
-                    isFocused={true}
-                    error={errors.code}
-                />
-
                 <InputField
                     id="name"
                     label="Nombre"

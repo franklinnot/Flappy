@@ -13,12 +13,14 @@ use App\Enums\Status;
 class NewProduct extends Controller
 {
     public const COMPONENT = "Products/NewProduct";
+    public const ROUTE = "users.new";
 
-    public function show()
+    public function show(Request $request)
     {
         return inertia(self::COMPONENT, [
             "units" => $this->getUnits(),
             "categories" => $this->getCategories(),
+            'report' => $request->session()->get('report')
         ]);
     }
 
@@ -49,10 +51,9 @@ class NewProduct extends Controller
             Report::error('Error al registrar un nuevo producto');
         }
 
-        return inertia(self::COMPONENT, Report::success('Producto registrado correctamente', [
-            "units" => $this->getUnits(),
-            "categories" => $this->getCategories(),
-        ]));
+        return redirect()
+            ->route(SELF::ROUTE)
+            ->with(Report::success('Producto registrado correctamente'));
     }
 
     private function getUnits()

@@ -12,10 +12,13 @@ use Inertia\Inertia;
 class NewPayment extends Controller
 {
     public const COMPONENT = "Payments/NewPayment";
+    public const ROUTE = "payment.new";
 
-    public function show()
+    public function show(Request $request)
     {
-        return Inertia::render(self::COMPONENT);
+        return Inertia::render(self::COMPONENT, [
+            'report' => $request->session()->get('report')
+        ]);
     }
 
     public function create(Request $request)
@@ -33,6 +36,8 @@ class NewPayment extends Controller
             Report::error('Error al registrar un nuevo metodo de pago');
         }
 
-        return Inertia::render(self::COMPONENT, Report::success('Metodo de pago registrado correctamente'));
+        return redirect()
+            ->route(SELF::ROUTE)
+            ->with(Report::success('Método de pago registrado correctamente'));
     }
 }

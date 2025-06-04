@@ -12,10 +12,13 @@ use Inertia\Inertia;
 class NewUnit extends Controller
 {
     public const COMPONENT = "Units/NewUnit";
+    public const ROUTE = "units.new";
 
-    public function show()
+    public function show(Request $request)
     {
-        return Inertia::render(self::COMPONENT);
+        return Inertia::render(self::COMPONENT, [
+            'report' => $request->session()->get('report')
+        ]);
     }
 
     public function create(Request $request)
@@ -34,7 +37,9 @@ class NewUnit extends Controller
         if (!$unit) {
             Report::error('Error al registrar una nueva unidad de medida');
         }
-
-        return Inertia::render(self::COMPONENT, Report::success('Unidad de medida registrada correctamente'));
+        
+        return redirect()
+            ->route(SELF::ROUTE)
+            ->with(Report::success('Unidad de medida registrada correctamente'));
     }
 }

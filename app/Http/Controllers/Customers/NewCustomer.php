@@ -12,10 +12,13 @@ use App\Models\Customer;
 class NewCustomer extends Controller
 {
     public const COMPONENT = "Customers/NewCustomer";
+    public const ROUTE = "customers.new";
 
-    public function show()
+    public function show(Request $request)
     {
-        return Inertia::render(self::COMPONENT);
+        return Inertia::render(self::COMPONENT, [
+            'report' => $request->session()->get('report')
+        ]);
     }
 
     public function create(Request $request)
@@ -37,8 +40,8 @@ class NewCustomer extends Controller
             Report::error('Error al registrar un nuevo cliente');
         }
 
-        return inertia(self::COMPONENT, Report::success('Cliente registrado correctamente'));
+        return redirect()
+            ->route(SELF::ROUTE)
+            ->with(Report::success('Cliente registrado correctamente'));
     }
-
-
 }
