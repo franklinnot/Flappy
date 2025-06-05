@@ -6,14 +6,14 @@ import Toast from "@/Components/Toast";
 import PrimaryButton from "@/Components/PrimaryButton";
 import Status from "@/Utils/status";
 
-export default function ListUnits({
+export default function ListProducts({
     records = [],
     properties,
     module,
     report,
     status,
 }) {
-    const title = "Lista de Unidades de Medida";
+    const title = "Lista de Productos";
     const [toast, setToast] = useState(null);
     const [toastKey, setToastKey] = useState(0);
     const [filteredRecords, setFilteredRecords] = useState([]);
@@ -27,22 +27,19 @@ export default function ListUnits({
         setStatusFilter(status);
     }, []);
 
-    // Filtrar los registros según el estado actual
     useEffect(() => {
         setFilteredRecords(
             records.filter((record) => record.status === statusFilter)
         );
-    }, [statusFilter, records]);
+    }, [statusFilter]);
 
-    // Función para editar la información (ejemplo)
     const editInfo = (id) => {
         const record = filteredRecords.find((record) => record.id === id);
         if (record) {
-            alert(record.name);
+            alert(`Producto: ${record.name}`);
         }
     };
 
-    // Función para cambiar el filtro de estado
     const handleToggleStatus = () => {
         setStatusFilter((prevStatus) =>
             prevStatus === Status.ENABLED ? Status.DISABLED : Status.ENABLED
@@ -61,8 +58,8 @@ export default function ListUnits({
             )}
             <PrimaryButton onClick={handleToggleStatus}>
                 {statusFilter == Status.ENABLED
-                    ? "Mostrar Deshabilitadas"
-                    : "Mostrar Habilitadas"}
+                    ? "Mostrar Deshabilitados"
+                    : "Mostrar Habilitados"}
             </PrimaryButton>
             <div className="space-y-6 mt-4">
                 <Table
