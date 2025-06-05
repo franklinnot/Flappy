@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Categories\ListCategories;
 use App\Http\Controllers\Customers\NewCustomer;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\ProfileController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Users\NewUser;
 use App\Http\Controllers\Suppliers\NewSupplier;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Categories\NewCategory;
+use App\Http\Controllers\Products\ListProducts;
 use App\Http\Controllers\Products\NewProduct;
 
 /*
@@ -89,38 +91,34 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     Route::get('units/new', [NewUnit::class, 'show'])->name('units.new');
     Route::post('units/new', [NewUnit::class, 'create']);
 
-    Route::patch('units/edit/{id}', [RegisteredUserController::class, 'update'])->name('units.edit');
+    Route::patch('units/edit/{id}', [ListUnits::class, 'edit'])->name('units.edit');
 
-    Route::patch('units/enable/{id}', [RegisteredUserController::class, 'update'])->name('units.enable');
-    Route::patch('units/disable/{id}', [RegisteredUserController::class, 'update'])->name('units.disable');
+    Route::patch('units/enable/{id}', [ListUnits::class, 'enable'])->name('units.enable');
+    Route::patch('units/disable/{id}', [ListUnits::class, 'disable'])->name('units.disable');
     #endregion
 
     #region Categories
-    Route::get('categories', [ProfileController::class, 'edit'])->name('categories');
-
-
+    Route::get('categories', [ListCategories::class, 'show'])->name('categories');
 
     Route::get('categories/new', [NewCategory::class, 'show'])->name('categories.new');
     Route::post('categories/new', [NewCategory::class, 'create']);
 
+    Route::patch('categories/edit/{id}', [ListCategories::class, 'edit'])->name('categories.edit');
 
-
-    Route::patch('categories/edit/{id}', [RegisteredUserController::class, 'update'])->name('categories.edit');
-
-    Route::patch('categories/enable/{id}', [RegisteredUserController::class, 'update'])->name('categories.enable');
-    Route::patch('users/disable/{id}', [RegisteredUserController::class, 'update'])->name('users.disable');
+    Route::patch('categories/enable/{id}', [ListCategories::class, 'enable'])->name('categories.enable');
+    Route::patch('categories/disable/{id}', [ListCategories::class, 'disable'])->name('categories.disable');
     #endregion
 
     #region Products
-    Route::get('products', [RegisteredUserController::class, 'show'])->name('products');
+    Route::get('products', [ListProducts::class, 'show'])->name('products');
 
     Route::get('products/new', [NewProduct::class, 'show'])->name('products.new');
     Route::post('products/new', [NewProduct::class, 'create']);
 
-    Route::patch('products/edit/{id}', [RegisteredUserController::class, 'update'])->name('products.edit');
+    Route::patch('products/edit/{id}', [ListProducts::class, 'edit'])->name('products.edit');
 
-    Route::patch('products/enable/{id}', [RegisteredUserController::class, 'update'])->name('products.enable');
-    Route::patch('products/disable/{id}', [RegisteredUserController::class, 'update'])->name('products.disable');
+    Route::patch('products/enable/{id}', [ListProducts::class, 'enable'])->name('products.enable');
+    Route::patch('products/disable/{id}', [ListProducts::class, 'disable'])->name('products.disable');
     #endregion
 
     #region Lots
