@@ -85,113 +85,121 @@ export default function Table({
                                             key={prop.name}
                                             className="px-4 py-2 whitespace-nowrap"
                                         >
-                                            {record[prop.name] || "-"}
+                                            {prop.name === "picture" && record[prop.name] ? (
+                                                <img
+                                                    src={record[prop.name]}
+                                                    alt={record.name || "Imagen"}
+                                                    className="w-12 h-12 object-cover rounded"
+                                                />
+                                            ) : (
+                                                record[prop.name] || "-"
+                                            )}
                                         </td>
                                     ))}
                                     {(typeof editInfo === "function" ||
                                         editStatus) && (
-                                        <td className="px-4 py-2 whitespace-nowrap text-center">
-                                            <button
-                                                onMouseDown={(e) =>
-                                                    e.stopPropagation()
-                                                }
-                                                onClick={() =>
-                                                    toggleMenu(record.id)
-                                                }
-                                                className="p-1 rounded-md hover:bg-gray-100"
-                                            >
-                                                <IconKebab className="size-5 text-gray-500" />
-                                            </button>
-                                            {openMenu === record.id && (
-                                                <div
-                                                    ref={menuRef}
-                                                    className="flex flex-row absolute ml-8 mt-[-35px] bg-white rounded-md shadow-md z-20 border border-gray-200"
+                                            <td className="px-4 py-2 whitespace-nowrap text-center">
+                                                <button
+                                                    onMouseDown={(e) =>
+                                                        e.stopPropagation()
+                                                    }
+                                                    onClick={() =>
+                                                        toggleMenu(record.id)
+                                                    }
+                                                    className="p-1 rounded-md hover:bg-gray-100"
                                                 >
-                                                    {typeof editInfo ===
-                                                        "function" &&
-                                                        !isImportant && (
-                                                            <button
-                                                                title="Editar"
-                                                                onClick={() => {
-                                                                    editInfo(
-                                                                        record.id
-                                                                    );
-                                                                    setOpenMenu(
-                                                                        null
-                                                                    );
-                                                                }}
-                                                                className="block w-full text-left p-2 text-sm text-sky-500 hover:bg-gray-100"
-                                                            >
-                                                                <IconPencil
-                                                                    size={16}
-                                                                />
-                                                            </button>
-                                                        )}
-
-                                                    {editStatus && (
-                                                        <>
-                                                            {isImportant &&
-                                                                record.status ===
-                                                                    Status.ENABLED && (
-                                                                    <button
-                                                                        title="Anular"
-                                                                        onClick={() =>
-                                                                            handleStatusChange(
-                                                                                `${module}/disable/${record.id}`
-                                                                            )
-                                                                        }
-                                                                        className="block w-full text-left p-2 text-sm text-red-500 hover:bg-gray-100"
-                                                                    >
-                                                                        <IconTrash
-                                                                            size={
-                                                                                16
-                                                                            }
-                                                                        />
-                                                                    </button>
-                                                                )}
-                                                            {!isImportant &&
-                                                                record.status ===
-                                                                    Status.ENABLED && (
-                                                                    <button
-                                                                        title="Eliminar"
-                                                                        onClick={() =>
-                                                                            handleStatusChange(
-                                                                                `${module}/disable/${record.id}`
-                                                                            )
-                                                                        }
-                                                                        className="block w-full text-left p-2 text-sm text-red-500 hover:bg-gray-100"
-                                                                    >
-                                                                        <IconTrash
-                                                                            size={
-                                                                                16
-                                                                            }
-                                                                        />
-                                                                    </button>
-                                                                )}
-                                                            {record.status ===
-                                                                Status.DISABLED && (
+                                                    <IconKebab className="size-5 text-gray-500" />
+                                                </button>
+                                                {openMenu === record.id && (
+                                                    <div
+                                                        ref={menuRef}
+                                                        className="flex flex-row absolute ml-8 mt-[-35px] bg-white rounded-md shadow-md z-20 border border-gray-200"
+                                                    >
+                                                        {typeof editInfo ===
+                                                            "function" &&
+                                                            !isImportant && (
                                                                 <button
-                                                                    title="Habilitar"
-                                                                    onClick={() =>
-                                                                        handleStatusChange(
-                                                                            `${module}/enable/${record.id}`
-                                                                        )
-                                                                    }
-                                                                    className="block w-full text-left p-2 text-sm text-emerald-500 hover:bg-gray-100"
+                                                                    title="Editar"
+                                                                    onClick={() => {
+                                                                        editInfo(
+                                                                            record.id
+                                                                        );
+                                                                        setOpenMenu(
+                                                                            null
+                                                                        );
+                                                                    }}
+                                                                    className="block w-full text-left p-2 text-sm text-sky-500 hover:bg-gray-100"
                                                                 >
-                                                                    <IconDocumentCheck
-                                                                        size={
-                                                                            16
-                                                                        }
+                                                                    <IconPencil
+                                                                        size={16}
                                                                     />
                                                                 </button>
                                                             )}
-                                                        </>
-                                                    )}
-                                                </div>
-                                            )}
-                                        </td>
-                                    )}
+
+                                                        {editStatus && (
+                                                            <>
+                                                                {isImportant &&
+                                                                    record.status ===
+                                                                    Status.ENABLED && (
+                                                                        <button
+                                                                            title="Anular"
+                                                                            onClick={() =>
+                                                                                handleStatusChange(
+                                                                                    `${module}/disable/${record.id}`
+                                                                                )
+                                                                            }
+                                                                            className="block w-full text-left p-2 text-sm text-red-500 hover:bg-gray-100"
+                                                                        >
+                                                                            <IconTrash
+                                                                                size={
+                                                                                    16
+                                                                                }
+                                                                            />
+                                                                        </button>
+                                                                    )}
+                                                                {!isImportant &&
+                                                                    record.status ===
+                                                                    Status.ENABLED && (
+                                                                        <button
+                                                                            title="Eliminar"
+                                                                            onClick={() =>
+                                                                                handleStatusChange(
+                                                                                    `${module}/disable/${record.id}`
+                                                                                )
+                                                                            }
+                                                                            className="block w-full text-left p-2 text-sm text-red-500 hover:bg-gray-100"
+                                                                        >
+                                                                            <IconTrash
+                                                                                size={
+                                                                                    16
+                                                                                }
+                                                                            />
+                                                                        </button>
+                                                                    )}
+                                                                {record.status ===
+                                                                    Status.DISABLED && (
+                                                                        <button
+                                                                            title="Habilitar"
+                                                                            onClick={() =>
+                                                                                handleStatusChange(
+                                                                                    `${module}/enable/${record.id}`
+                                                                                )
+                                                                            }
+                                                                            className="block w-full text-left p-2 text-sm text-emerald-500 hover:bg-gray-100"
+                                                                        >
+                                                                            <IconDocumentCheck
+                                                                                size={
+                                                                                    16
+                                                                                }
+                                                                            />
+                                                                        </button>
+                                                                    )}
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                )}
+                                            </td>
+                                        )}
                                 </tr>
                             ))
                         ) : (
@@ -200,7 +208,7 @@ export default function Table({
                                     colSpan={
                                         properties.length +
                                         (typeof editInfo === "function" ||
-                                        editStatus
+                                            editStatus
                                             ? 1
                                             : 0)
                                     }
