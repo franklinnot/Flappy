@@ -91,7 +91,7 @@ class ListProducts extends Controller
     {
         return [
             ['name' => 'code', 'tag' => 'Codigo'],
-            ['name' => 'picture', 'tag' => ''],
+            ['name' => 'picture', 'tag' => 'Imagen'],
             ['name' => 'name', 'tag' => 'Nombre'],
             ['name' => 'unit_name', 'tag' => 'Unidad de Medida'],
             ['name' => 'categorie_name', 'tag' => 'Categoria'],
