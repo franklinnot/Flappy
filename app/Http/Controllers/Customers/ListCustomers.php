@@ -1,24 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\Payments;
+namespace App\Http\Controllers\Customers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Payment;
+use App\Models\Customer;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Enums\Status;
 use App\Utils\Report;
 
-class ListPayments extends Controller
+class ListCustomers extends Controller
 {
-    public const COMPONENT = "Payments/ListPayments";
-    public const MODULE = "payments";
-    public const ROUTE = "payments";
+    public const COMPONENT = "Customers/ListCustomers";
+    public const MODULE = "customers";
+    public const ROUTE = "customers";
 
     public function show(Request $request)
     {
         return Inertia::render(self::COMPONENT, [
-            'records' => $this->getPayments(),
+            'records' => $this->getCustomers(),
             'properties' => $this->getColumns(),
             'module' => self::MODULE,
             'report' => $request->session()->get('report'),
@@ -30,55 +30,58 @@ class ListPayments extends Controller
 
     public function enable($id)
     {
-        $object = Payment::find($id);
+        $object = Customer::find($id);
         $enabled_value = Status::ENABLED->value;
 
         if (!$object) {
-            return Report::error(self::ROUTE, 'Método de pago no encontrado.');
-        } elseif ($object->status == $enabled_value) {
-            return Report::error(self::ROUTE, 'El método de pago ya está habilitado.');
+            return Report::error(self::ROUTE, 'Cliente no encontrado.');
+        } 
+        elseif ($object->status == $enabled_value) {
+            return Report::error(self::ROUTE, 'El cliente ya está habilitado.');
         }
 
         $old_status = $object->status;
         $object->status = $enabled_value;
         $object->save();
 
-        return Report::success(self::ROUTE, 'Método de pago habilitado correctamente.', [
+        return Report::success(self::ROUTE, 'Cliente habilitado correctamente.', [
             'status' => $old_status,
         ]);
     }
 
     public function disable($id)
     {
-        $object = Payment::find($id);
+        $object = Customer::find($id);
         $disabled_value = Status::DISABLED->value;
 
         if (!$object) {
-            return Report::error(self::ROUTE, 'Método de pago no encontrado.');
+            return Report::error(self::ROUTE, 'Cliente no encontrado.');
         } elseif ($object->status == $disabled_value) {
-            return Report::error(self::ROUTE, 'El método de pago ya está deshabilitado.');
+            return Report::error(self::ROUTE, 'El cliente ya está deshabilitado.');
         }
 
         $old_status = $object->status;
         $object->status = $disabled_value;
         $object->save();
 
-        return Report::success(self::ROUTE, 'Método de pago deshabilitado correctamente.', [
+        return Report::success(self::ROUTE, 'Cliente deshabilitado correctamente.', [
             'status' => $old_status,
         ]);
     }
 
-    private function getPayments()
+    private function getCustomers()
     {
-        return Payment::orderBy('created_at', 'desc')
-            ->select(['id', 'name', 'status'])
+        return Customer::orderBy('created_at', 'desc')
+            ->select(['id', 'dni', 'name', 'phone', 'status'])
             ->get();
     }
 
     private function getColumns()
     {
         return [
-            ['name' => 'name', 'tag' => 'Nombre del método'],
+            ['name' => 'dni', 'tag' => 'DNI'],
+            ['name' => 'name', 'tag' => 'Nombre'],
+            ['name' => 'phone', 'tag' => 'Teléfono'],
         ];
     }
 }

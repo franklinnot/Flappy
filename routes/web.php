@@ -14,8 +14,10 @@ use App\Http\Controllers\Users\NewUser;
 use App\Http\Controllers\Suppliers\NewSupplier;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Categories\NewCategory;
+use App\Http\Controllers\Customers\ListCustomers;
 use App\Http\Controllers\Products\ListProducts;
 use App\Http\Controllers\Products\NewProduct;
+use App\Http\Controllers\Users\ListUsers;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,28 +39,28 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     #endregion
 
     #region Users
-    Route::get('users', [RegisteredUserController::class, 'show'])->name('users');
+    Route::get('users', [ListUsers::class, 'show'])->name('users');
 
     Route::get('users/new', [NewUser::class, 'show'])->name('users.new');
     Route::post('users/new', [NewUser::class, 'create']);
 
-    Route::patch('users/edit/{id}', [RegisteredUserController::class, 'update'])->name('users.edit');
+    Route::patch('users/edit/{id}', [ListUsers::class, 'edit'])->name('users.edit');
     Route::patch('users/edit/pass/{id}', [RegisteredUserController::class, 'update'])->name('users.edit.pass');
 
-    Route::patch('users/enable/{id}', [RegisteredUserController::class, 'update'])->name('users.enable');
-    Route::patch('users/disable/{id}', [RegisteredUserController::class, 'update'])->name('users.disable');
+    Route::patch('users/enable/{id}', [ListUsers::class, 'enable'])->name('users.enable');
+    Route::patch('users/disable/{id}', [ListUsers::class, 'disable'])->name('users.disable');
     #endregion
 
     #region Customers
-    Route::get('customers', [RegisteredUserController::class, 'show'])->name('customers');
+    Route::get('customers', [ListCustomers::class, 'show'])->name('customers');
 
     Route::get('customers/new', [NewCustomer::class, 'show'])->name('customers.new');
     Route::post('customers/new', [NewCustomer::class, 'create']);
 
-    Route::patch('customers/edit/{id}', [RegisteredUserController::class, 'update'])->name('customers.edit');
+    Route::patch('customers/edit/{id}', [ListCustomers::class, 'edit'])->name('customers.edit');
 
-    Route::patch('customers/enable/{id}', [RegisteredUserController::class, 'update'])->name('customers.enable');
-    Route::patch('customers/disable/{id}', [RegisteredUserController::class, 'update'])->name('customers.disable');
+    Route::patch('customers/enable/{id}', [ListCustomers::class, 'enable'])->name('customers.enable');
+    Route::patch('customers/disable/{id}', [ListCustomers::class, 'disable'])->name('customers.disable');
     #endregion
 
     #region Suppliers
@@ -79,10 +81,10 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     Route::get('payments/new', [NewPayment::class, 'show'])->name('payments.new');
     Route::post('payments/new', [NewPayment::class, 'create']);
 
-    Route::patch('payments/edit/{id}', [RegisteredUserController::class, 'update'])->name('payments.edit');
+    Route::patch('payments/edit/{id}', [ListPayments::class, 'edit'])->name('payments.edit');
 
-    Route::patch('payments/enable/{id}', [RegisteredUserController::class, 'update'])->name('payments.enable');
-    Route::patch('payments/disable/{id}', [RegisteredUserController::class, 'update'])->name('payments.disable');
+    Route::patch('payments/enable/{id}', [ListPayments::class, 'enable'])->name('payments.enable');
+    Route::patch('payments/disable/{id}', [ListPayments::class, 'disable'])->name('payments.disable');
     #endregion
 
     #region Units
