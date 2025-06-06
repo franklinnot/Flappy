@@ -14,6 +14,7 @@ use App\Http\Controllers\Suppliers\NewSupplier;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Categories\NewCategory;
 use App\Http\Controllers\Products\NewProduct;
+use App\Http\Controllers\Lots\NewLot;
 
 /*
 |--------------------------------------------------------------------------
@@ -126,8 +127,8 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     #region Lots
     Route::get('lots', [RegisteredUserController::class, 'show'])->name('lots');
 
-    Route::get('lots/new', [RegisteredUserController::class, 'show'])->name('lots.new');
-    Route::post('lots/new', [RegisteredUserController::class, 'create']);
+    Route::get('lots/new', [NewLot::class, 'show'])->name('lots.new');
+    Route::post('lots/new', [NewLot::class, 'create']);
 
     Route::patch('lots/edit/{id}', [RegisteredUserController::class, 'update'])->name('lots.edit');
 
