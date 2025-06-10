@@ -6,18 +6,20 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import ComboBox from "@/Components/ComboBox";
 import Toast from "@/Components/Toast";
 import Loading from "@/Components/loading";
+import Checkbox from "@/Components/Checkbox";
 
 export default function NewLot({ products, report }) {
     const title = "Nuevo Lote";
 
-    const { data, setData, post, reset, processing, errors } = useForm({
-        product: null,          
-        code: "",
-        initial_stock: "",
-        price: "",
-        exp_alert: false,
-        exp_date: "",
-    });
+    const { data, setData, post, reset, processing, transform, errors } =
+        useForm({
+            code: "",
+            product: null,
+            exp_alert: false,
+            exp_date: "",
+            initial_stock: "",
+            price: "",
+        });
 
     const [toast, setToast] = useState(null);
     const [toastKey, setToastKey] = useState(0);
@@ -32,14 +34,15 @@ export default function NewLot({ products, report }) {
     const submit = (e) => {
         e.preventDefault();
 
-        const payload = {
+        transform((data) => ({
             ...data,
-            product_id: data.product ? data.product.id : null,
-        };
+            product: data.product ? data.product.id : null,
+        }));
 
         post(route("lots.new"), {
-            data: payload,
-            onSuccess: () => reset(),
+            onSuccess: () => {
+                reset();
+            },
         });
     };
 
@@ -58,17 +61,6 @@ export default function NewLot({ products, report }) {
                 onSubmit={submit}
                 className="flex flex-col gap-6 pb-16 justify-self-center rounded-2xl max-sm:w-full max-sm:max-w-[448px] sm:w-[75%] sm:max-w-[612px]"
             >
-                <ComboBox
-                    id="product"
-                    label="Producto"
-                    items={products}
-                    value={data.product}
-                    required
-                    onChange={(value) => setData("product", value)}
-                    disabled={processing}
-                    error={errors.product_id || errors.product}
-                />
-
                 <InputField
                     id="code"
                     label="Código"
@@ -83,9 +75,20 @@ export default function NewLot({ products, report }) {
                     isFocused={true}
                 />
 
+                <ComboBox
+                    id="product"
+                    label="Producto"
+                    items={products}
+                    value={data.product}
+                    required
+                    onChange={(value) => setData("product", value)}
+                    disabled={processing}
+                    error={errors.product}
+                />
+
                 <InputField
                     id="initial_stock"
-                    label="Stock Inicial"
+                    label="Stock inicial"
                     type="number"
                     min="1"
                     value={data.initial_stock}
@@ -97,49 +100,50 @@ export default function NewLot({ products, report }) {
 
                 <InputField
                     id="price"
-                    label="Precio"
-                    type="text"   
+                    label="Precio por unidad"
+                    type="float"
+                    min="0.1"
                     value={data.price}
                     required
                     onChange={(e) => {
-                        
-                        let val = e.target.value;
-                        val = val.replace(',', '.');
-
-                        if (/^\d*\.?\d*$/.test(val)) {
-                            setData("price", val);
-                        }
+                        setData("price", e.target.value);
                     }}
                     disabled={processing}
                     error={errors.price}
                 />
 
-                <div className="flex items-center gap-2">
-                    <input
-                        type="checkbox"
-                        id="exp_alert"
-                        checked={data.exp_alert}
-                        onChange={(e) => setData("exp_alert", e.target.checked)}
-                        disabled={processing}
-                        className="form-checkbox"
-                    />
-                    <label htmlFor="exp_alert">Activar alerta de vencimiento</label>
+                <div>
+                    <label className="flex items-center">
+                        <Checkbox
+                            name="exp_alert"
+                            checked={data.exp_alert}
+                            onChange={(e) =>
+                                setData("exp_alert", e.target.checked)
+                            }
+                        />
+                        <span className="ms-2 text-sm text-gray-600">
+                            Recibir alertas por vencimiento
+                        </span>
+                    </label>
                 </div>
 
-                {data.exp_alert && (
-                    <InputField
-                        id="exp_date"
-                        label="Fecha de vencimiento"
-                        type="date"
-                        value={data.exp_date}
-                        required={data.exp_alert}
-                        onChange={(e) => setData("exp_date", e.target.value)}
-                        disabled={processing}
-                        error={errors.exp_date}
-                    />
-                )}
+                <InputField
+                    id="exp_date"
+                    label="Fecha de vencimiento"
+                    type="date"
+                    min={
+                        new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+                            .toISOString()
+                            .split("T")[0]
+                    }
+                    value={data.exp_date}
+                    required={data.exp_alert}
+                    onChange={(e) => setData("exp_date", e.target.value)}
+                    disabled={processing || !data.exp_alert}
+                    error={errors.exp_date}
+                />
 
-                <PrimaryButton disabled={processing} className="mt-2">
+                <PrimaryButton disabled={processing} className="mt-4">
                     Registrar
                 </PrimaryButton>
             </form>
