@@ -73,7 +73,10 @@ export default function SelectInput({
         <div className={`w-full ${className}`} ref={containerRef}>
             <Combobox
                 value={value}
-                onChange={onChange}
+                onChange={(selected) => {
+                    setOpen(false);
+                    onChange(selected);
+                }}
                 onClose={() => setQuery("")}
                 disabled={disabled}
             >
@@ -134,7 +137,6 @@ export default function SelectInput({
                     {open && (
                         <div
                             anchor="bottom"
-                            transition
                             className={`mt-1 max-h-[188px] absolute overflow-auto rounded-md bg-white
                                         py-1 text-sm shadow-lg ring-1 ring-black z-20
                                         ring-opacity-5 focus:outline-none empty:hidden  
