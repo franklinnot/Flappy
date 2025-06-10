@@ -72,6 +72,7 @@ class ListProducts extends Controller
     {
         return Product::with(['unit', 'categorie'])
             ->orderBy('created_at', 'desc')
+            ->select(['id', 'code', 'name', 'picture', 'status', 'unit_id', 'categorie_id'])
             ->get()
             ->map(function ($product) {
                 return [
@@ -80,21 +81,20 @@ class ListProducts extends Controller
                     'name' => $product->name,
                     'picture' => $product->picture,
                     'status' => $product->status,
-                    'unit_name' => $product->unit->name ?? 'Desconocido',
-                    'categorie_name' => $product->categorie->name ?? 'Desconocida',
+                    'unit' => $product->unit->name,
+                    'categorie' => $product->categorie->name,
                 ];
-            }
-        );
+            });
     }
 
     private function getColumns()
     {
         return [
-            ['name' => 'code', 'tag' => 'Codigo'],
             ['name' => 'picture', 'tag' => 'Imagen'],
+            ['name' => 'code', 'tag' => 'Código'],
             ['name' => 'name', 'tag' => 'Nombre'],
-            ['name' => 'unit_name', 'tag' => 'Unidad de Medida'],
-            ['name' => 'categorie_name', 'tag' => 'Categoria'],
+            ['name' => 'unit', 'tag' => 'Unidad de medida'],
+            ['name' => 'categorie', 'tag' => 'Categoría'],
         ];
     }
 }
