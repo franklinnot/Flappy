@@ -28,6 +28,8 @@ export default function NewCategory({ report }) {
 
         post(route("categories.new"), {
             onSuccess: () => reset(),
+            preserveScroll: true,
+            preserveState: true,
         });
     };
 

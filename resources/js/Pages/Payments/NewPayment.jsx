@@ -30,6 +30,8 @@ export default function NewPayment({ report }) {
             onSuccess: () => {
                 reset();
             },
+            preserveScroll: true,
+            preserveState: true,
         });
     };
 

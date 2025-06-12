@@ -33,6 +33,8 @@ export default function NewCustomer({ report }) {
             onSuccess: () => {
                 reset();
             },
+            preserveScroll: true,
+            preserveState: true,
         });
     };
 

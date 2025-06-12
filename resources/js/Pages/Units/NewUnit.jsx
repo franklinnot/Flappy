@@ -31,6 +31,8 @@ export default function NewUnit({ report }) {
             onSuccess: () => {
                 reset();
             },
+            preserveScroll: true,
+            preserveState: true,
         });
     };
 

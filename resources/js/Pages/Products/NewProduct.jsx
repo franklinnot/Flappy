@@ -40,6 +40,8 @@ export default function NewProduct({ units, categories, report }) {
 
         post(route("products.new"), {
             onSuccess: () => reset(),
+            preserveScroll: true,
+            preserveState: true,
         });
     };
 

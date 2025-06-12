@@ -43,6 +43,8 @@ export default function NewLot({ products, report }) {
             onSuccess: () => {
                 reset();
             },
+            preserveScroll: true,
+            preserveState: true,
         });
     };
 

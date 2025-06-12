@@ -28,6 +28,8 @@ export default function Register() {
             onSuccess: () => {
                 reset();
             },
+            preserveScroll: true,
+            preserveState: true,
         });
     };
 

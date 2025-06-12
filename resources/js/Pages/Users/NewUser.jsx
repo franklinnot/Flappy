@@ -41,6 +41,8 @@ export default function NewUser({ roles, report }) {
             onSuccess: () => {
                 reset();
             },
+            preserveScroll: true,
+            preserveState: true,
         });
     };
 

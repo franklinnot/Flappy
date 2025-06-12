@@ -34,6 +34,8 @@ export default function NewProveedor({ report }) {
             onSuccess: () => {
                 reset();
             },
+            preserveScroll: true,
+            preserveState: true,
         });
     };
 
