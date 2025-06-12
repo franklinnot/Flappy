@@ -34,10 +34,10 @@ class ListCustomers extends Controller
         $enabled_value = Status::ENABLED->value;
 
         if (!$object) {
-            return Report::error(self::ROUTE, 'Cliente no encontrado.');
+            return Report::error('Cliente no encontrado.');
         } 
         elseif ($object->status == $enabled_value) {
-            return Report::error(self::ROUTE, 'El cliente ya está habilitado.');
+            return Report::error('El cliente ya está habilitado.');
         }
 
         $old_status = $object->status;
@@ -55,9 +55,9 @@ class ListCustomers extends Controller
         $disabled_value = Status::DISABLED->value;
 
         if (!$object) {
-            return Report::error(self::ROUTE, 'Cliente no encontrado.');
+            return Report::error('Cliente no encontrado.');
         } elseif ($object->status == $disabled_value) {
-            return Report::error(self::ROUTE, 'El cliente ya está deshabilitado.');
+            return Report::error('El cliente ya está deshabilitado.');
         }
 
         $old_status = $object->status;

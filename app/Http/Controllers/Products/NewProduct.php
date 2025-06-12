@@ -34,8 +34,8 @@ class NewProduct extends Controller
                 'url',
                 'regex:/\.(jpeg|jpg|png|gif|bmp|webp)$/i',
             ],
-            'unit' => 'required|exists:units,_id',
-            'categorie' => 'required|exists:categories,_id',
+            'unit' => 'required|exists:units,id',
+            'categorie' => 'required|exists:categories,id',
         ]);
 
         $product = Product::create([

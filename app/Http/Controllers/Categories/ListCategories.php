@@ -34,10 +34,10 @@ class ListCategories extends Controller
         $enabled_value = Status::ENABLED->value;
 
         if (!$object) {
-            return Report::error(self::ROUTE, 'Categoría no encontrada.');
+            return Report::error('Categoría no encontrada.');
         }
         else if ($object->status == $enabled_value) {
-            return Report::error(self::ROUTE, 'La categoría ya está habilitada.');
+            return Report::error('La categoría ya está habilitada.');
         }
 
         $old_status = $object->status;
@@ -55,9 +55,9 @@ class ListCategories extends Controller
         $disabled_value = Status::DISABLED->value;
 
         if (!$object) {
-            return Report::error(self::ROUTE, 'Categoría no encontrada.');
+            return Report::error('Categoría no encontrada.');
         } else if ($object->status == $disabled_value) {
-            return Report::error(self::ROUTE, 'La categoría ya está deshabilitada.');
+            return Report::error('La categoría ya está deshabilitada.');
         }
         
         $old_status = $object->status;

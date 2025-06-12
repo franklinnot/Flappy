@@ -34,9 +34,9 @@ class ListUnits extends Controller
         $enabled_value = Status::ENABLED->value;
 
         if (!$object) {
-            return Report::error(self::ROUTE, 'Unidad no encontrada.');
+            return Report::error('Unidad no encontrada.');
         } elseif ($object->status == $enabled_value) {
-            return Report::error(self::ROUTE, 'La unidad ya está habilitada.');
+            return Report::error('La unidad ya está habilitada.');
         }
 
         $old_status = $object->status;
@@ -54,9 +54,9 @@ class ListUnits extends Controller
         $disabled_value = Status::DISABLED->value;
 
         if (!$object) {
-            return Report::error(self::ROUTE, 'Unidad no encontrada.');
+            return Report::error('Unidad no encontrada.');
         } elseif ($object->status == $disabled_value) {
-            return Report::error(self::ROUTE, 'La unidad ya está deshabilitada.');
+            return Report::error('La unidad ya está deshabilitada.');
         }
 
         $old_status = $object->status;
