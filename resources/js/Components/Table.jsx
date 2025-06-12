@@ -30,6 +30,8 @@ export default function Table({
         setIsLoading(true);
         router.visit(href, {
             method: "patch",
+            preserveScroll: true,
+            preserveState: true,
             onFinish: () => {
                 setIsLoading(false);
                 setOpenMenu(null);
