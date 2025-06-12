@@ -6,7 +6,7 @@ import NavigationMenu from "@/Layouts/Partials/NavigationMenu";
 
 export default function Header({ user, title = null }) {
     return (
-        <header className="sticky top-0 z-50 grid grid-flow-col place-items-center px-5 lg:px-6 h-[3.3rem] sm:max-h-16 bg-[#EFF4FF] border-b border-gray-300">
+        <header className="sticky top-0 z-10 grid grid-flow-col place-items-center px-5 lg:px-6 h-[3.3rem] sm:max-h-16 bg-[#EFF4FF] border-b border-gray-300">
             <div className="grid grid-flow-col place-items-center justify-self-start gap-3">
                 <NavigationMenu user={user} />
                 {/* Application logo */}

@@ -44,7 +44,7 @@ export default function Toast({
 
     return (
         <div
-            className={`fixed top-16 right-4 w-auto max-w-[520px] rounded-lg shadow-lg overflow-hidden transition-opacity duration-300 ease-in-out border-b-[1px]
+            className={`fixed z-50 top-16 right-4 w-auto max-w-[520px] rounded-lg shadow-lg overflow-hidden transition-opacity duration-300 ease-in-out border-b-[1px]
         ${visible ? "opacity-100" : "opacity-0"} ${styles}`}
         >
             <div className="relative flex flex-row items-center justify-between px-4 py-3 gap-3 top-[1px]">
