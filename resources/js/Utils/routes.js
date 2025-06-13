@@ -48,14 +48,14 @@ const routes = [
         ],
     },
     {
-        title: "Métodos de Pago",
+        title: "Métodos de pago",
         subRoutes: [
             { title: "Nuevo método", route: "payments.new" },
             { title: "Listar métodos", route: "payments" },
         ],
     },
     {
-        title: "Unidades de Medida",
+        title: "Unidades de medida",
         subRoutes: [
             { title: "Nueva unidad", route: "units.new" },
             { title: "Listar unidades", route: "units" },
