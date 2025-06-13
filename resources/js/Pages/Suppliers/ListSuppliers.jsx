@@ -67,8 +67,8 @@ export default function ListSuppliers({
         }
     }, [report, showModal, modalData]);
 
-    // Paso 3: Centralizar la lógica de filtrado usando useMemo
-    // filteredRecords ahora se calcula a partir de baseRecords y todos los filtros.
+    
+    // calcular filteredRecords en base a baserecords y todos los filtros.
     const filteredRecords = useMemo(() => {
         return baseRecords.filter((record) => {
             const statusMatch = record.status === statusFilter;
@@ -115,7 +115,7 @@ export default function ListSuppliers({
         phoneFilter,
         addressFilter,
         emailFilter,
-    ]);
+    ]); // aqui colocar todos los filtros que se usen
 
     // abrir el modal de editar
     const editInfo = (id) => {
