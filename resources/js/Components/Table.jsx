@@ -71,7 +71,7 @@ export default function Table({
                                 </th>
                             ))}
                             {(typeof editInfo === "function" || editStatus) && (
-                                <th className="relative px-4 py-2" />
+                                <th className="px-4 py-2" />
                             )}
                         </tr>
                     </thead>
@@ -122,7 +122,7 @@ export default function Table({
                                             {openMenu === record.id && (
                                                 <div
                                                     ref={menuRef}
-                                                    className="flex flex-row absolute ml-8 mt-[-35px] bg-white rounded-md shadow-md z-20 border border-gray-200"
+                                                    className="flex flex-row absolute ml-[42px] mt-[-34px] bg-white rounded-md shadow-md z-20 border border-gray-200"
                                                 >
                                                     {typeof editInfo ===
                                                         "function" &&
@@ -137,7 +137,7 @@ export default function Table({
                                                                         null
                                                                     );
                                                                 }}
-                                                                className="block w-full text-left p-2 text-sm text-sky-500 hover:bg-gray-100"
+                                                                className="block w-full text-left p-2 text-sm text-sky-600 hover:bg-gray-100"
                                                             >
                                                                 <IconPencil
                                                                     size={16}
