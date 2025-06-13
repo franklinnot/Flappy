@@ -20,6 +20,7 @@ use App\Http\Controllers\Products\NewProduct;
 use App\Http\Controllers\Lots\NewLot;
 use App\Http\Controllers\Suppliers\EditSuppliers;
 use App\Http\Controllers\Suppliers\StatusSupplier;
+use App\Http\Controllers\Suppliers\StatusSuppliers;
 use App\Http\Controllers\Users\ListUsers;
 
 /*
@@ -74,8 +75,8 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
 
     Route::patch('suppliers/edit', [EditSuppliers::class, 'edit'])->name('suppliers.edit');
 
-    Route::patch('suppliers/enable/{id}', [StatusSupplier::class, 'enable'])->name('suppliers.enable');
-    Route::patch('suppliers/disable/{id}', [StatusSupplier::class, 'disable'])->name('suppliers.disable');
+    Route::patch('suppliers/enable/{id}', [StatusSuppliers::class, 'enable'])->name('suppliers.enable');
+    Route::patch('suppliers/disable/{id}', [StatusSuppliers::class, 'disable'])->name('suppliers.disable');
     #endregion
 
     #region Payments

@@ -7,7 +7,7 @@ use App\Models\Supplier;
 use App\Enums\Status;
 use App\Utils\Report;
 
-class StatusSupplier extends Controller
+class StatusSuppliers extends Controller
 {
     public const ROUTE = "suppliers";
 
