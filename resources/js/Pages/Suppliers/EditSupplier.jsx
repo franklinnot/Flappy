@@ -5,7 +5,7 @@ import InputField from "@/Components/InputField";
 import Loading from "@/Components/loading";
 import PrimaryButton from "@/Components/PrimaryButton";
 
-export default function ModalEdit({ onClose, object }) {
+export default function EditSupplier({ onClose, object }) {
     //#region Manejar la visibilidad del modal
     const [visible, setVisible] = useState(true);
     useEffect(() => {
@@ -44,8 +44,8 @@ export default function ModalEdit({ onClose, object }) {
             {/* Contenido */}
             <div
                 className="fixed flex flex-col z-30 bg-white 
-                           w-[75%] max-w-[620px] rounded-2xl 
-                           shadow-lg items-center gap-6 pb-8"
+                           max-w-[550px] rounded-2xl 
+                           shadow-lg items-center gap-6 mb-24"
             >
                 {/* titulo y boton de cierre */}
                 <div
@@ -76,8 +76,7 @@ export default function ModalEdit({ onClose, object }) {
                 {/* formulario para editar */}
                 <form
                     onSubmit={submit}
-                    className="flex flex-col px-4 gap-6 text-slate-700
-                               p-4 w-[548px]"
+                    className="flex flex-col gap-6 text-slate-700 w-[548px] p-5 py-0 pb-5"
                 >
                     <InputField
                         id="ruc"

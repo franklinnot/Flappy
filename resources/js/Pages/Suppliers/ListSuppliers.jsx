@@ -1,84 +1,141 @@
 import Table from "@/Components/Table";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react"; // Agregamos useMemo
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import Toast from "@/Components/Toast";
 import PrimaryButton from "@/Components/PrimaryButton";
 import Status from "@/Utils/status";
-import ModalEdit from "./ModalEdit";
+import EditSupplier from "./EditSupplier";
+import SlideButton from "@/Components/slide-button";
+import ComboBox from "@/Components/ComboBox";
 
 export default function ListSuppliers({
-    records = [], // registros
-    properties, // propiedades y sus etiquetas: prop: name - tag: Nombre
-    module, // modulo, ejemplo: "suppliers", "users", etc.
-    report, // info enviada desde el back
+    records: initialRecords = [],
+    properties,
+    module,
+    report,
 }) {
     const title = "Lista de Proveedores";
-    
-    // filtros
+
+    const [baseRecords, setBaseRecords] = useState(initialRecords);
+
+    // Filtros
+    const [rucFilter, setRucFilter] = useState(null);
+    const [nameFilter, setNameFilter] = useState(null);
+    const [phoneFilter, setPhoneFilter] = useState(null);
+    const [addressFilter, setAddressFilter] = useState(null);
+    const [emailFilter, setEmailFilter] = useState(null);
     const [statusFilter, setStatusFilter] = useState(Status.ENABLED);
 
-    //#region
-
-    // notificaciones
+    // Notificaciones
     const [toast, setToast] = useState(null);
     const [toastKey, setToastKey] = useState(0);
 
-    // modal para editar información
-    const [showModal, setModal] = useState(false);
-    const [modalData, setModalData] = useState(null);
+    // Modal para editar informacion
+    const [showModal, setModal] = useState(false); // estado de visibilidad del modal
+    const [modalData, setModalData] = useState(null); // datos del modal (contiene un registro)
 
-    // registros filtrados
-    const [filteredRecords, setFilteredRecords] = useState([]);
+    useEffect(() => {
+        setBaseRecords(initialRecords);
+    }, [initialRecords]);
 
-    // funcion para abrir el modal de editar
+    useEffect(() => {
+        if (report) {
+            setToast(report);
+            setToastKey(Date.now());
+
+            if (report.updatedRecord) {
+                setBaseRecords((prevBaseRecords) => {
+                    const newBaseRecords = prevBaseRecords.map((rec) =>
+                        rec.id === report.updatedRecord.id
+                            ? report.updatedRecord
+                            : rec
+                    );
+
+                    // s el modal est abierto y el registro actualizado es
+                    // el que se esta mostrando, actualiza el modalData.
+                    if (
+                        showModal &&
+                        modalData &&
+                        modalData.id === report.updatedRecord.id
+                    ) {
+                        setModalData(report.updatedRecord);
+                    }
+                    return newBaseRecords;
+                });
+            }
+        }
+    }, [report, showModal, modalData]);
+
+    // Paso 3: Centralizar la lógica de filtrado usando useMemo
+    // filteredRecords ahora se calcula a partir de baseRecords y todos los filtros.
+    const filteredRecords = useMemo(() => {
+        return baseRecords.filter((record) => {
+            const statusMatch = record.status === statusFilter;
+            const rucMatch = rucFilter
+                ? record.ruc
+                      .toLowerCase()
+                      .includes(rucFilter.name.toLowerCase())
+                : true;
+            const nameMatch = nameFilter
+                ? record.name
+                      .toLowerCase()
+                      .includes(nameFilter.name.toLowerCase())
+                : true;
+            const phoneMatch = phoneFilter
+                ? record.phone
+                      .toLowerCase()
+                      .includes(phoneFilter.name.toLowerCase())
+                : true;
+            const addressMatch = addressFilter
+                ? record.address
+                      .toLowerCase()
+                      .includes(addressFilter.name.toLowerCase())
+                : true;
+            const emailMatch = emailFilter
+                ? record.email
+                      .toLowerCase()
+                      .includes(emailFilter.name.toLowerCase())
+                : true;
+
+            return (
+                statusMatch &&
+                rucMatch &&
+                nameMatch &&
+                phoneMatch &&
+                addressMatch &&
+                emailMatch
+            );
+        });
+    }, [
+        baseRecords,
+        statusFilter,
+        rucFilter,
+        nameFilter,
+        phoneFilter,
+        addressFilter,
+        emailFilter,
+    ]);
+
+    // abrir el modal de editar
     const editInfo = (id) => {
-        const record = filteredRecords.find((record) => record.id === id);
+        const record = baseRecords.find((record) => record.id === id);
         if (record) {
-            // alert(JSON.stringify(record, null, 2));
             setModalData(record);
             setModal(true);
         }
     };
 
-    // mostrar notificación al recibir un reporte
-    useEffect(() => {
-        if (report) {
-            setToast(report);
-            setToastKey(Date.now());
-            // si el reporte trae un registro actualizado lo actualizamos en filteredRecords
-            if (report.updatedRecord) {
-                setFilteredRecords((prevRecords) =>
-                    prevRecords
-                        .map((rec) =>
-                            rec.id === report.updatedRecord.id
-                                ? report.updatedRecord
-                                : rec
-                        )
-                        // .filter((rec) => rec.status === statusFilter)
-                );
-            }
-        }
-    }, [report]);
-
-    //#endregion
-
-    // inicializar filteredRecords con los records iniciales y mantener los filtros aplicados
-    useEffect(() => {
-        setFilteredRecords(
-            records.filter((record) => record.status === statusFilter)
-        );
-    }, [records, statusFilter]); // adjuntar todos los filtros
-
-    // Actualizar el estado de los filtros
-    const updateFilters = () => {
-        setStatusFilter((prevStatus) =>
-            prevStatus === Status.ENABLED ? Status.DISABLED : Status.ENABLED
-        );
+    // generar los items para los comboBox
+    const itemsCombobox = (prop) => {
+        return filteredRecords.map((r) => ({
+            id: r.id,
+            name: r[prop],
+        }));
     };
 
     return (
-        <AuthenticatedLayout title={title} className="pb-36">
+        <AuthenticatedLayout title={title}>
             <Head title={title} />
 
             {toast && (
@@ -90,7 +147,7 @@ export default function ListSuppliers({
             )}
 
             {showModal && modalData && (
-                <ModalEdit
+                <EditSupplier
                     object={modalData}
                     onClose={() => {
                         setModal(false);
@@ -99,19 +156,70 @@ export default function ListSuppliers({
                 />
             )}
 
-            <PrimaryButton onClick={updateFilters}>
-                {statusFilter == Status.ENABLED
-                    ? "Mostrar Deshabilitados"
-                    : "Mostrar Habilitados"}
-            </PrimaryButton>
-            <div className="space-y-6 mt-4">
-                <Table
-                    module={module}
-                    properties={properties}
-                    records={filteredRecords} // Usar los registros filtrados
-                    editInfo={editInfo}
-                    editStatus={true}
-                />
+            <div className="inline-flex w-full h-full py-6 px-16 gap-10">
+                {/* filtros */}
+                <div className="flex flex-col w-[464px] gap-8 w-min-64 text-slate-700">
+                    <h2 className="text-xl font-semibold pb-[10px] border-b">
+                        Filtros
+                    </h2>
+                    <ComboBox
+                        id="ruc"
+                        label="RUC"
+                        items={itemsCombobox("ruc")}
+                        value={rucFilter}
+                        onChange={(value) => setRucFilter(value)}
+                    />
+
+                    <ComboBox
+                        id="name"
+                        label="Nombre"
+                        items={itemsCombobox("name")}
+                        value={nameFilter}
+                        onChange={(value) => setNameFilter(value)}
+                    />
+
+                    <ComboBox
+                        id="phone"
+                        label="Teléfono"
+                        items={itemsCombobox("phone")}
+                        value={phoneFilter}
+                        onChange={(value) => setPhoneFilter(value)}
+                    />
+
+                    <ComboBox
+                        id="email"
+                        label="Correo"
+                        items={itemsCombobox("email")}
+                        value={emailFilter}
+                        onChange={(value) => setEmailFilter(value)}
+                    />
+
+                    <ComboBox
+                        id="address"
+                        label="Dirección"
+                        items={itemsCombobox("address")}
+                        value={addressFilter}
+                        onChange={(value) => setAddressFilter(value)}
+                    />
+                </div>
+                <div className="flex-1 flex flex-col">
+                    <SlideButton
+                        className="flex mb-[13px] justify-end"
+                        value={statusFilter == Status.ENABLED}
+                        onChange={(val) => {
+                            setStatusFilter(
+                                val ? Status.ENABLED : Status.DISABLED
+                            );
+                        }}
+                    />
+                    <Table
+                        module={module}
+                        properties={properties}
+                        records={filteredRecords}
+                        editInfo={editInfo}
+                        editStatus={true}
+                    />
+                </div>
             </div>
         </AuthenticatedLayout>
     );
