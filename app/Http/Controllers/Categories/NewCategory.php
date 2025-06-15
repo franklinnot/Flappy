@@ -14,11 +14,9 @@ class NewCategory extends Controller
     public const COMPONENT = 'Categories/NewCategory';
     public const ROUTE = "categories.new";
 
-    public function show(Request $request)
+    public function show()
     {
-        return Inertia::render(self::COMPONENT, [
-            'report' => $request->session()->get('report')
-        ]);
+        return Inertia::render(self::COMPONENT);
     }
 
     public function create(Request $request)

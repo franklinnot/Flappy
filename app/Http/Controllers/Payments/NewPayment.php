@@ -14,11 +14,9 @@ class NewPayment extends Controller
     public const COMPONENT = "Payments/NewPayment";
     public const ROUTE = "payments.new";
 
-    public function show(Request $request)
+    public function show()
     {
-        return Inertia::render(self::COMPONENT, [
-            'report' => $request->session()->get('report')
-        ]);
+        return Inertia::render(self::COMPONENT);
     }
 
     public function create(Request $request)

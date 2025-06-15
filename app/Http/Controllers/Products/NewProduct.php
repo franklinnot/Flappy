@@ -15,12 +15,11 @@ class NewProduct extends Controller
     public const COMPONENT = "Products/NewProduct";
     public const ROUTE = "products.new";
 
-    public function show(Request $request)
+    public function show()
     {
         return inertia(self::COMPONENT, [
             "units" => $this->getUnits(),
-            "categories" => $this->getCategories(),
-            'report' => $request->session()->get('report')
+            "categories" => $this->getCategories(),  
         ]);
     }
 

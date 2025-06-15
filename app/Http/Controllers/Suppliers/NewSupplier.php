@@ -14,11 +14,9 @@ class NewSupplier extends Controller
     public const COMPONENT = "Suppliers/NewSupplier";
     public const ROUTE = "suppliers.new";
 
-    public function show(Request $request)
+    public function show()
     {
-        return Inertia::render(self::COMPONENT, [
-            'report' => $request->session()->get('report')
-        ]);
+        return Inertia::render(self::COMPONENT);
     }
 
     public function create(Request $request)

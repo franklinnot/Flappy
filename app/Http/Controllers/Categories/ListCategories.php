@@ -21,7 +21,6 @@ class ListCategories extends Controller
             'records' => $this->getCategories(),
             'properties' => $this->getColumns(),
             'module' => self::MODULE,
-            'report' => $request->session()->get('report'),
             'status' => $request->session()->get('status') ?? Status::ENABLED->value,
         ]);
     }

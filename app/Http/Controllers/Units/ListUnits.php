@@ -21,7 +21,6 @@ class ListUnits extends Controller
             'records' => $this->getUnits(),
             'properties' => $this->getColumns(),
             'module' => self::MODULE,
-            'report' => $request->session()->get('report'),
             'status' => $request->session()->get('status') ?? Status::ENABLED->value,
         ]);
     }

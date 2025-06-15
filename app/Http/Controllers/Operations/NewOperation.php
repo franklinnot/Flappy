@@ -21,13 +21,12 @@ class NewOperation extends Controller
     public const COMPONENT = "Operations/NewOperation";
     public const ROUTE = "operations.new";
 
-    public function show(Request $request)
+    public function show()
     {
         return Inertia::render(self::COMPONENT, [
             'types' => TypesOperation::valuesWithId(),
             'suppliers' => $this->getSuppliers(),
             'lots' => $this->getLots(),
-            'report' => $request->session()->get('report')
         ]);
     }
 
@@ -55,7 +54,7 @@ class NewOperation extends Controller
     {
         $request->validate([
             'type' => ['required', Rule::in(TypesOperation::names())],
-            'supplier' => 'nullable|exists:supplier,id',
+            'supplier' => 'nullable|exists:suppliers,id',
             'quantity' => 'required|numeric|min:1',
         ]);
 

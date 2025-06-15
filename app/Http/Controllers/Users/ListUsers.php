@@ -21,7 +21,6 @@ class ListUsers extends Controller
             'records' => $this->getUsers(),
             'properties' => $this->getColumns(),
             'module' => self::MODULE,
-            'report' => $request->session()->get('report'),
             'status' => $request->session()->get('status') ?? Status::ENABLED->value,
         ]);
     }

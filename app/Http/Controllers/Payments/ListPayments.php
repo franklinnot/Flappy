@@ -21,7 +21,6 @@ class ListPayments extends Controller
             'records' => $this->getPayments(),
             'properties' => $this->getColumns(),
             'module' => self::MODULE,
-            'report' => $request->session()->get('report'),
             'status' => $request->session()->get('status') ?? Status::ENABLED->value,
         ]);
     }

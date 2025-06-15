@@ -18,7 +18,6 @@ class ListSuppliers extends Controller
             'records' => $this->getSuppliers(),
             'properties' => $this->getColumns(),
             'module' => self::MODULE,
-            'report' => $request->session()->get('report'),
         ]);
     }
 

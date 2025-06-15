@@ -23,7 +23,6 @@ class NewUser extends Controller
     {
         return Inertia::render(self::COMPONENT, [
             'roles' => Roles::valuesWithId(),
-            'report' => $request->session()->get('report')
         ]);
     }
 

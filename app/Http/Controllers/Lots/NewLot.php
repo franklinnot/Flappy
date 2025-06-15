@@ -16,11 +16,10 @@ class NewLot extends Controller
     public const COMPONENT = "Lots/NewLot";
     public const ROUTE = "lots.new";
 
-    public function show(Request $request)
+    public function show()
     {
         return Inertia::render(self::COMPONENT, [
             'products' => $this->getProducts(),
-            'report' => $request->session()->get('report'),
         ]);
     }
 
