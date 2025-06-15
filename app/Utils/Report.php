@@ -2,6 +2,7 @@
 
 namespace App\Utils;
 
+use App\Exceptions\ReportableException;
 use Illuminate\Validation\ValidationException;
 
 /**
@@ -41,16 +42,17 @@ class Report
      */
     public static function warning(string $message, ?string $field = null)
     {
-        $errorMessages = [
-            'report_message' => $message,
-            'report_type' => 'error'
-        ];
-
+        // Si se especifica un campo, lanza ValidationException para errores de campo
         if ($field !== null) {
-            $errorMessages[$field] = $message; 
+            $errorMessages = [
+                'report_message' => $message, 
+                'report_type' => 'warning',  
+                $field => $message,          
+            ];
+            throw ValidationException::withMessages($errorMessages);
         }
 
-        throw ValidationException::withMessages($errorMessages);
+        throw new ReportableException($message, 'warning');
     }
 
     /**
@@ -59,15 +61,15 @@ class Report
      */
     public static function error(string $message, ?string $field = null)
     {
-        $errorMessages = [
-            'report_message' => $message,
-            'report_type' => 'error'
-        ];
-
         if ($field !== null) {
-            $errorMessages[$field] = $message;
+            $errorMessages = [
+                'report_message' => $message, 
+                'report_type' => 'error',    
+                $field => $message,         
+            ];
+            throw ValidationException::withMessages($errorMessages);
         }
 
-        throw ValidationException::withMessages($errorMessages);
+        throw new ReportableException($message, 'error');
     }
 }
