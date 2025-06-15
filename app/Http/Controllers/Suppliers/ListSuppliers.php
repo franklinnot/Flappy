@@ -12,7 +12,7 @@ class ListSuppliers extends Controller
     public const COMPONENT = "Suppliers/ListSuppliers";
     public const MODULE = "suppliers";
 
-    public function show(Request $request)
+    public function show()
     {
         return Inertia::render(self::COMPONENT, [
             'records' => $this->getSuppliers(),

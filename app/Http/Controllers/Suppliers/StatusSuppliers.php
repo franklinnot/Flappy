@@ -42,7 +42,6 @@ class StatusSuppliers extends Controller
             return Report::error('El proveedor ya está deshabilitado.');
         }
         
-        $old_status = $object->status;
         $object->status = $disabled_value;
         $object->save();
 

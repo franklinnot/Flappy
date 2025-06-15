@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo } from "react"; // Agregamos useMemo
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import Toast from "@/Components/Toast";
-import PrimaryButton from "@/Components/PrimaryButton";
+import { usePage } from "@inertiajs/react";
 import Status from "@/Utils/status";
 import EditSupplier from "./EditSupplier";
 import SlideButton from "@/Components/slide-button";
@@ -16,6 +16,7 @@ export default function ListSuppliers({
     report,
 }) {
     const title = "Lista de Proveedores";
+    let errors = usePage()?.props?.errors;
 
     const [baseRecords, setBaseRecords] = useState(initialRecords);
 
@@ -67,7 +68,16 @@ export default function ListSuppliers({
         }
     }, [report, showModal, modalData]);
 
-    
+    useEffect(() => {
+        if (errors?.report_type) {
+            setToast({
+                message: errors.report_message,
+                type: errors.report_type,
+            });
+            setToastKey(Date.now());
+        }
+    }, [errors]);
+
     // calcular filteredRecords en base a baserecords y todos los filtros.
     const filteredRecords = useMemo(() => {
         return baseRecords.filter((record) => {
