@@ -1,27 +1,38 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Categories\ListCategories;
-use App\Http\Controllers\Customers\NewCustomer;
+//
 use App\Http\Controllers\Dashboard;
-use App\Http\Controllers\ProfileController;
+//
+use App\Http\Controllers\Users\NewUser;
+use App\Http\Controllers\Users\ListUsers;
+//
+use App\Http\Controllers\Customers\NewCustomer;
+use App\Http\Controllers\Customers\ListCustomers;
+//
+use App\Http\Controllers\Suppliers\NewSupplier;
 use App\Http\Controllers\Suppliers\ListSuppliers;
-use App\Http\Controllers\Units\ListUnits;
-use App\Http\Controllers\Units\NewUnit;
+use App\Http\Controllers\Suppliers\EditSuppliers;
+use App\Http\Controllers\Suppliers\StatusSuppliers;
+//
 use App\Http\Controllers\Payments\NewPayment;
 use App\Http\Controllers\Payments\ListPayments;
-use App\Http\Controllers\Users\NewUser;
-use App\Http\Controllers\Suppliers\NewSupplier;
-use Illuminate\Support\Facades\Route;
+//
+use App\Http\Controllers\Units\NewUnit;
+use App\Http\Controllers\Units\ListUnits;
+//
 use App\Http\Controllers\Categories\NewCategory;
-use App\Http\Controllers\Customers\ListCustomers;
-use App\Http\Controllers\Products\ListProducts;
+use App\Http\Controllers\Categories\ListCategories;
+//
 use App\Http\Controllers\Products\NewProduct;
+use App\Http\Controllers\Products\ListProducts;
+//
 use App\Http\Controllers\Lots\NewLot;
-use App\Http\Controllers\Suppliers\EditSuppliers;
-use App\Http\Controllers\Suppliers\StatusSupplier;
-use App\Http\Controllers\Suppliers\StatusSuppliers;
-use App\Http\Controllers\Users\ListUsers;
+//
+use App\Http\Controllers\Operations\NewOperation;
+use App\Http\Controllers\Operations\ListOperations;
+use App\Http\Controllers\Operations\StatusOperations;
 
 /*
 |--------------------------------------------------------------------------
@@ -140,12 +151,12 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     #endregion
 
     #region Operations
-    Route::get('operations', [RegisteredUserController::class, 'show'])->name('operations');
+    Route::get('operations', [ListOperations::class, 'show'])->name('operations');
 
-    Route::get('operations/new', [RegisteredUserController::class, 'show'])->name('operations.new');
-    Route::post('operations/new', [RegisteredUserController::class, 'create']);
+    Route::get('operations/new', [NewOperation::class, 'show'])->name('operations.new');
+    Route::post('operations/new', [NewOperation::class, 'create']);
 
-    Route::patch('operations/disable/{id}', [RegisteredUserController::class, 'update'])->name('operations.disable');
+    Route::patch('operations/disable/{id}', [StatusOperations::class, 'disable'])->name('operations.disable');
     #endregion
 
     #region Sales
