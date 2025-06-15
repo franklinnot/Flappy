@@ -51,7 +51,6 @@ class NewLot extends Controller
         $lot = Lot::create([
             'code'           => $request->code,
             'product_id'     => $request->product,
-            'initial_stock'  => $request->initial_stock,
             'stock'          => $request->initial_stock,
             'price'          => $request->price,
             'exp_alert'      => $request->exp_alert,

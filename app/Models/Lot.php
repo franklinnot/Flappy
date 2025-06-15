@@ -14,7 +14,6 @@ class Lot extends Model
         'code',
         'exp_alert',
         'exp_date',
-        'initial_stock',
         'stock',
         'price',
         'exp_status',
