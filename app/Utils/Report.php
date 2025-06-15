@@ -6,81 +6,68 @@ use Illuminate\Validation\ValidationException;
 
 /**
  * Class Report
- * Provides standardized methods for generating responses, often including toast notifications.
- * Some methods can throw ValidationException based on input parameters.
+ * Proporciona métodos estandarizados para generar respuestas, a menudo incluyendo notificaciones toast.
+ * Los métodos de error/advertencia siempre lanzan ValidationException con una estructura específica.
  */
 class Report
 {
-    // Generates a standardized success response array.
+    /**
+     * Genera una respuesta de éxito estandarizada. Flashea a la sesión.
+     */
     public static function success(string $route, string $message, array $additionalData = [])
     {
-        $data = [
-            'report' => [
-                'message' => $message,
-                'type' => 'success',
-            ],
-        ];
-
-        return Report::sendResponse($route, array_merge($additionalData, $data));
+        session()->flash('report', [
+            'message' => $message,
+            'type' => 'success',
+        ]);
+        return redirect()->route($route)->with($additionalData);
     }
 
-    // Generates a standardized information response array.
+    /**
+     * Genera una respuesta de información estandarizada. Flashea a la sesión.
+     */
     public static function information(string $route, string $message)
     {
-        $data = [
-            'report' => [
-                'message' => $message,
-                'type' => 'information',
-            ],
-        ];
-
-        return Report::sendResponse($route, $data);
+        session()->flash('report', [
+            'message' => $message,
+            'type' => 'information',
+        ]);
+        return redirect()->route($route);
     }
 
-    // Generates a warning response, optionally associating it with a field and throwing an exception
-    public static function warning(string $route, string $message, ?string $field = null, bool $exception = true)
+    /**
+     * Genera una respuesta de advertencia. Siempre lanza una ValidationException.
+     * Incluye un 'report' con mensaje y tipo, y opcionalmente un error para un campo específico.
+     */
+    public static function warning(string $message, ?string $field = null)
     {
-        $data = [
-            'report' => [
-                'message' => $message,
-                'type' => 'warning'
-            ],
+        $errorMessages = [
+            'report_message' => $message,
+            'report_type' => 'error'
         ];
 
-        // If a specific field is provided, add it to the errors array
         if ($field !== null) {
-            // Use the field name as the key and the message as the value
-            $data[$field] = $message;
+            $errorMessages[$field] = $message; 
         }
 
-        if ($exception) {
-            throw ValidationException::withMessages($data);
-        }
-
-        return Report::sendResponse($route, $data);
+        throw ValidationException::withMessages($errorMessages);
     }
 
-    // Generates an error response, optionally associating it with a field and throwing an exception.
+    /**
+     * Genera una respuesta de error. Siempre lanza una ValidationException.
+     * Incluye un 'report' con mensaje y tipo, y opcionalmente un error para un campo específico.
+     */
     public static function error(string $message, ?string $field = null)
     {
-        $data = [
-            'report' => ['message' => $message, 'type' => 'error']
+        $errorMessages = [
+            'report_message' => $message,
+            'report_type' => 'error'
         ];
 
-        // If a specific field is provided, add it to the errors array
         if ($field !== null) {
-            // Use the field name as the key and the message as the value
-            $data[$field] = $message;
+            $errorMessages[$field] = $message;
         }
 
-        throw ValidationException::withMessages($data);
-    }
-
-    // Sends a response with the provided data and route
-    public static function sendResponse($route, $data = null)
-    {
-        return redirect()
-            ->route($route)
-            ->with($data);
+        throw ValidationException::withMessages($errorMessages);
     }
 }
