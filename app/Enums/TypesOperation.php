@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum TypeOperations: string
+enum TypesOperation: string
 {
     case INPUT = 'Entrada';
     case OUTPUT = 'Salida';
@@ -25,7 +25,7 @@ enum TypeOperations: string
     public static function valuesWithId(): array
     {
         $roles = [];
-        foreach (TypeOperations::cases() as $case) {
+        foreach (TypesOperation::cases() as $case) {
             $roles[] = ['id' => $case->name, 'name' => $case->value];
         }
         return $roles;
