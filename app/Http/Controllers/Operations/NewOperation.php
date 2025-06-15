@@ -15,6 +15,7 @@ use Inertia\Inertia;
 use App\Utils\Report;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class NewOperation extends Controller
 {
@@ -67,6 +68,12 @@ class NewOperation extends Controller
 
         // datos de la request
         $type = EnumHelper::getValue(TypesOperation::class, $request->type);
+
+        $data = [
+            'report' => ['message' => $type, 'type' => 'error']
+        ];
+        throw ValidationException::withMessages($data);
+
         $quantity = $request->quantity;
 
         // si es una salida y el stock es mas bajo que la cantidad a retirar

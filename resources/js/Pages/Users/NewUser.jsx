@@ -25,9 +25,15 @@ export default function NewUser({ roles, report }) {
     useEffect(() => {
         if (report) {
             setToast(report);
-            setToastKey(Date.now()); 
+            setToastKey(Date.now());
+        } else if (errors?.report_type) {
+            setToast({
+                message: errors.report_message,
+                type: errors.report_type,
+            });
+            setToastKey(Date.now());
         }
-    }, [report]);
+    }, [report, errors]);
 
     const submit = (e) => {
         e.preventDefault();
@@ -56,7 +62,7 @@ export default function NewUser({ roles, report }) {
                     type={toast.type}
                 />
             )}
-            <Loading isLoading={processing} /> 
+            <Loading isLoading={processing} />
             <form
                 className="flex flex-col gap-6 pb-16 justify-self-center rounded-2xl max-sm:w-full max-sm:max-w-[448px] sm:w-[75%] sm:max-w-[612px] "
                 onSubmit={submit}

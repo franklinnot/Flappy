@@ -26,8 +26,14 @@ export default function NewOperation({ types, suppliers, lots, report }) {
         if (report) {
             setToast(report);
             setToastKey(Date.now());
+        } else if (errors?.report_type) {
+            setToast({
+                message: errors.report_message,
+                type: errors.report_type,
+            });
+            setToastKey(Date.now());
         }
-    }, [report]);
+    }, [report, errors]);
 
     const submit = (e) => {
         e.preventDefault();
