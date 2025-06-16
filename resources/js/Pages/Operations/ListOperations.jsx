@@ -181,6 +181,7 @@ export default function ListOperations({
                         module={module}
                         properties={properties}
                         records={filteredRecords}
+                        isImportant={true}
                         editStatus={true}
                     />
                 </div>

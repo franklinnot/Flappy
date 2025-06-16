@@ -78,11 +78,11 @@ class NewOperation extends Controller
         }
 
         // Una vez realizdas las validaciones
-        $new_stock = 0;
+        $new_stock = $lot->stock;
         if ($type == $type_output) { // si es una salida
-            $new_stock = $lot->stock - $quantity;
+            $new_stock -= $quantity;
         } else { // si es una entrada
-            $new_stock = $lot->stock + $quantity;
+            $new_stock += $quantity;
         }
 
         try {

@@ -5,6 +5,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Relations\BelongsTo;
+use MongoDB\BSON\UTCDateTime;
 
 class Operation extends Model
 {
@@ -46,6 +47,16 @@ class Operation extends Model
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->format('h:i A d/m/Y');
+    }
+
+    public function getOriginalCreatedAt(): Carbon
+    {
+        $rawValue = $this->attributes['created_at'];
+        try {
+            return Carbon::parse($rawValue);
+        } catch (\Exception $e) {
+            return Carbon::now(); 
+        }
     }
 
 }
