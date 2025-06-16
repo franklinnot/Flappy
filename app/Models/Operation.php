@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Models;
+
+use Carbon\Carbon;
 use MongoDB\Laravel\Eloquent\Model;
 use MongoDB\Laravel\Relations\BelongsTo;
 
@@ -18,6 +20,12 @@ class Operation extends Model
         'lot_id'
     ];
     #endregion
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     #region Relationships
     public function user(): BelongsTo
     {
@@ -34,4 +42,10 @@ class Operation extends Model
         return $this->belongsTo(Supplier::class);
     }
     #endregion
+
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('h:i A d/m/Y');
+    }
+
 }
