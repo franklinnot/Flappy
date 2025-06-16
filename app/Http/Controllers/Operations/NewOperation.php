@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Operations;
 
-use App\Enums\ExpirationStatus;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Lot;
@@ -14,6 +13,7 @@ use App\Utils\EnumHelper;
 use Inertia\Inertia;
 use App\Utils\Report;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
@@ -68,43 +68,46 @@ class NewOperation extends Controller
 
         // datos de la request
         $type = EnumHelper::getValue(TypesOperation::class, $request->type);
+        $type_output = TypesOperation::OUTPUT->value;
 
-        $data = [
-            'report' => ['message' => $type, 'type' => 'error']
-        ];
-        throw ValidationException::withMessages($data);
-
-        $quantity = $request->quantity;
+        $quantity = (int)$request->quantity;
 
         // si es una salida y el stock es mas bajo que la cantidad a retirar
-        if ($type == TypesOperation::OUTPUT && $lot->stock < $quantity) {
-            Report::error("No hay stock suficiente en el lote {$lot->code}.", "lot");
+        if ($type == $type_output && $lot->stock < $quantity) {
+            return Report::error("No hay stock suficiente en el lote $lot->code.", "quantity");
         }
 
         // Una vez realizdas las validaciones
-        if ($type == TypesOperation::OUTPUT) { // si es una salida
-            $lot->update([
-                'stock' => $lot->stock - $quantity
-            ]);
+        $new_stock = $lot->stock;
+        if ($type == $type_output) { // si es una salida
+            $new_stock -= $quantity;
         } else { // si es una entrada
-            $lot->update([
-                'stock' => $lot->stock + $quantity
-            ]);
+            $new_stock += $quantity;
         }
 
-        $operation = Operation::create([
-            'user_id' => Auth::user()->id,
-            'lot_id' => $request->lot,
-            'type' => $type,
-            'supplier_id' => $request->supplier,
-            'quantity' => $quantity,
-            'status' => Status::ENABLED->value,
-        ]);
+        try {
 
-        if (!$operation) {
+            DB::beginTransaction();
+
+            $lot->update([
+                'stock' => (int)$new_stock
+            ]);
+
+            Operation::create([
+                'user_id' => Auth::user()->id,
+                'lot_id' => $request->lot,
+                'type' => $type,
+                'supplier_id' => $request->supplier,
+                'quantity' => $quantity,
+                'status' => Status::ENABLED->value,
+            ]);
+
+            DB::commit();
+
+            return Report::success(self::ROUTE, 'Operación registrada correctamente');
+        } catch (\Exception $e) {
+            DB::rollBack();
             Report::error('Error al registrar una nueva operación.');
         }
-
-        return Report::success(self::ROUTE, 'Operación registrada correctamente');
     }
 }

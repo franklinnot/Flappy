@@ -185,24 +185,25 @@ export default function Table({
                                                                         />
                                                                     </button>
                                                                 )}
-                                                            {record.status ===
-                                                                Status.DISABLED && (
-                                                                <button
-                                                                    title="Habilitar"
-                                                                    onClick={() =>
-                                                                        handleStatusChange(
-                                                                            `${module}/enable/${record.id}`
-                                                                        )
-                                                                    }
-                                                                    className="block w-full text-left p-2 text-sm text-emerald-500 hover:bg-gray-100"
-                                                                >
-                                                                    <IconDocumentCheck
-                                                                        size={
-                                                                            16
+                                                            {!isImportant &&
+                                                                record.status ==
+                                                                    Status.DISABLED && (
+                                                                    <button
+                                                                        title="Habilitar"
+                                                                        onClick={() =>
+                                                                            handleStatusChange(
+                                                                                `${module}/enable/${record.id}`
+                                                                            )
                                                                         }
-                                                                    />
-                                                                </button>
-                                                            )}
+                                                                        className="block w-full text-left p-2 text-sm text-emerald-500 hover:bg-gray-100"
+                                                                    >
+                                                                        <IconDocumentCheck
+                                                                            size={
+                                                                                16
+                                                                            }
+                                                                        />
+                                                                    </button>
+                                                                )}
                                                         </>
                                                     )}
                                                 </div>
