@@ -34,6 +34,9 @@ use App\Http\Controllers\Operations\NewOperation;
 use App\Http\Controllers\Operations\ListOperations;
 use App\Http\Controllers\Operations\StatusOperations;
 
+use App\Http\Controllers\Sales\NewSale;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -162,11 +165,12 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     #region Sales
     Route::get('sales', [RegisteredUserController::class, 'show'])->name('sales');
 
-    Route::get('sales/new', [RegisteredUserController::class, 'show'])->name('sales.new');
-    Route::post('sales/new', [RegisteredUserController::class, 'create']);
+    Route::get('sales/new', [NewSale::class, 'show'])->name('sales.new');
+    Route::post('sales/new', [NewSale::class, 'create']);
 
     Route::patch('sales/disable/{id}', [RegisteredUserController::class, 'update'])->name('sales.disable');
     #endregion
+
 
 });
 
