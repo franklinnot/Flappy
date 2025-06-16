@@ -69,6 +69,18 @@ export default function NewLot({ products, report }) {
                 onSubmit={submit}
                 className="flex flex-col gap-6 pb-16 justify-self-center rounded-2xl max-sm:w-full max-sm:max-w-[448px] sm:w-[75%] sm:max-w-[612px]"
             >
+                <ComboBox
+                    id="product"
+                    label="Producto"
+                    items={products}
+                    value={data.product}
+                    required
+                    onChange={(value) => setData("product", value)}
+                    disabled={processing}
+                    error={errors.product}
+                    isFocused={true}
+                />
+
                 <InputField
                     id="code"
                     label="Código"
@@ -80,18 +92,6 @@ export default function NewLot({ products, report }) {
                     }
                     disabled={processing}
                     error={errors.code}
-                    isFocused={true}
-                />
-
-                <ComboBox
-                    id="product"
-                    label="Producto"
-                    items={products}
-                    value={data.product}
-                    required
-                    onChange={(value) => setData("product", value)}
-                    disabled={processing}
-                    error={errors.product}
                 />
 
                 <InputField
