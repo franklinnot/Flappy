@@ -50,8 +50,8 @@ class NewLot extends Controller
         $lot = Lot::create([
             'code'           => $request->code,
             'product_id'     => $request->product,
-            'stock'          => $request->initial_stock,
-            'price'          => $request->price,
+            'stock'          => (int) $request->initial_stock,
+            'price'          => (float) $request->price,
             'exp_alert'      => $request->exp_alert,
             'exp_date'       => $exp_alert ? $exp_date : null,
             'exp_status'     => $exp_alert ? ExpirationStatus::VALID->value : null,
