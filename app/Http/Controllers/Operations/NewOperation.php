@@ -77,26 +77,28 @@ class NewOperation extends Controller
             return Report::error("No hay stock suficiente en el lote $lot->code.", "quantity");
         }
 
+        // Una vez realizdas las validaciones
+        $new_stock = 0;
+        if ($type == $type_output) { // si es una salida
+            $new_stock = $lot->stock - $quantity;
+        } else { // si es una entrada
+            $new_stock = $lot->stock + $quantity;
+        }
+
         try {
 
             DB::beginTransaction();
-            // Una vez realizdas las validaciones
-            if ($type == $type_output) { // si es una salida
-                $lot->update([
-                    'stock' => (int)($lot->stock - $quantity)
-                ]);
-            } else { // si es una entrada
-                $lot->update([
-                    'stock' => (int)($lot->stock + $quantity)
-                ]);
-            }
+
+            $lot->update([
+                'stock' => (int)$new_stock
+            ]);
 
             Operation::create([
                 'user_id' => Auth::user()->id,
                 'lot_id' => $request->lot,
                 'type' => $type,
                 'supplier_id' => $request->supplier,
-                'quantity' => (int)$quantity,
+                'quantity' => $quantity,
                 'status' => Status::ENABLED->value,
             ]);
 
