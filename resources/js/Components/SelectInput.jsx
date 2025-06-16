@@ -59,39 +59,43 @@ export default function SelectInput({
 
     // Filtrado basado en item.name, eliminación de duplicados e ignorar sin valor
     const filteredItems = useMemo(() => {
-        const processedItems = [];
-        const seenIds = new Set();
+        const uniqueItems = []; // Cambiamos el nombre para mayor claridad
+        const seenNames = new Set(); // <-- **Clave**: Usamos un Set para los nombres ya vistos
 
         for (const item of items) {
             // Ignorar elementos si no tienen un 'id' o 'name' válido,
-            // o si el 'name' es una cadena vacía.
+            // o si el 'name' es una cadena vacía o solo espacios.
             if (
                 !item ||
                 item.id === undefined ||
                 item.name === undefined ||
                 item.name === null ||
-                item.name.trim() === ""
+                String(item.name).trim() === "" // Convertimos a String por seguridad
             ) {
                 continue; // Saltar este elemento y pasar al siguiente
             }
 
-            // Si el id ya fue visto, ignorar este duplicado
-            if (seenIds.has(item.id)) {
+            const itemNameNormalized = String(item.name).toLowerCase().trim();
+
+            // Si el nombre (normalizado) ya fue visto, ignorar este duplicado
+            if (seenNames.has(itemNameNormalized)) {
                 continue;
             }
 
-            // Si pasa las validaciones, añadirlo a la lista de items procesados
-            processedItems.push(item);
-            seenIds.add(item.id);
+            // Si pasa las validaciones, añadirlo a la lista de items únicos
+            // y añadir el nombre normalizado al Set de nombres vistos
+            uniqueItems.push(item);
+            seenNames.add(itemNameNormalized); // <-- **Clave**: Añadimos el nombre normalizado
         }
 
         const queryString = query.toLowerCase().trim();
-        if (queryString === "") return processedItems; // Devuelve los únicos y válidos si no hay búsqueda
+        if (queryString === "") return uniqueItems; // Devuelve solo los únicos y válidos si no hay búsqueda
 
-        return processedItems.filter((item) =>
-            item.name.toLowerCase().includes(queryString)
+        // Ahora filtra sobre la lista de ítems únicos
+        return uniqueItems.filter((item) =>
+            String(item.name).toLowerCase().includes(queryString)
         );
-    }, [items, query]);
+    }, [items, query]); // Dependencias: items y query
 
     // Mostrar item.name en el input
     const displayValue = (item) => (item ? item.name : "");
@@ -182,7 +186,9 @@ export default function SelectInput({
                             ) : (
                                 filteredItems.map((item) => (
                                     <ComboboxOption
-                                        key={item.id} // Use item.id directly
+                                        // Es crucial usar item.id aquí, ya que cada opción debe tener un 'key' único.
+                                        // Aunque filtremos por nombre, los ítems subyacentes pueden tener IDs diferentes.
+                                        key={item.id}
                                         value={item}
                                         className={`relative cursor-default select-none py-2
                                                  px-4 text-gray-600 data-[focus]:bg-indigo-100

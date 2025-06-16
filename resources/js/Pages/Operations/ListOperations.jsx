@@ -83,7 +83,7 @@ export default function ListOperations({
                 ? record.supplier &&
                   record.supplier
                       .toLowerCase()
-                      .includes(supplierFilter.name.toLowerCase()) // Añadir chequeo por null/undefined
+                      .includes(supplierFilter.name.toLowerCase())
                 : true;
 
             const userMatch = userFilter
