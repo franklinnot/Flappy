@@ -5,144 +5,194 @@ import ComboBox from "@/Components/ComboBox";
 import Toast from "@/Components/Toast";
 import Loading from "@/Components/loading";
 import Table from "@/Components/Table";
-import { Head, useForm } from "@inertiajs/react";
+import ModalCliente from "@/Components/ModalCliente";
+import { Head, router } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
-export default function NewSale({ lots, customers, report }) {
+export default function NewSale({ lots, customers, report, errors: serverErrors }) {
     const title = "Registrar venta";
 
-    const { data, setData, post, reset, processing, errors } = useForm({
-        lot: null,
-        quantity: "",
-        customer: null,
-        items: [],
-    });
-
-    const [toast, setToast] = useState(null);
-    const [toastKey, setToastKey] = useState(0);
+    const [availableLots, setAvailableLots] = useState(() =>
+        lots.map((lot) => ({ ...lot }))
+    );
+    const [lot, setLot] = useState(null);
+    const [quantity, setQuantity] = useState("");
+    const [customer, setCustomer] = useState(null);
     const [items, setItems] = useState([]);
     const [total, setTotal] = useState(0);
+    const [processing, setProcessing] = useState(false);
+    const [errors, setErrors] = useState({});
+    const [toast, setToast] = useState(null);
+    const [toastKey, setToastKey] = useState(0);
+
+
+    const [showModal, setShowModal] = useState(false);
+    const [isCustomerRequired, setIsCustomerRequired] = useState(false);
+    const [tempCustomer, setTempCustomer] = useState(null);
 
     useEffect(() => {
         if (report) {
             setToast(report);
             setToastKey(Date.now());
-        } else if (errors?.report_type) {
+        } else if (serverErrors?.report_type) {
             setToast({
-                message: errors.report_message,
-                type: errors.report_type,
+                message: serverErrors.report_message,
+                type: serverErrors.report_type,
             });
             setToastKey(Date.now());
         }
-    }, [report, errors]);
+    }, [report, serverErrors]);
 
     useEffect(() => {
         const sumTotal = items.reduce((acc, item) => acc + item.subtotal, 0);
         setTotal(sumTotal);
-        if (sumTotal <= 700 && data.customer !== null) {
-            setData("customer", null);
+        if (sumTotal <= 700 && customer !== null) {
+            setCustomer(null);
         }
     }, [items]);
 
-    const currentQuantity = parseFloat(data.quantity);
-    const currentPrice = parseFloat(data.lot?.price ?? 0);
-    const currentSubtotal = (!isNaN(currentQuantity) && !isNaN(currentPrice))
-        ? currentQuantity * currentPrice
-        : 0;
+    const currentQuantity = parseFloat(quantity);
+    const currentPrice = parseFloat(lot?.price ?? 0);
+    const currentSubtotal =
+        !isNaN(currentQuantity) && !isNaN(currentPrice)
+            ? currentQuantity * currentPrice
+            : 0;
 
     const addItem = () => {
-        if (!data.lot) {
-            setToast({ message: "Seleccione un lote válido", type: "error" });
-            setToastKey(Date.now());
-            return;
-        }
-        if (!data.quantity || currentQuantity <= 0) {
-            setToast({ message: "Ingrese una cantidad válida", type: "error" });
-            setToastKey(Date.now());
-            return;
-        }
-        if (currentQuantity > data.lot.stock) {
-            setToast({ message: "Cantidad excede stock disponible", type: "error" });
-            setToastKey(Date.now());
-            return;
-        }
+    setErrors({});
+    if (!lot) return showError("Seleccione un lote válido");
+    if (!quantity || currentQuantity <= 0)
+        return showError("Ingrese una cantidad válida");
 
-        const existingIndex = items.findIndex(i => i.lot.id === data.lot.id);
+    const lotFromState = availableLots.find((l) => l.id === lot.id);
+    if (!lotFromState) return showError("Lote no encontrado");
 
-        if (existingIndex >= 0) {
-            const updatedItem = { ...items[existingIndex] };
-            const newQuantity = updatedItem.quantity + currentQuantity;
+    const currentStock = lotFromState.stock;
 
-            if (newQuantity > data.lot.stock) {
-                setToast({ message: "Cantidad total excede stock disponible", type: "error" });
-                setToastKey(Date.now());
-                return;
-            }
-
-            updatedItem.quantity = newQuantity;
-            updatedItem.subtotal = newQuantity * currentPrice;
-
-            const newItems = [...items];
-            newItems[existingIndex] = updatedItem;
-
-            setItems(newItems);
-        } else {
-            const newItem = {
-                id: crypto.randomUUID(),
-                lot: data.lot,
-                quantity: currentQuantity,
-                subtotal: currentSubtotal,
-            };
-            setItems([...items, newItem]);
-        }
-
-        setData("lot", null);
-        setData("quantity", "");
-    };
-
-    const removeItem = (id) => {
-        setItems(items.filter(i => i.id !== id));
-    };
-
-    const submit = (e) => {
-    e.preventDefault();
-
-    if (items.length === 0) {
-        setToast({ message: "Agregue al menos un producto", type: "error" });
-        setToastKey(Date.now());
-        return;
+    if (currentQuantity > currentStock) {
+        return showError("Cantidad excede stock disponible");
     }
 
-    if (total > 700 && !data.customer) {
-        setToast({ message: "Debe seleccionar un cliente para ventas mayores a S/.700", type: "error" });
-        setToastKey(Date.now());
-        return;
+    const newItems = [...items];
+    const existingIndex = newItems.findIndex((i) => i.lot.id === lot.id);
+
+    if (existingIndex >= 0) {
+        const updatedItem = { ...newItems[existingIndex] };
+        updatedItem.quantity += currentQuantity;
+        updatedItem.subtotal = updatedItem.quantity * currentPrice;
+        newItems[existingIndex] = updatedItem;
+    } else {
+        const newItem = {
+            id: crypto.randomUUID(),
+            lot,
+            quantity: currentQuantity,
+            subtotal: currentSubtotal,
+        };
+        newItems.push(newItem);
     }
-                   
-    const finalItems = items.map(i => ({
-        lot_id: i.lot.id,
-        quantity: i.quantity,
-    }));
 
-    // Actualizamos los datos del form
-    setData("items", finalItems);
+    const updatedLots = availableLots.map((l) =>
+        l.id === lot.id
+            ? { ...l, stock: l.stock - currentQuantity }
+            : l
+    );
 
-    // Esperamos un tick para que se actualice antes de hacer el post
-    setTimeout(() => {
-        post(route("sales.new"), {
-            onSuccess: () => {
-                reset();
-                setItems([]);
-                setTotal(0);
-            },
-            preserveScroll: true,
-        });
-    }, 0);
+    setItems(newItems);
+    setAvailableLots(updatedLots);
+    setLot(null);
+    setQuantity("");
 };
 
 
+    const removeItem = (id) => {
+    const itemToRemove = items.find((i) => i.id === id);
+    if (!itemToRemove) return;
+
+    // Restaurar stock exacto del lote
+    const updatedLots = availableLots.map((l) =>
+        l.id === itemToRemove.lot.id
+            ? { ...l, stock: l.stock + itemToRemove.quantity }
+            : l
+    );
+
+    const updatedItems = items.filter((i) => i.id !== id);
+
+    setItems(updatedItems);
+    setAvailableLots(updatedLots);
+    if (lot?.id === itemToRemove.lot.id) {
+    const updatedLot = updatedLots.find((l) => l.id === lot.id);
+    setLot(updatedLot || null);
+}
+
+};
+
+
+    const showError = (message) => {
+        setToast({ message, type: "error" });
+        setToastKey(Date.now());
+    };
+
+    const handleModalConfirm = (selectedCustomer) => {
+        setCustomer(selectedCustomer);
+        setShowModal(false);
+        sendSale(selectedCustomer);
+    };
+
+    const submit = (e) => {
+        e.preventDefault();
+        setErrors({});
+
+        if (items.length === 0) {
+            showError("Agregue al menos un producto");
+            return;
+        }
+
+        if (!customer && total > 700) {
+            setIsCustomerRequired(true);
+            setShowModal(true);
+            return;
+        }
+
+        if (!customer && total <= 700) {
+            setIsCustomerRequired(false);
+            setShowModal(true);
+            return;
+        }
+
+        sendSale(customer);
+    };
+
+    const sendSale = (finalCustomer) => {
+        const payload = {
+            items: items.map((i) => ({
+                lot_id: i.lot.id,
+                quantity: i.quantity,
+            })),
+            customer: finalCustomer ? { id: finalCustomer.id } : null,
+        };
+
+        setProcessing(true);
+
+        router.post(route("sales.new"), payload, {
+            preserveScroll: true,
+            onSuccess: () => {
+                setLot(null);
+                setQuantity("");
+                setCustomer(null);
+                setItems([]);
+                setTotal(0);
+                setAvailableLots(lots.map((l) => ({ ...l }))); // Reiniciar stock visual
+            },
+            onError: (errors) => {
+                setErrors(errors);
+            },
+            onFinish: () => setProcessing(false),
+        });
+    };
+
     const tableProperties = [
         { name: "lotCode", tag: "Código" },
+        { name: "image", tag: "Imagen" },
         { name: "productName", tag: "Producto" },
         { name: "quantity", tag: "Cantidad" },
         { name: "price", tag: "Precio Unit." },
@@ -150,82 +200,111 @@ export default function NewSale({ lots, customers, report }) {
         { name: "actions", tag: "Acciones" },
     ];
 
-    const tableRecords = items.map(item => ({
-        id: item.id,
-        lotCode: item.lot.code,
-        productName: item.lot.product?.name || "",
-        quantity: item.quantity,
-        price: `S/. ${Number(item.lot.price).toFixed(2)}`,
-        subtotal: `S/. ${Number(item.subtotal).toFixed(2)}`,
-        actions: (
-            <button
-                onClick={() => removeItem(item.id)}
-                className="text-red-600 hover:text-red-800"
-                title="Eliminar"
-                type="button"
-            >
-                🗑️
-            </button>
-        ),
-    }));
+    const tableRecords = items.map((item) => {
+        const product = item.lot.product;
+        const productName = product?.name || "Producto";
+        const rawPicture = product?.picture;
+
+        const isValidPicture =
+            typeof rawPicture === "string" &&
+            rawPicture.trim() !== "" &&
+            (rawPicture.startsWith("http") || rawPicture.startsWith("/"));
+
+        const imageUrl = isValidPicture
+            ? rawPicture
+            : "/images/placeholder.png";
+
+        return {
+            id: item.id,
+            lotCode: item.lot.code,
+            image: (
+                <img
+                    src={imageUrl}
+                    alt={productName}
+                    className="w-12 h-12 object-cover rounded"
+                    onError={(e) => {
+                        e.target.src = "/images/placeholder.png";
+                    }}
+                />
+            ),
+            productName,
+            quantity: item.quantity,
+            price: `S/. ${Number(item.lot.price).toFixed(2)}`,
+            subtotal: `S/. ${Number(item.subtotal).toFixed(2)}`,
+            actions: (
+                <button
+                    onClick={() => removeItem(item.id)}
+                    className="text-red-600 hover:text-red-800"
+                    title="Eliminar"
+                    type="button"
+                >
+                    🗑️
+                </button>
+            ),
+        };
+    });
 
     return (
         <AuthenticatedLayout title={title}>
             <Head title={title} />
-
-            {toast && (
-                <Toast key={toastKey} message={toast.message} type={toast.type} />
-            )}
-
+            {toast && <Toast key={toastKey} message={toast.message} type={toast.type} />}
             <Loading isLoading={processing} />
-
-            <form
-                className="flex flex-col gap-6 pb-16 justify-self-center rounded-2xl max-sm:w-full max-sm:max-w-[448px] sm:w-[75%] sm:max-w-[612px]"
-                onSubmit={submit}
-            >
-                <div className="flex flex-col gap-4">
+            <ModalCliente
+                isOpen={showModal}
+                onClose={() => setShowModal(false)}
+                onConfirm={handleModalConfirm}
+                customers={customers}
+                obligatorio={isCustomerRequired}
+                selectedCustomer={tempCustomer}
+                setSelectedCustomer={setTempCustomer}
+            />
+            <form onSubmit={submit} className="flex flex-col gap-6 pb-16 max-w-3xl mx-auto">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
                     <ComboBox
                         id="lot"
                         label="Lote"
-                        items={lots}
-                        value={data.lot}
-                        onChange={(value) => setData("lot", value)}
+                        items={availableLots}
+                        value={lot}
+                        onChange={setLot}
                         disabled={processing}
                         error={errors.lot}
-                        itemToString={item => item ? item.name : ""}
+                        itemToString={(item) => item?.name || ""}
                     />
-
                     <InputField
                         id="quantity"
                         label="Cantidad"
                         type="number"
                         min={1}
                         inputMode="numeric"
-                        value={data.quantity}
-                        onChange={(e) => setData("quantity", e.target.value)}
+                        value={quantity}
+                        onChange={(e) => setQuantity(e.target.value)}
                         disabled={processing}
                         error={errors.quantity}
                     />
-
-                    <button
-                        type="button"
-                        onClick={addItem}
-                        disabled={processing}
-                        className="self-start px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
-                    >
-                        Agregar producto
-                    </button>
-
-                    <ComboBox
-                        id="customer"
-                        label="Cliente"
-                        items={customers}
-                        value={data.customer}
-                        onChange={(value) => setData("customer", value)}
-                        disabled={processing || total <= 700}
-                        error={errors.customer}
-                        itemToString={item => item?.name || ""}
+                    <InputField
+                        id="stock"
+                        label="Stock disponible"
+                        type="number"
+                        value={lot?.stock ?? ""}
+                        disabled
                     />
+                    <InputField
+                        id="unit"
+                        label="Unidad de medida"
+                        type="text"
+                        value={lot?.product?.unit ?? ""}
+                        disabled
+                    />
+                    <div className="sm:col-start-2">
+                        <button
+                            type="button"
+                            onClick={addItem}
+                            disabled={processing}
+                            className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+                        >
+                            Agregar producto
+                        </button>
+                    </div>
                 </div>
 
                 <div className="mt-8">
@@ -240,7 +319,7 @@ export default function NewSale({ lots, customers, report }) {
                     Total acumulado: S/. {total.toFixed(2)}
                 </div>
 
-                <PrimaryButton disabled={processing} className="mt-6">
+                <PrimaryButton disabled={processing} className="mt-6 self-end">
                     Registrar venta
                 </PrimaryButton>
             </form>

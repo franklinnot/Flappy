@@ -21,21 +21,41 @@ class NewSale extends Controller
     // Mostrar formulario con lotes y clientes activos
     public function show()
     {
-        $lots = Lot::with('product:id,name')
-            ->where('status', Status::ENABLED->value)
-            ->where('exp_status', 'En vigencia')
-            ->get()
-            ->filter(fn($lot) => (float) $lot->stock > 0) // Aceptar stock como número o string
-            ->map(function ($lot) {
-                return [
-                    'id' => $lot->id,
-                    'name' => "{$lot->code} - " . ($lot->product->name ?? ''),
-                    'code' => $lot->code,
-                    'stock' => (float) $lot->stock,   // ← Conversión aquí
-                    'price' => (float) $lot->price,   // ← Conversión aquí
-                ];
-            })
-            ->values(); // Reindexar array (clave 0, 1, 2...)
+        $lots = Lot::with([
+    'product' => function ($q) {
+        $q->select('_id', 'name', 'picture', 'unit_id')->with('unit:id,name');
+    }
+])
+    ->where('status', Status::ENABLED->value)
+    ->get()
+    ->filter(function ($lot) {
+        $hasValidStock = $lot->stock > 0;
+
+        $isValidExp = true;
+        if (!empty($lot->exp_status)) {
+            $isValidExp = $lot->exp_status === 'En vigencia';
+        }
+
+        return $hasValidStock && $isValidExp;
+    })
+        ->map(function ($lot) {
+        return [
+            'id' => $lot->id,
+            'name' => "{$lot->code} - " . ($lot->product->name ?? ''),
+            'code' => $lot->code,
+            'stock' => $lot->stock,
+            'price' => $lot->price,
+            'product' => [
+                'id' => $lot->product->id ?? null,
+                'name' => $lot->product->name ?? null,
+                'picture' => $lot->product->picture ?? null,
+                'unit' => $lot->product->unit->name ?? null,
+            ],
+
+        ];
+    })
+
+    ->values();
 
         $customers = Customer::where('status', Status::ENABLED->value)
             ->select(['_id', 'name'])
