@@ -44,19 +44,9 @@ class Operation extends Model
     }
     #endregion
 
-    public function getCreatedAtAttribute($value)
+    public function getFormattedCreatedAtAttribute(): string
     {
-        return Carbon::parse($value)->format('h:i A d/m/Y');
-    }
-
-    public function getOriginalCreatedAt(): Carbon
-    {
-        $rawValue = $this->attributes['created_at'];
-        try {
-            return Carbon::parse($rawValue);
-        } catch (\Exception $e) {
-            return Carbon::now(); 
-        }
+        return $this->created_at->format('h:i A d/m/Y');
     }
 
 }

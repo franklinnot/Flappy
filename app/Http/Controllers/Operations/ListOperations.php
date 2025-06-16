@@ -36,6 +36,8 @@ class ListOperations extends Controller
             ])
             ->get()
             ->map(function ($obj) {
+                $formattedCreatedAt = $obj->formatted_created_at;
+
                 $lot = $obj->lot;
                 $lot_code = $lot->code;
                 $product_name = $lot->product->name;
@@ -47,7 +49,7 @@ class ListOperations extends Controller
                     'quantity' => $obj->quantity,
                     'user' => $obj->user->name,
                     'supplier' => $supplier_name,
-                    'created_at' => $obj->created_at,
+                    'created_at' => $formattedCreatedAt,
                     'status' => $obj->status,
                 ];
             });
