@@ -35,6 +35,8 @@ use App\Http\Controllers\Operations\ListOperations;
 use App\Http\Controllers\Operations\StatusOperations;
 
 use App\Http\Controllers\Sales\NewSale;
+use App\Http\Controllers\Sales\ListSales;
+
 
 
 /*
@@ -163,12 +165,12 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     #endregion
 
     #region Sales
-    Route::get('sales', [RegisteredUserController::class, 'show'])->name('sales');
+    Route::get('sales', [ListSales::class, 'show'])->name('sales');
 
     Route::get('sales/new', [NewSale::class, 'show'])->name('sales.new');
     Route::post('sales/new', [NewSale::class, 'create']);
 
-    Route::patch('sales/disable/{id}', [RegisteredUserController::class, 'update'])->name('sales.disable');
+    Route::put('/sales/{id}/toggle-status', [ListSales::class, 'toggleStatus']);
     #endregion
 
 
