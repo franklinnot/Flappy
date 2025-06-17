@@ -8,6 +8,7 @@ use App\Models\Sale;
 use App\Models\SaleDetails;
 use App\Models\Lot;
 use App\Models\Customer;
+use App\Models\Payment;
 use App\Enums\Status;
 use App\Utils\Report;
 use Illuminate\Support\Facades\Auth;
@@ -56,20 +57,35 @@ class NewSale extends Controller
     })
 
     ->values();
-
+        $paymentMethods = Payment::where('status', Status::ENABLED->value)
+        ->select(['_id', 'name']) // Asegúrate de que el campo sea 'name'
+        ->get()
+        ->map(fn($method) => [
+            'id' => $method->id,
+            'name' => $method->name,
+        ]);
         $customers = Customer::where('status', Status::ENABLED->value)
-            ->select(['_id', 'name'])
+            ->select(['_id', 'name','dni','phone' ])
             ->get()
             ->map(fn($customer) => [
                 'id' => $customer->id,
                 'name' => $customer->name,
+                'dni' => $customer->dni,
+                'phone' => $customer->phone,
             ]);
 
         return inertia(self::COMPONENT, [
             'lots' => $lots,
             'customers' => $customers,
+            'paymentMethods' => $paymentMethods,
         ]);
+
+        
+
     }
+
+    
+
 
     // Crear venta con validaciones
     public function create(Request $request)
@@ -81,6 +97,8 @@ class NewSale extends Controller
             'items.*.lot_id' => ['required', 'string', 'exists:lots,id'],
             'items.*.quantity' => ['required', 'numeric', 'min:1'],
             'customer.id' => ['nullable', 'string', 'exists:customers,id'],
+            'payment.id' => ['required', 'string', 'exists:payments,id'],
+
         ]);
 
         $items = $validated['items'];
@@ -115,6 +133,7 @@ class NewSale extends Controller
             'total' => $total,
             'status' => Status::ENABLED->value,
             'user_id' => Auth::id(),
+            'payment_id' => $request->input('payment.id') ?? null,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
