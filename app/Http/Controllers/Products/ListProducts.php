@@ -80,8 +80,8 @@ class ListProducts extends Controller
                     'name' => $product->name,
                     'picture' => $product->picture,
                     'status' => $product->status,
-                    'unit' => $product->unit->name,
-                    'categorie' => $product->categorie->name,
+                    'unit' => $product->unit->name ?? '',
+                    'categorie' => $product->categorie->name ?? '',
                 ];
             });
     }
