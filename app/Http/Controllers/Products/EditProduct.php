@@ -7,7 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Utils\Report;
 
-class EditProducts extends Controller
+class EditProduct extends Controller
 {
     public const ROUTE = "products";
 

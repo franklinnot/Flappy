@@ -4,8 +4,10 @@ import { useForm } from "@inertiajs/react";
 import InputField from "@/Components/InputField";
 import Loading from "@/Components/loading";
 import PrimaryButton from "@/Components/PrimaryButton";
+import ComboBox from "@/Components/ComboBox";
 
-export default function EditProduct({ onClose, object }) {
+
+export default function EditProduct({ onClose, object, unidades, categorias  }) {
     const [visible, setVisible] = useState(true);
 
     useEffect(() => {
@@ -77,23 +79,24 @@ export default function EditProduct({ onClose, object }) {
                     error={errors.picture}
                 />
 
-                <InputField
+                <ComboBox
                     id="unit_id"
-                    label="Unidad de Medida (ID)"
-                    value={data.unit_id}
-                    onChange={(e) => setData("unit_id", e.target.value)}
+                    label="Unidad de Medida"
+                    items={unidades}
+                    value={unidades.find((u) => u.id === data.unit_id) || null}
+                    onChange={(val) => setData("unit_id", val?.id || "")}
                     error={errors.unit_id}
-                    required
                 />
 
-                <InputField
+                <ComboBox
                     id="categorie_id"
-                    label="Categoría (ID)"
-                    value={data.categorie_id}
-                    onChange={(e) => setData("categorie_id", e.target.value)}
+                    label="Categoría"
+                    items={categorias}
+                    value={categorias.find((c) => c.id === data.categorie_id) || null}
+                    onChange={(val) => setData("categorie_id", val?.id || "")}
                     error={errors.categorie_id}
-                    required
                 />
+
 
                 <div className="flex justify-end gap-4">
                     <PrimaryButton disabled={processing} type="submit">

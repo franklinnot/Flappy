@@ -29,7 +29,7 @@ use App\Http\Controllers\Categories\EditCategories;
 //
 use App\Http\Controllers\Products\NewProduct;
 use App\Http\Controllers\Products\ListProducts;
-use App\Http\Controllers\Products\StatusProduct;
+use App\Http\Controllers\Products\StatusProducts;
 use App\Http\Controllers\Products\EditProduct;
 
 //
@@ -139,8 +139,8 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
 
     Route::patch('products/edit', [EditProduct::class, 'edit'])->name('products.edit');
 
-    Route::patch('products/enable/{id}', [StatusProduct::class, 'enable'])->name('products.enable');
-    Route::patch('products/disable/{id}', [StatusProduct::class, 'disable'])->name('products.disable');
+    Route::patch('products/enable/{id}', [StatusProducts::class, 'enable'])->name('products.enable');
+    Route::patch('products/disable/{id}', [StatusProducts::class, 'disable'])->name('products.disable');
     #endregion
 
     #region Lots
