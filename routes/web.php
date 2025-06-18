@@ -24,9 +24,14 @@ use App\Http\Controllers\Units\ListUnits;
 //
 use App\Http\Controllers\Categories\NewCategory;
 use App\Http\Controllers\Categories\ListCategories;
+use App\Http\Controllers\Categories\StatusCategorie;
+use App\Http\Controllers\Categories\EditCategories;
 //
 use App\Http\Controllers\Products\NewProduct;
 use App\Http\Controllers\Products\ListProducts;
+use App\Http\Controllers\Products\StatusProducts;
+use App\Http\Controllers\Products\EditProduct;
+
 //
 use App\Http\Controllers\Lots\NewLot;
 //
@@ -125,10 +130,10 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     Route::get('categories/new', [NewCategory::class, 'show'])->name('categories.new');
     Route::post('categories/new', [NewCategory::class, 'create']);
 
-    Route::patch('categories/edit', [ListCategories::class, 'edit'])->name('categories.edit');
+    Route::patch('categories/edit', [EditCategories::class, 'edit'])->name('categories.edit');
 
-    Route::patch('categories/enable/{id}', [ListCategories::class, 'enable'])->name('categories.enable');
-    Route::patch('categories/disable/{id}', [ListCategories::class, 'disable'])->name('categories.disable');
+    Route::patch('categories/enable/{id}', [StatusCategorie::class, 'enable'])->name('categories.enable');
+    Route::patch('categories/disable/{id}', [StatusCategorie::class, 'disable'])->name('categories.disable');
     #endregion
 
     #region Products
@@ -137,10 +142,10 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     Route::get('products/new', [NewProduct::class, 'show'])->name('products.new');
     Route::post('products/new', [NewProduct::class, 'create']);
 
-    Route::patch('products/edit', [ListProducts::class, 'edit'])->name('products.edit');
+    Route::patch('products/edit', [EditProduct::class, 'edit'])->name('products.edit');
 
-    Route::patch('products/enable/{id}', [ListProducts::class, 'enable'])->name('products.enable');
-    Route::patch('products/disable/{id}', [ListProducts::class, 'disable'])->name('products.disable');
+    Route::patch('products/enable/{id}', [StatusProducts::class, 'enable'])->name('products.enable');
+    Route::patch('products/disable/{id}', [StatusProducts::class, 'disable'])->name('products.disable');
     #endregion
 
     #region Lots

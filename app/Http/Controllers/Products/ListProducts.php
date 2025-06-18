@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\Products;
-
-use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Unit;
+use App\Models\Categorie;
+use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Enums\Status;
@@ -22,6 +23,8 @@ class ListProducts extends Controller
             'properties' => $this->getColumns(),
             'module' => self::MODULE,
             'status' => $request->session()->get('status') ?? Status::ENABLED->value,
+            'unidades' => Unit::where('status', Status::ENABLED)->get(['id', 'name']),
+            'categorias' => Categorie::where('status', Status::ENABLED)->get(['id', 'name']),
         ]);
     }
 
@@ -80,8 +83,8 @@ class ListProducts extends Controller
                     'name' => $product->name,
                     'picture' => $product->picture,
                     'status' => $product->status,
-                    'unit' => $product->unit->name,
-                    'categorie' => $product->categorie->name,
+                    'unit' => $product->unit->name ?? '',
+                    'categorie' => $product->categorie->name ?? '',
                 ];
             });
     }
