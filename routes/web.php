@@ -7,9 +7,11 @@ use App\Http\Controllers\Dashboard;
 //
 use App\Http\Controllers\Users\NewUser;
 use App\Http\Controllers\Users\ListUsers;
+use App\Http\Controllers\Users\EditUsers;
 //
 use App\Http\Controllers\Customers\NewCustomer;
 use App\Http\Controllers\Customers\ListCustomers;
+use App\Http\Controllers\Customers\EditCustomers;
 //
 use App\Http\Controllers\Suppliers\NewSupplier;
 use App\Http\Controllers\Suppliers\ListSuppliers;
@@ -18,9 +20,11 @@ use App\Http\Controllers\Suppliers\StatusSuppliers;
 //
 use App\Http\Controllers\Payments\NewPayment;
 use App\Http\Controllers\Payments\ListPayments;
+use App\Http\Controllers\Payments\EditPayments;
 //
 use App\Http\Controllers\Units\NewUnit;
 use App\Http\Controllers\Units\ListUnits;
+use App\Http\Controllers\Units\EditUnit;
 //
 use App\Http\Controllers\Categories\NewCategory;
 use App\Http\Controllers\Categories\ListCategories;
@@ -69,7 +73,7 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     Route::get('users/new', [NewUser::class, 'show'])->name('users.new');
     Route::post('users/new', [NewUser::class, 'create']);
 
-    Route::patch('users/edit', [ListUsers::class, 'edit'])->name('users.edit');
+    Route::patch('users/edit', [EditUsers::class, 'edit'])->name('users.edit');
     Route::patch('users/edit/pass', [RegisteredUserController::class, 'update'])->name('users.edit.pass');
 
     Route::patch('users/enable/{id}', [ListUsers::class, 'enable'])->name('users.enable');
@@ -82,7 +86,7 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     Route::get('customers/new', [NewCustomer::class, 'show'])->name('customers.new');
     Route::post('customers/new', [NewCustomer::class, 'create']);
 
-    Route::patch('customers/edit', [ListCustomers::class, 'edit'])->name('customers.edit');
+    Route::patch('customers/edit', [EditCustomers::class, 'edit'])->name('customers.edit');
 
     Route::patch('customers/enable/{id}', [ListCustomers::class, 'enable'])->name('customers.enable');
     Route::patch('customers/disable/{id}', [ListCustomers::class, 'disable'])->name('customers.disable');
@@ -106,7 +110,7 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     Route::get('payments/new', [NewPayment::class, 'show'])->name('payments.new');
     Route::post('payments/new', [NewPayment::class, 'create']);
 
-    Route::patch('payments/edit', [ListPayments::class, 'edit'])->name('payments.edit');
+    Route::patch('payments/edit', [EditPayments::class, 'edit'])->name('payments.edit');
 
     Route::patch('payments/enable/{id}', [ListPayments::class, 'enable'])->name('payments.enable');
     Route::patch('payments/disable/{id}', [ListPayments::class, 'disable'])->name('payments.disable');
@@ -118,7 +122,7 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     Route::get('units/new', [NewUnit::class, 'show'])->name('units.new');
     Route::post('units/new', [NewUnit::class, 'create']);
 
-    Route::patch('units/edit', [ListUnits::class, 'edit'])->name('units.edit');
+    Route::patch('units/edit', [EditUnit::class, 'edit'])->name('units.edit');
 
     Route::patch('units/enable/{id}', [ListUnits::class, 'enable'])->name('units.enable');
     Route::patch('units/disable/{id}', [ListUnits::class, 'disable'])->name('units.disable');

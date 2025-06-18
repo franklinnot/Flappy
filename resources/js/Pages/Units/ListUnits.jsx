@@ -1,57 +1,117 @@
 import Table from "@/Components/Table";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
+import { Head, usePage } from "@inertiajs/react";
 import Toast from "@/Components/Toast";
-import PrimaryButton from "@/Components/PrimaryButton";
 import Status from "@/Utils/status";
+import EditUnit from "./EditUnit";
+import SlideButton from "@/Components/slide-button";
+import ComboBox from "@/Components/ComboBox";
 
 export default function ListUnits({
-    records = [],
+    records: initialRecords = [],
     properties,
     module,
     report,
-    status,
 }) {
     const title = "Lista de Unidades de Medida";
+    let errors = usePage()?.props?.errors;
+
+    const [baseRecords, setBaseRecords] = useState(initialRecords);
+
+    // Filtros
+    const [nameFilter, setNameFilter] = useState(null);
+    const [codeFilter, setCodeFilter] = useState(null);
+    const [statusFilter, setStatusFilter] = useState(Status.ENABLED);
+
+    // Notificaciones
     const [toast, setToast] = useState(null);
     const [toastKey, setToastKey] = useState(0);
-    const [filteredRecords, setFilteredRecords] = useState([]);
-    const [statusFilter, setStatusFilter] = useState(status);
+
+    // Modal para editar informacion
+    const [showModal, setModal] = useState(false);
+    const [modalData, setModalData] = useState(null);
+
+    useEffect(() => {
+        setBaseRecords(initialRecords);
+    }, [initialRecords]);
 
     useEffect(() => {
         if (report) {
             setToast(report);
             setToastKey(Date.now());
+
+            if (report.updatedRecord) {
+                setBaseRecords((prevBaseRecords) => {
+                    const newBaseRecords = prevBaseRecords.map((rec) =>
+                        rec.id === report.updatedRecord.id
+                            ? report.updatedRecord
+                            : rec
+                    );
+                    if (
+                        showModal &&
+                        modalData &&
+                        modalData.id === report.updatedRecord.id
+                    ) {
+                        setModalData(report.updatedRecord);
+                    }
+                    return newBaseRecords;
+                });
+            }
         }
-        setStatusFilter(status);
-    }, []);
+    }, [report, showModal, modalData]);
 
-    // Filtrar los registros según el estado actual
     useEffect(() => {
-        setFilteredRecords(
-            records.filter((record) => record.status === statusFilter)
-        );
-    }, [statusFilter, records]);
+        if (errors?.report_type) {
+            setToast({
+                message: errors.report_message,
+                type: errors.report_type,
+            });
+            setToastKey(Date.now());
+        }
+    }, [errors]);
 
-    // Función para editar la información (ejemplo)
+    const filteredRecords = useMemo(() => {
+        return baseRecords.filter((record) => {
+            const statusMatch = record.status === statusFilter;
+            const nameMatch = nameFilter
+                ? record.name
+                      .toLowerCase()
+                      .includes(nameFilter.name.toLowerCase())
+                : true;
+            const codeMatch = codeFilter
+                ? record.code
+                      .toLowerCase()
+                      .includes(codeFilter.name.toLowerCase())
+                : true;
+            return statusMatch && nameMatch && codeMatch;
+        });
+    }, [
+        baseRecords,
+        statusFilter,
+        nameFilter,
+        codeFilter,
+    ]);
+
     const editInfo = (id) => {
-        const record = filteredRecords.find((record) => record.id === id);
+        const record = baseRecords.find((record) => record.id === id);
         if (record) {
-            alert(record.name);
+            setModalData(record);
+            setModal(true);
         }
     };
 
-    // Función para cambiar el filtro de estado
-    const handleToggleStatus = () => {
-        setStatusFilter((prevStatus) =>
-            prevStatus === Status.ENABLED ? Status.DISABLED : Status.ENABLED
-        );
+    const itemsCombobox = (prop) => {
+        return filteredRecords.map((r) => ({
+            id: r.id,
+            name: r[prop],
+        }));
     };
 
     return (
-        <AuthenticatedLayout title={title} className="pb-36">
+        <AuthenticatedLayout title={title}>
             <Head title={title} />
+
             {toast && (
                 <Toast
                     key={toastKey}
@@ -59,19 +119,57 @@ export default function ListUnits({
                     type={toast.type}
                 />
             )}
-            <PrimaryButton onClick={handleToggleStatus}>
-                {statusFilter == Status.ENABLED
-                    ? "Mostrar Deshabilitadas"
-                    : "Mostrar Habilitadas"}
-            </PrimaryButton>
-            <div className="space-y-6 mt-4">
-                <Table
-                    module={module}
-                    properties={properties}
-                    records={filteredRecords}
-                    editInfo={editInfo}
-                    editStatus={true}
+
+            {showModal && modalData && (
+                <EditUnit
+                    object={modalData}
+                    onClose={() => {
+                        setModal(false);
+                        setModalData(null);
+                    }}
                 />
+            )}
+
+            <div className="inline-flex w-full h-full py-6 px-16 gap-10">
+                {/* filtros */}
+                <div className="flex flex-col w-[464px] gap-8 w-min-64 text-slate-700">
+                    <h2 className="text-xl font-semibold pb-[10px] border-b">
+                        Filtros
+                    </h2>
+                    <ComboBox
+                        id="name"
+                        label="Nombre"
+                        items={itemsCombobox("name")}
+                        value={nameFilter}
+                        onChange={(value) => setNameFilter(value)}
+                    />
+
+                    <ComboBox
+                        id="code"
+                        label="Código"
+                        items={itemsCombobox("code")}
+                        value={codeFilter}
+                        onChange={(value) => setCodeFilter(value)}
+                    />
+                </div>
+                <div className="flex-1 flex flex-col">
+                    <SlideButton
+                        className="flex mb-[13px] justify-end"
+                        value={statusFilter == Status.ENABLED}
+                        onChange={(val) => {
+                            setStatusFilter(
+                                val ? Status.ENABLED : Status.DISABLED
+                            );
+                        }}
+                    />
+                    <Table
+                        module={module}
+                        properties={properties}
+                        records={filteredRecords}
+                        editInfo={editInfo}
+                        editStatus={true}
+                    />
+                </div>
             </div>
         </AuthenticatedLayout>
     );
