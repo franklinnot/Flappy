@@ -64,7 +64,7 @@ class NewLot extends Controller
                 'price'          => (float) $request->price,
                 'exp_alert'      => $request->exp_alert,
                 'exp_date'       => $exp_alert ? $exp_date : null,
-                'exp_status'     => $exp_alert ? ExpirationStatus::VALID->value : null,
+                'exp_status' => $exp_alert ? ExpirationStatus::calculateFromDate($exp_date) : null,
                 'status' => Status::ENABLED->value,
             ]);
 

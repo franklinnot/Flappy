@@ -29,4 +29,25 @@ enum ExpirationStatus: string
         }
         return $status;
     }
+    
+    //
+    public static function calculateFromDate(?string $exp_date): ?string
+    {
+        if (!$exp_date) {
+            return null;
+        }
+
+        $date = now()->startOfDay();
+        $expiration = \Carbon\Carbon::parse($exp_date)->startOfDay();
+
+        if ($expiration->lessThan($date)) {
+            return self::EXPIRED->value;
+        }
+
+        if ($expiration->diffInDays($date) <= 7) {
+            return self::ALERT->value;
+        }
+
+        return self::VALID->value;
+    }
 }
