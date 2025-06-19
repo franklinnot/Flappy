@@ -35,9 +35,11 @@ use App\Http\Controllers\Products\NewProduct;
 use App\Http\Controllers\Products\ListProducts;
 use App\Http\Controllers\Products\StatusProducts;
 use App\Http\Controllers\Products\EditProduct;
-
 //
 use App\Http\Controllers\Lots\NewLot;
+use App\Http\Controllers\Lots\StatusLots;
+use App\Http\Controllers\Lots\EditLot;
+use App\Http\Controllers\Lots\ListLots;
 //
 use App\Http\Controllers\Operations\NewOperation;
 use App\Http\Controllers\Operations\ListOperations;
@@ -153,15 +155,15 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     #endregion
 
     #region Lots
-    Route::get('lots', [RegisteredUserController::class, 'show'])->name('lots');
+    Route::get('lots', [ListLots::class, 'show'])->name('lots');
 
     Route::get('lots/new', [NewLot::class, 'show'])->name('lots.new');
     Route::post('lots/new', [NewLot::class, 'create']);
 
-    Route::patch('lots/edit', [RegisteredUserController::class, 'update'])->name('lots.edit');
+    Route::patch('lots/edit', [EditLot::class, 'edit'])->name('lots.edit');
 
-    Route::patch('lots/enable/{id}', [RegisteredUserController::class, 'update'])->name('lots.enable');
-    Route::patch('lots/disable/{id}', [RegisteredUserController::class, 'update'])->name('lots.disable');
+    Route::patch('lots/enable/{id}', [StatusLots::class, 'enable'])->name('lots.enable');
+    Route::patch('lots/disable/{id}', [StatusLots::class, 'disable'])->name('lots.disable');
     #endregion
 
     #region Operations
