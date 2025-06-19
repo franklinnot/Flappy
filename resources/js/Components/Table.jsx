@@ -85,11 +85,11 @@ export default function Table({
                                     {properties.map((prop) => (
                                         <td
                                             key={prop.name}
-                                            className={`px-4 py-2 whitespace-nowrap ${
-                                                prop.name === "picture"
-                                                    ? "text-center"
-                                                    : ""
-                                            }`}
+                                            className={`px-4 py-2 ${
+                                                ["name", "address", "email"].includes(prop.name)
+                                                    ? "max-w-[180px] break-words whitespace-pre-line"
+                                                    : "whitespace-nowrap"
+                                            } ${prop.name === "picture" ? "text-center" : ""}`}
                                         >
                                             {prop.name === "picture" &&
                                             record[prop.name] ? (
@@ -107,7 +107,7 @@ export default function Table({
                                     ))}
                                     {(typeof editInfo === "function" ||
                                         editStatus) && (
-                                        <td className="px-4 py-2 whitespace-nowrap text-center">
+                                        <td className="max-w-[180px] break-words whitespace-pre-line px-2 py-1">
                                             <button
                                                 onMouseDown={(e) =>
                                                     e.stopPropagation()
