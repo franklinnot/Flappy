@@ -7,37 +7,35 @@ import { Head, usePage } from "@inertiajs/react";
 import { useState, useEffect, useMemo } from "react";
 import Toast from "@/Components/Toast";
 import ShowSale from "./ShowSale";
-import Status from "@/Utils/status";
-import axios from "axios";
 
 export default function ListSales({ records: initialRecords = [], properties, module, auth }) {
     const title = "Listado de Ventas";
 
-    const [baseRecords, setBaseRecords] = useState(initialRecords);
 
+
+    const [baseRecords, setBaseRecords] = useState(initialRecords);
     const [customerFilter, setCustomerFilter] = useState(null);
     const [statusFilter, setStatusFilter] = useState("Habilitado");
 
     const [showModal, setModal] = useState(false);
     const [modalData, setModalData] = useState(null);
 
-    const [toast, setToast] = useState(null);
-    const [toastKey, setToastKey] = useState(0);
-    const errors = usePage()?.props?.errors;
+    const { report, errors } = usePage().props;
+
+        const [toast, setToast] = useState(report || null);
+        const [toastKey, setToastKey] = useState(0);
+
+        useEffect(() => {
+            if (report) {
+                setToast(report);
+                setToastKey(Date.now());
+            }
+        }, [report]);
+
 
     useEffect(() => {
         setBaseRecords(initialRecords);
     }, [initialRecords]);
-
-    useEffect(() => {
-        if (errors?.report_type) {
-            setToast({
-                message: errors.report_message,
-                type: errors.report_type,
-            });
-            setToastKey(Date.now());
-        }
-    }, [errors]);
 
     const filteredRecords = useMemo(() => {
         return baseRecords.filter((record) => {
@@ -58,33 +56,6 @@ export default function ListSales({ records: initialRecords = [], properties, mo
         if (record) {
             setModalData(record);
             setModal(true);
-        }
-    };
-
-    const toggleStatus = async (id) => {
-        if (!window.confirm("¿Estás seguro de cambiar el estado de esta venta?")) return;
-
-        try {
-            const response = await axios.put(`/sales/${id}/toggle-status`);
-            const updated = response.data;
-
-            setBaseRecords((prev) =>
-                prev.map((record) =>
-                    record.id === id ? { ...record, status: updated.status } : record
-                )
-            );
-
-            setToast({
-                message: `Venta ${updated.status === "Habilitado" ? "habilitada" : "deshabilitada"}.`,
-                type: "success",
-            });
-            setToastKey(Date.now());
-        } catch (error) {
-            setToast({
-                message: "Error al cambiar el estado.",
-                type: "error",
-            });
-            setToastKey(Date.now());
         }
     };
 
@@ -137,35 +108,21 @@ export default function ListSales({ records: initialRecords = [], properties, mo
                     <SlideButton
                         className="flex mb-[13px] justify-end"
                         value={statusFilter === "Habilitado"}
-                        onChange={(val) => setStatusFilter(val ? "Habilitado" : "Deshabilitado")}
+                        onChange={(val) =>
+                            setStatusFilter(val ? "Habilitado" : "Deshabilitado")
+                        }
                     />
 
                     <Table
                         module={module}
                         properties={[
                             ...properties,
-                            { name: "actions", tag: "Acciones" },
-                            { name: "status_toggle", tag: "Estado" },
+                            { name: "user", tag: "Registrado por" },
+                            { name: "created_at", tag: "Fecha" },
                         ]}
-                        records={filteredRecords.map((r) => ({
-                            ...r,
-                            status_toggle: (
-                                <SlideButton
-                                    value={r.status === "Habilitado"}
-                                    onChange={() => toggleStatus(r.id)}
-                                    labelTrue=""
-                                    labelFalse=""
-                                />
-                            ),
-                            actions: (
-                                <button
-                                    onClick={() => editInfo(r.id)}
-                                    className="bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-semibold px-3 py-1 rounded-md transition"
-                                >
-                                    Ver Detalles
-                                </button>
-                            ),
-                        }))}
+                        records={filteredRecords}
+                        editInfo={editInfo}
+                        editStatus={true}
                     />
                 </div>
             </div>

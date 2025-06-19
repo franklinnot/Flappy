@@ -36,8 +36,10 @@ class ListSales extends Controller
                 'id' => $sale->id,
                 'code' => $sale->code,
                 'total' => $sale->total,
-                'status' => $sale->status, // 👈 NECESARIO PARA FILTRAR EN EL FRONTEND
+                'status' => $sale->status, // NECESARIO PARA FILTRAR EN EL FRONTEND
                 'customer' => $sale->customer?->name ?? null,
+                'created_at' => $sale->created_at?->toISOString(),
+                'user' => $sale->user?->name ?? 'No registrado', 
                 'details' => $sale->saleDetails->map(function ($detail) {
                     return [
                         'product' => $detail->lot?->product?->name ?? 'Producto no encontrado',
@@ -60,16 +62,25 @@ class ListSales extends Controller
             ['name' => 'total', 'tag' => 'Total'],
         ];
     }
-    public function toggleStatus($id)
+
+
+public function enable($id)
 {
     $sale = Sale::findOrFail($id);
-    $sale->status = $sale->status === 'Habilitado' ? 'Deshabilitado' : 'Habilitado';
+    $sale->status = 'Habilitado';
     $sale->save();
 
-    return response()->json([
-        'id' => $sale->id,
-        'status' => $sale->status,
-    ]);
+    return Report::success(self::ROUTE, 'Venta habilitada correctamente.');
 }
+
+public function disable($id)
+{
+    $sale = Sale::findOrFail($id);
+    $sale->status = 'Deshabilitado';
+    $sale->save();
+
+    return Report::success(self::ROUTE, 'Venta deshabilitada correctamente.');
+}
+   
 
 }

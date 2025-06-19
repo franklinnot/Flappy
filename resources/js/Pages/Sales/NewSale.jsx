@@ -193,7 +193,8 @@ export default function NewSale({ lots, customers, paymentMethods, report, error
             <Loading isLoading={processing} />
 
             <form onSubmit={submit} className="flex gap-4 pb-16 min-h-[500px]">
-                <div className="w-full md:w-[70%] flex flex-col gap-6 pr-4 border-r border-gray-300">
+                {/* IZQUIERDA - FORMULARIO: 40% */}
+                <div className="w-full md:w-[40%] flex flex-col gap-6 pr-4 border-r border-gray-300">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
                         <ComboBox
                             id="lot"
@@ -236,20 +237,12 @@ export default function NewSale({ lots, customers, paymentMethods, report, error
                                 onClick={addItem}
                                 disabled={processing}
                                 className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
-                            >Agregar producto</button>
+                            >
+                                Agregar producto
+                            </button>
                         </div>
                     </div>
 
-                    <div className="mt-8 max-h-72 overflow-y-auto">
-                        <Table properties={tableProperties} records={tableRecords} className="shadow-md rounded" />
-                    </div>
-
-                    <div className="text-right font-semibold text-lg mt-4">
-                        Total acumulado: S/. {total.toFixed(2)}
-                    </div>
-                </div>
-
-                <div className="w-full md:w-[30%] flex flex-col gap-6 pl-4">
                     <ComboBox
                         id="customer"
                         label="Cliente"
@@ -288,7 +281,23 @@ export default function NewSale({ lots, customers, paymentMethods, report, error
                         Registrar venta
                     </PrimaryButton>
                 </div>
+
+                {/* DERECHA - TABLA: 60% */}
+                <div className="w-full md:w-[60%] flex flex-col gap-6 pl-4">
+                    <div className="mt-2 max-h-[450px] overflow-y-auto">
+                        <Table
+                            properties={tableProperties}
+                            records={tableRecords}
+                            className="shadow-md rounded"
+                        />
+                    </div>
+
+                    <div className="text-right font-semibold text-lg mt-4">
+                        Total acumulado: S/. {total.toFixed(2)}
+                    </div>
+                </div>
             </form>
+
         </AuthenticatedLayout>
     );
 }
