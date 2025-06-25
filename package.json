@@ -21,6 +21,7 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
-        "@headlessui/react": "^2.2.3"
+        "@headlessui/react": "^2.2.3",
+        "recharts": "^3.0.0"
     }
 }
