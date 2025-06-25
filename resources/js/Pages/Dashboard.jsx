@@ -9,16 +9,27 @@ import {
 import Card from '@/Components/Card';
 import PieInventory from '@/Components/PieInventory';
 import LineSales from '@/Components/LineSales';
+import ProductsRanking from '@/Components/ProductsRanking';
 
-export default function Dashboard({ totalVentas, totalClientes, ingresosMes, topVendedor, inventarioMovimientos, ventasPorMes }) {
+export default function Dashboard({ 
+    totalVentas, 
+    totalClientes, 
+    ingresosMes, 
+    topVendedor, 
+    inventarioMovimientos, 
+    ventasPorMes,
+    productosMasVendidos
+    }) {
     const title = 'Dashboard';
 
     return (
         <AuthenticatedLayout title={title} className="bg-[#f9fbff] ">
             <Head title={title} />
-            <LineSales data={ventasPorMes} />
+            <ProductsRanking data={productosMasVendidos} />
+            
+            {/* <LineSales data={ventasPorMes} /> */}
 
-            {/* <PieInventory data={inventarioMovimientos} /> */}
+            {/* <PieInventory data={inventarioMovimientos} />  */}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
                 <Card

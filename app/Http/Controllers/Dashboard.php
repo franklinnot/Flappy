@@ -9,6 +9,7 @@ use App\Models\Sale;
 use App\Models\User;
 use App\Enums\TypesOperation;
 use App\Models\Operation;
+use App\Models\SaleDetails;
 use Carbon\Carbon;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -104,6 +105,34 @@ class Dashboard extends Controller
             ]);
         }
 
+        // Top 5 productos más vendidos
+        $topProductos = SaleDetails::raw(function ($collection) {
+            return $collection->aggregate([
+                [
+                    '$group' => [
+                        '_id' => '$lot_id',
+                        'totalVendidos' => ['$sum' => '$quantity']
+                    ]
+                ],
+                [
+                    '$sort' => ['totalVendidos' => -1]
+                ],
+                [
+                    '$limit' => 5
+                ]
+            ]);
+        });
+
+        $productosVendidos = collect($topProductos)->map(function ($item) {
+            $lot = Lot::find($item->_id);
+            $producto = $lot?->product;
+
+            return [
+                'nombre' => $producto?->name ?? 'Producto eliminado',
+                'cantidad' => $item->totalVendidos,
+            ];
+        });
+
         return Inertia::render(self::COMPONENT, [
             'totalVentas' => $totalVentas,
             'totalClientes' => $totalClientes,
@@ -117,6 +146,7 @@ class Dashboard extends Controller
                 'salidas' => $salidas,
             ],
             'ventasPorMes' => $ventasPorMesFormateadas,
+            'productosMasVendidos' => $productosVendidos,
         ]);
     }
 }
