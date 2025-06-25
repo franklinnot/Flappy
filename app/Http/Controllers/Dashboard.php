@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ExpirationStatus;
 use App\Enums\Status;
 use App\Models\Customer;
 use App\Models\Lot;
@@ -31,6 +32,9 @@ class Dashboard extends Controller
             Carbon::now()->startOfMonth(),
             Carbon::now()->endOfMonth()
         ])->sum('total');
+
+        //Ingresos totales
+        $ingresosTotales = Sale::sum('total');
 
         // Vendedor con más ventas
         $rankingVendedores = Sale::raw(function ($collection) {
@@ -118,7 +122,7 @@ class Dashboard extends Controller
                     '$sort' => ['totalVendidos' => -1]
                 ],
                 [
-                    '$limit' => 5
+                    '$limit' => 6
                 ]
             ]);
         });
@@ -133,10 +137,14 @@ class Dashboard extends Controller
             ];
         });
 
+        // Lotes Proximos a Vencer
+        $proximosAVencer = Lot::where('exp_status', ExpirationStatus::ALERT->value)->count();
+
         return Inertia::render(self::COMPONENT, [
             'totalVentas' => $totalVentas,
             'totalClientes' => $totalClientes,
             'ingresosMes' => $ingresosMes,
+            'ingresosTotales' => $ingresosTotales,
             'topVendedor' => $topVendedor ? [
                 'name' => $topVendedor->name,
                 'total' => $rankingVendedores[0]->totalVentas ?? 0,
@@ -147,6 +155,7 @@ class Dashboard extends Controller
             ],
             'ventasPorMes' => $ventasPorMesFormateadas,
             'productosMasVendidos' => $productosVendidos,
+            'proximosAVencer' => $proximosAVencer,
         ]);
     }
 }

@@ -18,7 +18,7 @@ export default function LineSales({ data }) {
             {noData ? (
                 <p className="text-center text-gray-500">No hay datos de ventas.</p>
             ) : (
-                <div className="h-40 w-full sm:w-[600px]">
+                <div className="h-80 w-full sm:w-[600px]">
                     <ResponsiveContainer width="100%" height="100%">
                         <LineChart data={data}>
                             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
