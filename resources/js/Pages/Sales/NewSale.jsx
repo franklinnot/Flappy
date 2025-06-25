@@ -139,7 +139,8 @@ export default function NewSale({ lots, customers, paymentMethods, report, error
         setProcessing(true);
 
         router.post(route("sales.new"), payload, {
-            preserveScroll: true,
+            preserveScroll: false,
+            preserveState: false,
             onSuccess: () => {
                 setLot(null);
                 setQuantity("");

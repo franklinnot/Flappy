@@ -23,49 +23,49 @@ class NewSale extends Controller
     public function show()
     {
         $lots = Lot::with([
-    'product' => function ($q) {
-        $q->select('_id', 'name', 'picture', 'unit_id')->with('unit:id,name');
-    }
-])
-    ->where('status', Status::ENABLED->value)
-    ->get()
-    ->filter(function ($lot) {
-        $hasValidStock = $lot->stock > 0;
+            'product' => function ($q) {
+                $q->select('_id', 'name', 'picture', 'unit_id')->with('unit:id,name');
+            }
+        ])
+            ->where('status', Status::ENABLED->value)
+            ->get()
+            ->filter(function ($lot) {
+                $hasValidStock = $lot->stock > 0;
 
-        $isValidExp = true;
-        if (!empty($lot->exp_status)) {
-            $isValidExp = $lot->exp_status === 'En vigencia';
-        }
+                $isValidExp = true;
+                if (!empty($lot->exp_status)) {
+                    $isValidExp = $lot->exp_status == 'En vigencia' || $lot->exp_status == 'Próximo a vencer';
+                }
 
-        return $hasValidStock && $isValidExp;
-    })
-        ->map(function ($lot) {
-        return [
-            'id' => $lot->id,
-            'name' => "{$lot->code} - " . ($lot->product->name ?? ''),
-            'code' => $lot->code,
-            'stock' => $lot->stock,
-            'price' => $lot->price,
-            'product' => [
-                'id' => $lot->product->id ?? null,
-                'name' => $lot->product->name ?? null,
-                'picture' => $lot->product->picture ?? null,
-                'unit' => $lot->product->unit->name ?? null,
-            ],
+                return $hasValidStock && $isValidExp;
+            })
+            ->map(function ($lot) {
+                return [
+                    'id' => $lot->id,
+                    'name' => "{$lot->code} - " . ($lot->product->name ?? ''),
+                    'code' => $lot->code,
+                    'stock' => $lot->stock,
+                    'price' => $lot->price,
+                    'product' => [
+                        'id' => $lot->product->id ?? null,
+                        'name' => $lot->product->name ?? null,
+                        'picture' => $lot->product->picture ?? null,
+                        'unit' => $lot->product->unit->name ?? null,
+                    ],
 
-        ];
-    })
+                ];
+            })
 
-    ->values();
+            ->values();
         $paymentMethods = Payment::where('status', Status::ENABLED->value)
-        ->select(['_id', 'name']) // Asegúrate de que el campo sea 'name'
-        ->get()
-        ->map(fn($method) => [
-            'id' => $method->id,
-            'name' => $method->name,
-        ]);
+            ->select(['_id', 'name']) // Asegúrate de que el campo sea 'name'
+            ->get()
+            ->map(fn($method) => [
+                'id' => $method->id,
+                'name' => $method->name,
+            ]);
         $customers = Customer::where('status', Status::ENABLED->value)
-            ->select(['_id', 'name','dni','phone' ])
+            ->select(['_id', 'name', 'dni', 'phone'])
             ->get()
             ->map(fn($customer) => [
                 'id' => $customer->id,
@@ -79,18 +79,14 @@ class NewSale extends Controller
             'customers' => $customers,
             'paymentMethods' => $paymentMethods,
         ]);
-
-        
-
     }
 
-    
+
 
 
     // Crear venta con validaciones
     public function create(Request $request)
     {
-        \Log::info('Create sale request', $request->all());
 
         $validated = $request->validate([
             'items' => ['required', 'array', 'min:1'],

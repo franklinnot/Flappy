@@ -10,14 +10,13 @@ import Loading from "@/Components/loading";
 export default function NewOperation({ types, suppliers, lots, report }) {
     const title = "Nueva operación";
 
-    const { data, setData, post, reset, processing, transform, errors } = useForm(
-        {
+    const { data, setData, post, reset, processing, transform, errors } =
+        useForm({
             lot: "",
             type: "",
             supplier: "",
             quantity: "",
-        }
-    );
+        });
 
     const [toast, setToast] = useState(null);
     const [toastKey, setToastKey] = useState(0);
