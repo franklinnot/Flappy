@@ -65,7 +65,7 @@ const ProfileMenu = ({ user }) => {
             >
                 <ul>
                     <li className="px-4 py-2 hover:bg-[#e3ebff] border-b text-gray-600 text-sm font-normal text-left rounded-t-xl ">
-                        <Link href={route("profile")}>Perfil de usuario</Link>
+                        <Link href={route("profile")}>Perfil</Link>
                     </li>
                     <li className="px-4 py-2 hover:bg-[#e3ebff] text-sm font-normal text-left text-red-600 rounded-b-xl">
                         <Link href={route("logout")} method="post" as="button">

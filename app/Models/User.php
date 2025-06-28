@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use MongoDB\Laravel\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -46,6 +45,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
     ];
     #endregion
     #region Relationships
@@ -60,5 +61,9 @@ class User extends Authenticatable
     }
     #endregion
 
+    public function getFormattedCreatedAtAttribute(): string
+    {
+        return $this->created_at->format('h:i A d/m/Y');
+    }
 
 }

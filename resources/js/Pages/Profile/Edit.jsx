@@ -1,28 +1,44 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import UpdatePasswordForm from './Partials/UpdatePasswordForm';
-import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
-import { Head } from '@inertiajs/react';
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head } from "@inertiajs/react";
+import InputField from "@/Components/InputField";
 
-export default function Edit({ auth, status }) {
+export default function Edit({ user }) {
     return (
-        <AuthenticatedLayout
-            user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Profile</h2>}
-        >
-            <Head title="Profile" />
+        <AuthenticatedLayout className="pb-[56px]">
+            <Head title="Perfil" />
 
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                    <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                        <UpdateProfileInformationForm
-                            status={status}
-                            className="max-w-xl"
-                        />
-                    </div>
+            <div className="min-w-[600px] p-10 pt-0">
+                <header>
+                    <h2 className="text-2xl py-10 pb-9 font-semibold text-slate-800">
+                        Información del perfil
+                    </h2>
+                </header>
 
-                    <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                        <UpdatePasswordForm className="max-w-xl" />
-                    </div>
+                <div className="space-y-8">
+                    <InputField
+                        id="dni"
+                        label="DNI"
+                        value={user.dni}
+                        disabled={true}
+                    />
+                    <InputField
+                        id="name"
+                        label="Nombre"
+                        value={user.name}
+                        disabled={true}
+                    />
+                    <InputField
+                        id="rol"
+                        label="Rol"
+                        value={user.rol}
+                        disabled={true}
+                    />
+                    <InputField
+                        id="created_at"
+                        label="Fecha de registro"
+                        value={user.created_at}
+                        disabled={true}
+                    />
                 </div>
             </div>
         </AuthenticatedLayout>
