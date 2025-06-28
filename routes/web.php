@@ -182,12 +182,8 @@ Route::middleware(['auth', 'verify.rol'])->group(function () {
     Route::post('sales/new', [NewSale::class, 'create']);
     
     Route::patch('sales/enable/{id}', [ListSales::class, 'enable'])->name('sales.enable');
-    Route::patch('sales/disable/{id}', [ListSales::class, 'disable'])->name('sales.disable');
-
-    
+    Route::patch('sales/disable/{id}', [ListSales::class, 'disable'])->name('sales.disable');    
     #endregion
-
-
 });
 
 

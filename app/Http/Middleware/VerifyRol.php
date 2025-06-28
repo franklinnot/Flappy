@@ -34,7 +34,7 @@ class VerifyRol
                 }
             }
             if (!$allowed) {
-                return Inertia::location(route('sales'));
+                return Inertia::location(route('sales.new'));
             }
         }
 
