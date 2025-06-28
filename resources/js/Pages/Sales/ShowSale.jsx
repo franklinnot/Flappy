@@ -44,7 +44,7 @@ export default function ShowSale({ onClose, sale }) {
                         <p><strong>Código:</strong> {sale.code}</p>
                         <p><strong>Cliente:</strong> {sale.customer ?? "Sin cliente"}</p>
                         <p><strong>Estado:</strong> {sale.status}</p>
-                        <p><strong>Fecha:</strong> {formatDate(sale.created_at)}</p>
+                        <p><strong>Fecha:</strong> {sale.created_at}</p>
                         <p><strong>Registrado por:</strong> {sale.user}</p>
                     </div>
 

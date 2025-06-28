@@ -36,9 +36,9 @@ class ListSales extends Controller
                 'id' => $sale->id,
                 'code' => $sale->code,
                 'total' => $sale->total,
-                'status' => $sale->status, // NECESARIO PARA FILTRAR EN EL FRONTEND
+                'status' => $sale->status, 
                 'customer' => $sale->customer?->name ?? null,
-                'created_at' => $sale->created_at?->toISOString(),
+                'created_at' => $sale->created_at?->format('d/m/Y h:i A'),
                 'user' => $sale->user?->name ?? 'No registrado', 
                 'details' => $sale->saleDetails->map(function ($detail) {
                     return [

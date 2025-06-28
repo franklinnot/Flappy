@@ -12,13 +12,17 @@ export default function ListSales({ records: initialRecords = [], properties, mo
     const title = "Historial de ventas";
 
 
-
+    
     const [baseRecords, setBaseRecords] = useState(initialRecords);
     const [customerFilter, setCustomerFilter] = useState(null);
     const [statusFilter, setStatusFilter] = useState("Habilitado");
 
+    
+
     const [showModal, setModal] = useState(false);
     const [modalData, setModalData] = useState(null);
+    const [codeFilter, setCodeFilter] = useState(null);
+    const [userFilter, setUserFilter] = useState(null);
 
     const { report, errors } = usePage().props;
 
@@ -43,12 +47,24 @@ export default function ListSales({ records: initialRecords = [], properties, mo
             const customerMatch = customerFilter
                 ? record.customer?.toLowerCase().includes(customerFilter.name.toLowerCase())
                 : true;
-            return statusMatch && customerMatch;
+
+            const codeMatch = codeFilter
+            ? record.code?.toLowerCase().includes(codeFilter.name.toLowerCase())
+            : true;
+
+            const userMatch = userFilter
+                ? record.user?.toLowerCase().includes(userFilter.name.toLowerCase())
+                : true;
+
+            return statusMatch && customerMatch && codeMatch && userMatch;
+            
         });
-    }, [baseRecords, customerFilter, statusFilter]);
+    }, [baseRecords, customerFilter, statusFilter, codeFilter, userFilter]);
 
     const resetFilters = () => {
         setCustomerFilter(null);
+        setCodeFilter(null);
+        setUserFilter(null);
     };
 
     const editInfo = (id) => {
@@ -96,6 +112,22 @@ export default function ListSales({ records: initialRecords = [], properties, mo
                         items={itemsCombobox("customer")}
                         value={customerFilter}
                         onChange={setCustomerFilter}
+                    />
+
+                    <ComboBox
+                        id="code"
+                        label="Código"
+                        items={itemsCombobox("code")}
+                        value={codeFilter}
+                        onChange={setCodeFilter}
+                    />
+
+                    <ComboBox
+                        id="user"
+                        label="Registrado por"
+                        items={itemsCombobox("user")}
+                        value={userFilter}
+                        onChange={setUserFilter}
                     />
 
                     <PrimaryButton onClick={resetFilters}>

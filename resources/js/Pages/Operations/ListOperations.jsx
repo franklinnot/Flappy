@@ -149,7 +149,7 @@ export default function ListOperations({
 
             <div className="inline-flex w-full h-full py-6 px-16 gap-10">
                 {/* filtros */}
-                <div className="flex flex-col w-[464px] gap-8 w-min-64 text-slate-700">
+                    <div className="flex flex-col min-w-[300px] max-w-[464px] w-full gap-8 text-slate-700">
                     <h2 className="text-xl font-semibold pb-[10px] border-b">
                         Filtros
                     </h2>
