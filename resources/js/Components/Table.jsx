@@ -60,18 +60,18 @@ export default function Table({
                 className={`w-full overflow-hidden rounded-md border border-gray-200 shadow-sm ${className}`}
             >
                 <table className="w-full table-auto text-sm text-left text-gray-700">
-                    <thead className="bg-gray-50 border-b border-gray-200">
+                    <thead className="bg-blue-50 border-b border-gray-200">
                         <tr>
                             {properties.map((prop) => (
                                 <th
                                     key={prop.name}
-                                    className="px-4 py-2 font-semibold text-gray-600"
+                                    className="px-4 py-2 font-semibold text-sky-900"
                                 >
                                     {prop.tag}
                                 </th>
                             ))}
                             {(typeof editInfo === "function" || editStatus) && (
-                                <th className="px-4 py-2" />
+                                <th className="px-4 py-2 w-px text-right" />
                             )}
                         </tr>
                     </thead>
@@ -86,10 +86,18 @@ export default function Table({
                                         <td
                                             key={prop.name}
                                             className={`px-4 py-2 ${
-                                                ["name", "address", "email"].includes(prop.name)
+                                                [
+                                                    "name",
+                                                    "address",
+                                                    "email",
+                                                ].includes(prop.name)
                                                     ? "max-w-[180px] break-words whitespace-pre-line"
-                                                    : "whitespace-nowrap"
-                                            } ${prop.name === "picture" ? "text-center" : ""}`}
+                                                    : "truncate"
+                                            } ${
+                                                prop.name === "picture"
+                                                    ? "text-center"
+                                                    : ""
+                                            }`}
                                         >
                                             {prop.name === "picture" &&
                                             record[prop.name] ? (

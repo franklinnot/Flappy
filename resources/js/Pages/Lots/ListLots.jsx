@@ -14,7 +14,7 @@ export default function ListLots({
     module,
     report
 }) {
-    const title = "Lista de Lotes";
+    const title = "Lotes";
     let errors = usePage()?.props?.errors;
 
     const [baseRecords, setBaseRecords] = useState(initialRecords);

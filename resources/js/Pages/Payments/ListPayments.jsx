@@ -14,7 +14,7 @@ export default function ListPayments({
     module,
     report,
 }) {
-    const title = "Lista de Métodos de Pago";
+    const title = "Métodos de pago";
     let errors = usePage()?.props?.errors;
 
     const [baseRecords, setBaseRecords] = useState(initialRecords);

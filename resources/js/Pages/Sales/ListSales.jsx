@@ -9,7 +9,7 @@ import Toast from "@/Components/Toast";
 import ShowSale from "./ShowSale";
 
 export default function ListSales({ records: initialRecords = [], properties, module, auth }) {
-    const title = "Listado de Ventas";
+    const title = "Historial de ventas";
 
 
 

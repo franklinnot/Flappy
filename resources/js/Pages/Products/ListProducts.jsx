@@ -17,7 +17,7 @@ export default function ListProducts({
     unidades,
     categorias
 }) {
-    const title = "Lista de Productos";
+    const title = "Productos";
     const errors = usePage()?.props?.errors;
 
     const [baseRecords, setBaseRecords] = useState(initialRecords);

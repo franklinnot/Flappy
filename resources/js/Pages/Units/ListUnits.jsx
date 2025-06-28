@@ -14,7 +14,7 @@ export default function ListUnits({
     module,
     report,
 }) {
-    const title = "Lista de Unidades de Medida";
+    const title = "Unidades de medida";
     let errors = usePage()?.props?.errors;
 
     const [baseRecords, setBaseRecords] = useState(initialRecords);

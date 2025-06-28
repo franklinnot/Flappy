@@ -15,7 +15,7 @@ export default function ListSuppliers({
     module,
     report,
 }) {
-    const title = "Lista de Proveedores";
+    const title = "Proveedores";
     let errors = usePage()?.props?.errors;
 
     const [baseRecords, setBaseRecords] = useState(initialRecords);

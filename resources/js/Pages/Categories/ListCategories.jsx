@@ -15,7 +15,7 @@ export default function ListCategories({
     module,
     report,
 }) {
-    const title = "Lista de Categorías";
+    const title = "Categorías";
     let errors = usePage()?.props?.errors;
 
     const [baseRecords, setBaseRecords] = useState(initialRecords);

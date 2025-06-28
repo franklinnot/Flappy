@@ -77,7 +77,7 @@ class ListPayments extends Controller
     private function getColumns()
     {
         return [
-            ['name' => 'name', 'tag' => 'Nombre del método'],
+            ['name' => 'name', 'tag' => 'Nombre'],
         ];
     }
 }

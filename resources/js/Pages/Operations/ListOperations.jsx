@@ -15,7 +15,7 @@ export default function ListOperations({
     module,
     report,
 }) {
-    const title = "Lista de Operaciones";
+    const title = "Historial de operaciones";
     let errors = usePage()?.props?.errors;
 
     const [baseRecords, setBaseRecords] = useState(initialRecords);

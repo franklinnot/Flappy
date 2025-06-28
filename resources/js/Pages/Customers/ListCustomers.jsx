@@ -14,7 +14,7 @@ export default function ListCustomers({
     module,
     report,
 }) {
-    const title = "Lista de Clientes";
+    const title = "Clientes";
     let errors = usePage()?.props?.errors;
 
     const [baseRecords, setBaseRecords] = useState(initialRecords);
