@@ -13,6 +13,7 @@ class Operation extends Model
     protected $connection = 'mongodb';
     protected $table = 'operations';
     protected $fillable = [
+        'code',
         'type',
         'quantity',
         'status',

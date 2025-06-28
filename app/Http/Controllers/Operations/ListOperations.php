@@ -26,6 +26,7 @@ class ListOperations extends Controller
             ->orderBy('created_at', 'desc')
             ->select([
                 'id',
+                'code',
                 'type',
                 'quantity',
                 'status',
@@ -44,6 +45,7 @@ class ListOperations extends Controller
                 $supplier_name = $obj->supplier->name ?? null;
                 return [
                     'id' => $obj->id,
+                    'code' => $obj->code,
                     'lot' => "$lot_code - $product_name",
                     'type' => $obj->type,
                     'quantity' => $obj->quantity,
@@ -58,6 +60,7 @@ class ListOperations extends Controller
     private function getColumns()
     {
         return [
+            ['name' => 'code', 'tag' => 'Código'],
             ['name' => 'created_at', 'tag' => 'Fecha'],
             ['name' => 'lot', 'tag' => 'Lote'],
             ['name' => 'type', 'tag' => 'Tipo de operación'],

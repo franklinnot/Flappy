@@ -69,6 +69,7 @@ class NewLot extends Controller
             ]);
 
             Operation::create([
+                'code' => 'O-' . now()->format('YmdHis'),
                 'user_id' => Auth::user()->id,
                 'lot_id' => $lot->id,
                 'type' => TypesOperation::INPUT->value,

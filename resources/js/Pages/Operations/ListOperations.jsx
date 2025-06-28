@@ -7,6 +7,7 @@ import { usePage } from "@inertiajs/react";
 import Status from "@/Utils/status";
 import SlideButton from "@/Components/slide-button";
 import ComboBox from "@/Components/ComboBox";
+import PrimaryButton from "@/Components/PrimaryButton";
 
 export default function ListOperations({
     records: initialRecords = [],
@@ -24,11 +25,21 @@ export default function ListOperations({
     const [toastKey, setToastKey] = useState(0);
 
     // Filtros
+    const [codeFilter, setCodeFilter] = useState(null);
     const [lotFilter, setLotFilter] = useState(null);
     const [typeFilter, setTypeFilter] = useState(null);
     const [supplierFilter, setSupplierFilter] = useState(null);
     const [userFilter, setUserFilter] = useState(null);
     const [statusFilter, setStatusFilter] = useState(Status.ENABLED);
+
+    const resetFilters = () => {
+        setCodeFilter(null);
+        setLotFilter(null);
+        setTypeFilter(null);
+        setSupplierFilter(null);
+        setUserFilter(null);
+        setStatusFilter(Status.ENABLED);
+    };
 
     useEffect(() => {
         setBaseRecords(initialRecords);
@@ -67,6 +78,12 @@ export default function ListOperations({
         return baseRecords.filter((record) => {
             const statusMatch = record.status === statusFilter;
 
+            const codeMatch = codeFilter
+                ? record.lot
+                      .toLowerCase()
+                      .includes(codeFilter.name.toLowerCase())
+                : true;
+
             const lotMatch = lotFilter
                 ? record.lot
                       .toLowerCase()
@@ -93,6 +110,7 @@ export default function ListOperations({
                 : true;
 
             return (
+                codeMatch &&
                 statusMatch &&
                 lotMatch &&
                 typeMatch &&
@@ -136,6 +154,14 @@ export default function ListOperations({
                         Filtros
                     </h2>
                     <ComboBox
+                        id="code"
+                        label="Código"
+                        items={itemsCombobox("code")}
+                        value={codeFilter}
+                        onChange={(value) => setCodeFilter(value)}
+                    />
+
+                    <ComboBox
                         id="lot"
                         label="Lote"
                         items={itemsCombobox("lot")}
@@ -166,6 +192,9 @@ export default function ListOperations({
                         value={userFilter}
                         onChange={(value) => setUserFilter(value)}
                     />
+                    <PrimaryButton onClick={resetFilters}>
+                        Eliminar filtros
+                    </PrimaryButton>
                 </div>
                 <div className="flex-1 flex flex-col">
                     <SlideButton

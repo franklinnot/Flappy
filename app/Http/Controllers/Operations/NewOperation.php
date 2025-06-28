@@ -94,6 +94,7 @@ class NewOperation extends Controller
             ]);
 
             Operation::create([
+                'code' => 'O-' . now()->format('YmdHis'),
                 'user_id' => Auth::user()->id,
                 'lot_id' => $request->lot,
                 'type' => $type,
