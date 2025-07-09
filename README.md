@@ -129,14 +129,6 @@ config/
 
 Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles. [8](#0-7) 
 
-## 👥 Autores
-
-- **Franklin** - Desarrollo principal
-- **Sebas** - Contribuciones al frontend
-- **Belen** - Dashboard y componentes
-- **Flavio Zavaleta** - Mejoras en la interfaz
-- **Jose** - Módulo de ventas
-
 ---
 
 ⭐ ¡No olvides dar una estrella al proyecto si te resulta útil!
